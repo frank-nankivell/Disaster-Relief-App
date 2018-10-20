@@ -1,0 +1,49 @@
+include mixins
+
+doctype
+html( lang="en" )
+    head
+        title Disaster Relief App
+        meta( charset='utf-8' )
+        meta( http-equiv='X-UA-Compatible', content='IE=edge' )
+        meta( name='viewport', content='width=device-width, initial-scale=1.0' )
+        meta( name='description', content='Disaster Relief application' )
+        //- Bootswatch Theme
+        link(href="https://bootswatch.com/4/minty/bootstrap.min.css", rel="stylesheet")
+
+        //+bootswatch("superhero")
+        +bootswatch("flatly")
+
+    body(style="padding-bottom:10rem;")
+
+        .container
+
+        +nav("Disaster Relief App", "dropdown_menu")
+            +nav_item( "/views/index.jade", "active" ) Home
+            +nav_item( "about.html" ) About
+            +nav_item( "missing-somebody") Missing Someone
+            +nav_item( "learninghub.html" ) Learning Hub
+            +nav_divider
+            +nav_item_dropdown( "#" )( label="Report")
+                +nav_item( "#" ) Now
+                +nav_item( "#" ) Find an old report
+                +nav_item( "#" ) Something else here
+                +nav_divider
+                +nav_header Nav header
+                +nav_item( "#" ) Separated link
+                +nav_item( "#" ) One more separated link
+
+                +alert("info") Some information for you
+        .row
+            .col-md-2.col-sm-6.col-xs-12
+            .col-md-8.col-sm-6.col-xs-12
+                .jumbotron
+                    h1 Disaster Relief App!
+                    p Preventing Disaster Relief around the world
+                    p: +button("primary", "about.html", "large") Learn more
+            .col-md-2.col-sm-6.col-xs-12
+
+
+
+        script( src='//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js' )
+        script( src='//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js' )

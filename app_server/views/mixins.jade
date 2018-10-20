@@ -2,8 +2,9 @@ mixin nav(name, id, style)
     - var style = (typeof style === 'undefined') ? "default" : style
     nav( role="navigation", class=["navbar", "navbar-" + style] )
         .navbar-header
-            button.navbar-toggle.collapsed( type="button", data-toggle="collapse", data-target="#" + id, aria-expanded="false", aria-controls="navbar")
+            button.navbar-toggler.collapsed( type="button", data-toggle="collapse", data-target="#" + id, aria-expanded="false", aria-controls="navbar")
                 span.sr-only Toggle navigation
+                span.navbar-toggler-icon
                 span.icon-bar
                 span.icon-bar
                 span.icon-bar
@@ -19,7 +20,6 @@ mixin nav_item(href, active)
 
 mixin nav_item_red(href, active)
     li(class=active): a( href=href )
-
         block
 
 mixin nav_item_dropdown(href, active)
@@ -35,6 +35,8 @@ mixin nav_divider
 mixin nav_header
     li.dropdown-header
         block
+
+
 
 //- End navbar mixins
 
@@ -70,6 +72,10 @@ mixin alert(style)
 //- List group mixins
 - var groupType
 
+mixin the_title
+      the_title =#{title.}
+        block
+
 mixin listGroup(type)
     - groupType = type
     case groupType
@@ -79,6 +85,7 @@ mixin listGroup(type)
         default
             .list-group
                 block
+
 
 mixin listItem(arg1, arg2)
     case groupType

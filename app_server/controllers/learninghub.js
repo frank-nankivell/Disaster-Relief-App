@@ -6,7 +6,7 @@ module.exports.home = function(req, res) {
 
 // list page for the learning hub
 module.exports.list = function(req, res) {
-  res.render('learninghub', {title: 'List of Hub Entries'});
+  res.render('learninghubList', {title: 'List of Hub Entries'});
 };
 // comment page for the learning hub
 

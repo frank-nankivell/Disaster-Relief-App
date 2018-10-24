@@ -1,4 +1,5 @@
-doctype
+
+doctype html
 html( lang="en" )
     head
         title=title
@@ -9,39 +10,42 @@ html( lang="en" )
         link(href="https://bootswatch.com/4/minty/bootstrap.css", rel="stylesheet")
 
         //+bootswatch("superhero")
-        +bootswatch("minty")
+        //+bootswatch("minty")
 
     body(style="padding-bottom:10rem;")
+      nav.navbar.navbar-expand-lg.navbar-dark.bg-primary
+        a.navbar-brand(href='#') D_R.APP
+          button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navbarColor02', aria-controls='navbarColor01', aria-expanded='true', aria-label='Toggle navigation')
+          span.navbar-toggler-icon
+          #navbarColor02.navbar-collapse.collapse.show(style='')
+          ul.navbar-nav.mr-auto
+            li.nav-item.active
+              a.nav-link(href='#')
+                span.sr-only (current)
+            li.nav-nav
+              a.nav-link(href='/') home
+            li.nav-item
+              a.nav-link(href='/learninghub/') Learning Hub
+            li.nav-item
+              a.nav-link(href='/reporttool/') Reporting Tool
+            li.nav-item
+              a.nav-link(href='/about/') About
+          form.form-inline.my-2.my-lg-0
+            input.form-control.mr-sm-2(type='text', placeholder='Search')
+            button.btn.btn-secondary.my-2.my-sm-0(type='submit') Search
 
-    nav.navbar.navbar-expand-lg.navbar-dark.bg-primary
-      a.navbar-brand(href='#') D_R.APP
-        button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navbarColor02', aria-controls='navbarColor01', aria-expanded='true', aria-label='Toggle navigation')
-        span.navbar-toggler-icon
-        #navbarColor02.navbar-collapse.collapse.show(style='')
-        ul.navbar-nav.mr-auto
-          li.nav-item.active
-            a.nav-link(href='#')
-              span.sr-only (current)
-          li.nav-nav
-            a.nav-link(href='/') home
-          li.nav-item
-            a.nav-link(href='/learninghub/') Learning Hub
-          li.nav-item
-            a.nav-link(href='/reporttool/') Reporting Tool
-          li.nav-item
-            a.nav-link(href='/about/') About
-        form.form-inline.my-2.my-lg-0
-          input.form-control.mr-sm-2(type='text', placeholder='Search')
-          button.btn.btn-secondary.my-2.my-sm-0(type='submit') Search
+      .container
+        block content
 
-    body(style="padding-bottom:10rem;")
-        .container
-          block content
+        footer
+          ul
+            li
+              a(href="/team") Team
+            li
+              a(href="/privacy") Privacy
+            p
+              | Frank'zAPP <br> 
+              | &copy; 3000, All Rights Reserved
 
-            footer
-              .row
-                .col-xs-12
-                  small &copy; Frank Nankivell
-
-        script( src='//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js' )
-        script( src='//maxcdn.bootstrapcdn.com/bootstrap/4..1/js/bootstrap.min.js' )
+      script( src='//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js' )
+      script( src='//maxcdn.bootstrapcdn.com/bootstrap/4..1/js/bootstrap.min.js' )

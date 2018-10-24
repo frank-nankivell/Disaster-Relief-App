@@ -1,10 +1,12 @@
 extends layout
 includes mixins
+  head
 
-block content
-  jumbotron
-    p.lead
-    h1= title
-    p.lead
-      a.btn.btn-secondary.btn-lg(href='/reporttool/', role='button') Report a Disaster
-      img.logo(src="/public/images/fire.jpg")
+  block content
+    jumbotron
+      p.lead
+      h1= title
+      p.lead
+      p
+        h4= 'DRAP - A new app for Communiy Disaster Prevention'
+        .a.btn.btn-danger.btn-lg(href='/reporttool/', role='button') Report a Disaster

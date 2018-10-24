@@ -3,7 +3,7 @@ var router = express.Router();
 var ctrlMain = require ('../controllers/main');
 var ctrllearninghub = require('../controllers/learninghub');
 var ctrlreporttool = require('../controllers/reporttool');
-var ctrlAbout = require('../controllers/about');
+var ctrlabout = require('../controllers/about');
 
 // route for the main home page
 router.get('/',ctrlMain.main);
@@ -16,12 +16,12 @@ router.get('/learninghub/new',ctrllearninghub.new);
 // report routes
 router.get('/reporttool',ctrlreporttool.home);
 // reportinfo routes
-router.get('/reporttool/info', ctrlreporttool.info);
+router.get('/reporttool/info',ctrlreporttool.info);
 // router etc
 
 // router for about
-router.get('/about',ctrlAbout.about);
-router.get('/privacy',ctrlAbout.privacy);
-router.get('/team',ctrlAbout.team);
+router.get('/about',ctrlabout.about);
+router.get('/privacy',ctrlabout.privacy);
+router.get('/team',ctrlabout.team);
 
 module.exports = router;

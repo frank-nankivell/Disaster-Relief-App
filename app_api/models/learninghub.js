@@ -9,17 +9,15 @@ var userSchema = new mongoose.Schema({
   });
 
 var learninghubSchema = new mongoose.Schema({
-    id: Number,
+//    id: Number,
     hubentryName: String,
     articleType: ['How-to Guide', 'Idea','Question','Other'],
     disasterType: ['Forrest Fire','Earthquake','Storm','Drought'],
     hubtext: String,
-    author: [userSchema],
-    createdOn: {
-        type: Date,
-        "default": Date.now
-      }
+//    author: [userSchema],
+//    createdOn: {
+//        type: Date,
+//        "default": Date.now
+    });
 
-});
-
-mongoose.model('lhdata', learninghubSchema);
+mongoose.model('Learninghub', learninghubSchema);

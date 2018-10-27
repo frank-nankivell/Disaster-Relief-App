@@ -10,7 +10,7 @@ if (process.platform === "win32"){
         process.emit ("SIGINT");
     });
 }
-const dbURI = "mongodb://localhost:27017/drap";
+const dbURI = "mongodb://localhost:27017/DRAP";
 const mongo = mongoose.connect(dbURI, {useNewUrlParser: true });
 mongo.then(() => {
 console.log('connected');
@@ -19,7 +19,7 @@ console.log('err', err);
 });
 
 mongoose.connection.on('connected', function() {
-  console.log('Mongoose connected to' + dbURI);
+  console.log('Mongoose connected to ' + dbURI);
 });
 
 mongoose.connection.on('error', function(err) {
@@ -56,5 +56,5 @@ process.once('SIGTERM', function() {
   });
 });
 
-require('./lhdata');
+require('./learninghub');
 //require('./companies');

@@ -11,13 +11,14 @@ var userSchema = new mongoose.Schema({
 var learninghubSchema = new mongoose.Schema({
 //    id: Number,
     hubentryName: String,
-    articleType: ['How-to Guide', 'Idea','Question','Other'],
-    disasterType: ['Forrest Fire','Earthquake','Storm','Drought'],
+    articleType: [], // How to guide etc
+    disasterType: [], // Forrest Fire','Earthquake','Storm','Drought'
     hubtext: String,
 //    author: [userSchema],
-//    createdOn: {
-//        type: Date,
-//        "default": Date.now
+    createdOn: {
+        type: Date,
+       "default": Date.now
+     }
     });
 
 mongoose.model('Learninghub', learninghubSchema);

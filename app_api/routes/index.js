@@ -5,14 +5,25 @@ var ctrllearninghub = require('../controllers/learninghubapi');
 //var ctrlreporttool = require('../controllers/reporttool');
 //var ctrlabout = require('../controllers/about');
 
-// Learning hub List AP
 // Main page for listing learninghub stuff
-router.get('/learninghub/list',ctrllearninghub.learninghubByCreatedDate);
 
+// Search all articles by Created Date
+router.get('/learninghub/list/date', ctrllearninghub.learninghubByCreatedDate);
 
-router.get('/learninghub/list',ctrllearninghub.learninghubReadAll);
+// Search all articles ordered by Disaster type
+router.get('/learninghub/list',ctrllearninghub.learninghubByDisasterAll);
 
-router.post('/learninghub',ctrllearninghub.learninghubCreate);
+// Shows all values from specific Disaster tpe
+router.get('/learninghub/list:searchid',ctrllearninghub.learninghubByDisasterType);
+
+// Search all articles by Article Type
+router.get('/learninghub/list',ctrllearninghub.learninghubByType);
+
+// Search for articles by value
+router.get('/learninghub/list:searchid',ctrllearninghub.learninghubSearchVar);
+
+// Page to create record
+router.post('/learninghub/new',ctrllearninghub.learninghubCreate);
 
 router.get('/learninghub/new:learninghubid',ctrllearninghub.learninghubReadOne);
 

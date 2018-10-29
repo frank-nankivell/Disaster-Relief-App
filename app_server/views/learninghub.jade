@@ -1,15 +1,18 @@
 extends layout
 
 block content
-  jumbotron
-    p.lead
+  .top
     h1= title
-
-      body
-        .card.text-white.bg-info.mb-3(style='max-width: 20rem;')
-        p.card-text
-            | Search for current entries
-          a.btn.btn-outline-info.btn-lg(href='/learninghub/list/', role='button') List of Resources
-
-      body
-        //search functionality to implement
+  .top
+    .jumbotron
+      h3= Qinfo
+    .middle
+      h4= info
+    .middle
+    .searchbutton.col-md-12.text-center
+      a.btn.btn-outline-info.btn-lg(href='/learninghub/list/', role='button') List of Learning Hub Entries
+    .searchbutton
+    .lower
+      h4= inputinfo
+      .searchbutton2.col-md-12.text-center
+        a.btn.btn-primary.btn-lg(href='/learninghub/new/', role='button') Create your entry here

@@ -1,5 +1,8 @@
 module.exports.about = function(req, res) {
-  res.render('about', {title: 'About'});
+  res.render('about', {
+    title: 'About',
+    info: ''
+  });
 };
 
 module.exports.privacy = function(req, res) {

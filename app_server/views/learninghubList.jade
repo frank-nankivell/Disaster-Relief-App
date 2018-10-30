@@ -3,16 +3,11 @@ extends layout
 block content
   jumbotron
     p.lead
-    h1= title
+    h1= lhEntries
 
-        body
-        for l in learninghub
-          x = learninghub.name
-          .col-xs-12.col.sm-8
-            .row.list-group
-            .col-xs-12.list-group-item
-            .card.mb-3
-              a(href='/learninghub/list') = learninghublist.name
-              h3.card-header= learninghublist.articleType
-              h6.card-subtitle= learninghublist.disasterType
-              .card-body= learninghublist.text
+    .listofentries
+      h2= lhEntries
+    .listofentries
+
+
+    

@@ -22,7 +22,7 @@ module.exports.learninghubByCreatedDate = function(req, res) {
 };
 // Search by Disaster - Provides list of all values ordered by Disaster
 module.exports.learninghubByDisasterAll = function(req, res){
-  console.log('Finding all learninghub entries Ordered by date')
+  console.log('Finding all learninghub entries Ordered by Disaster')
   lh
     .find().sort({ disasterType: -1})
     .exec(function(err, learninghublist) {
@@ -108,6 +108,37 @@ module.exports.learninghubReadOne = function(req, res) {
     });
   }
 };
+
+module.exports.learninghubByContinent = function(req, res) {
+  console.log('Finding Learninghub details', req.params);
+  if (req.params && req.params.continent) {
+    lh
+      .findById(req.params.continent)
+      .exec(function(err, learninghub) {
+        if (!learninghub) {
+          sendJSONresponse(res, 404, {
+            "message": "learninghubid not found"
+          });
+          return;
+        } else if (err) {
+          console.log(err);
+          sendJSONresponse(res, 404, err);
+          return;
+        }
+        console.log(learninghub);
+        sendJSONresponse(res, 200, learninghub);
+      });
+  } else {
+    console.log('No learninghubid specified');
+    sendJSONresponse(res, 404, {
+      "message": "No learninghubid in request"
+    });
+  }
+};
+
+
+
+
 
 
 //to create a record within mongoDB

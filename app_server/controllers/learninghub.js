@@ -5,26 +5,28 @@ var tbc = 'Page coming soon...'
 //if (process.env.NODE_ENV === 'production') {
 //  apiOptions.server = "http://inserturl"
 //};
-// Variable of the render learninghub list
+
+// Variable of the render learninghub list //
 var renderLearninghublist = function(req, res, responseBody) {
   res.render('learninghubList', {
     title: 'List of Learning hub entries thus far',
     lhEntries: responseBody
   });
 };
-// list page for the learning hub
-module.exports.list = function(req, res) {
-  var requestOptions, path;
-  path = 'api/learninghub/list';
+// list page for the learning hub //
+module.exports.list = function(req, res ) {
+  var requestOptions;
   requestOptions = {
-    url : localserver + path,
-    method : "GET",
-    json : {}
+    url : 'http://localhost:3000/api/learninghub/list',
+    method :'GET',
+    json : '',
+    qs: ''
   };
   request (
     requestOptions,
     function (err, response, body) {
       renderLearninghublist(req, res, body)
+      console.log('module export has been ran')
     }
   );
 };

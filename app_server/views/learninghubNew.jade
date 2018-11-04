@@ -31,5 +31,16 @@ block content
     input#uploadimage.form-control-file(type='image', aria-describedby='imagehelp')
     small#fileHelp.form-text.text-muted
       | Upload an image here or anything that might help everyone get to understand your entry better!
+  .form-group
+    label(for='/inserurl') Related Continent
+    select#insert1.form-control
+    small#emailHelp.form-text.text-muted Select any of the continents this article applies to
+      option Antartica
+      option Asia
+      option Africa
+      option Australasia
+      option Europe
+      option North America
+      option South America
   .button.btn.btn-primary(type='submit') Submit
   .inputform

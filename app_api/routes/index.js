@@ -16,6 +16,8 @@ router.get('/learninghub/list',ctrllearninghub.learninghubByDisasterAll);
 // Shows all values from specific Disaster tpe
 router.get('/learninghub/list:searchid',ctrllearninghub.learninghubByDisasterType);
 
+router.get('learninghub/list:continent', ctrllearninghub.learninghubByContinent);
+
 // Search all articles by Article Type
 router.get('/learninghub/list',ctrllearninghub.learninghubByType);
 

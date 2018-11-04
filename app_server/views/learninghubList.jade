@@ -1,13 +1,16 @@
 extends layout
 
 block content
-  jumbotron
     p.lead
-    h1= lhEntries
-
-    .listofentries
-      h2= lhEntries
-    .listofentries
-
-
-    
+      h1= title
+    p.lead
+      h2= work
+       for Learninghub in lhEntries
+        .col-xs-12.list-group-item
+            h4
+              p #{lhEntries.hubentryName}
+            li.entry
+              p #{lhEntries.articleType}
+            li.entry
+              p4= lhEntries.hubtext
+            li.entry

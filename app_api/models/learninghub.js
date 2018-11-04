@@ -14,6 +14,7 @@ var learninghubSchema = new mongoose.Schema({
     articleType: [], // How to guide etc
     disasterType: [], // Forrest Fire','Earthquake','Storm','Drought'
     hubtext: String,
+    relatedContinent: [],
 //    author: [userSchema],
     createdOn: {
         type: Date,

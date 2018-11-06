@@ -1,6 +1,4 @@
-var mongoose = require('mongoose');
-
-var learninghubSchema = new mongoose.Schema({
+{
     hubentryName: {
       type:String,
       required: true
@@ -15,11 +13,9 @@ var learninghubSchema = new mongoose.Schema({
     createdOn: {
         type: Date,
        "default": Date.now
-     },
+     }
      author: {
        type: String,
        required: true
      }
-    });
-
-mongoose.model('Learninghub', learninghubSchema);
+}

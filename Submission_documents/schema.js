@@ -1,12 +1,14 @@
-var mongoose = require('mongoose');
+
+
+// Task 3 a) A schema for data related to the prototype
 
 var learninghubSchema = new mongoose.Schema({
     hubentryName: {
       type:String,
       required: true
     },
-    articleType: [], // How to guide etc
-    disasterType: [], // Forrest Fire','Earthquake','Storm','Drought'
+    articleType: [],
+    disasterType: [],
     hubtext: {
       type: String,
       required: true
@@ -20,6 +22,4 @@ var learninghubSchema = new mongoose.Schema({
        type: String,
        required: true
      }
-    });
-
-mongoose.model('Learninghub', learninghubSchema);
+});

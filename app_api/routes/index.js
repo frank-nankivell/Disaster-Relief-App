@@ -14,9 +14,8 @@ router.get('/learninghub/list/date', ctrllearninghub.learninghubByCreatedDate);
 router.get('/learninghub/list',ctrllearninghub.learninghubByDisasterAll);
 
 // Shows all values from specific Disaster tpe
-router.get('/learninghub/list:searchid',ctrllearninghub.learninghubByDisasterType);
-
-router.get('learninghub/list:continent', ctrllearninghub.learninghubByContinent);
+//router.get('/learninghub/list:searchid',ctrllearninghub.learninghubByDisasterType);
+//router.get('learninghub/list:continent', ctrllearninghub.learninghubByContinent);
 
 // Search all articles by Article Type
 router.get('/learninghub/list',ctrllearninghub.learninghubByType);
@@ -27,11 +26,11 @@ router.get('/learninghub/list:searchid',ctrllearninghub.learninghubSearchVar);
 // Page to create record
 router.post('/learninghub/new',ctrllearninghub.learninghubCreate);
 
-router.get('/learninghub/new:learninghubid',ctrllearninghub.learninghubReadOne);
+router.get('/learninghub/get/:learninghubid',ctrllearninghub.learninghubReadOne);
 
-router.put('/learninghub/new:learninghubid',ctrllearninghub.learninghubUpdateOne);
+router.put('/learninghub/get/:learninghubid',ctrllearninghub.learninghubUpdateOne);
 
-router.delete('/learninghub/new:learninhubid',ctrllearninghub.learninghubDeleteOne);
+router.delete('/learninghub/del:learninhubid',ctrllearninghub.learninghubDeleteOne);
 
 module.exports = router;
 

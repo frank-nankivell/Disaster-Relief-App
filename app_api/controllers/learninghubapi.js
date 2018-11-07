@@ -6,11 +6,13 @@ var sendJSONresponse = function(res, status, content) {
   res.json(content);
 };
 // Search by Date - Provides list of all values ordered by date
+
 module.exports.learninghubByCreatedDate = function(req, res) {
   console.log('Finding all learninghub entries Ordered by date')
   lh
     .find().sort({ createdOn: -1})
-    .exec(function(err, learninghublist) {
+    .exec(function(err, learninghublist)
+    {
       if (err) {
       console.log(err);
       sendJSONresponse(res, 400, err);
@@ -20,6 +22,25 @@ module.exports.learninghubByCreatedDate = function(req, res) {
   }
 })
 };
+
+var buildLearninghubList = function(req, res, learninghublist) {
+  var lhEntries = [];
+  learninghublist.forEach(function(doc) {
+    lhEntries.push({
+      hName: doc.obj.hubentryName,
+      hdisasterType: doc.obj.disasterType,
+      harticleType: doc.obj.articleType,
+      hcreateDate: doc.obj.createOn,
+      hhubtext: doc.obj.hubtext,
+      _id: doc.obj._id,
+      hcontinent: doc.obj.relatedContinent
+    });
+  });
+  return lhEntries;
+  console.log('this works')
+  console.log(lhEntries)
+};
+
 // Search by Disaster - Provides list of all values ordered by Disaster
 module.exports.learninghubByDisasterAll = function(req, res){
   console.log('Finding all learninghub entries Ordered by Disaster')

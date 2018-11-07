@@ -3,16 +3,16 @@
 extends layout
 
 block content
-    p.lead
-      h1= title
-    p.lead
-      h2= work
-       for Learninghub in lhEntries
-        .col-xs-12.list-group-item
-            h4
-              p #{lhEntries.hubentryName}
-            li.entry
-              p #{lhEntries.articleType}
-            li.entry
-              p4= lhEntries.hubtext
-            li.entry
+        h1= title
+
+        .repeat-Entry
+        for v in data
+          .card.mb-3
+            h5.card-header= v.hubentryName
+            .card-body
+                li.list-group-item= v.articleType
+                li.list-group-item= v.disasterType
+                li.list-group-item= v.createOn
+                li.list-group-item= v.hubtext
+                li.list-group-item= v.relatedContinent
+            .card-body

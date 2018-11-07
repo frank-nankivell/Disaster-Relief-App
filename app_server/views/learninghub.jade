@@ -4,18 +4,36 @@ block content
   .top
     h1= title
   .top
+
+  .second
     .jumbotron
       h3= Qinfo
-    .middle
+    .informationSection
       h4= info
-    .middle
+    .informationSection
+  .second
+
+  .third
+  h4= listinfo
     .Listbutton.col-md-12.text-center
       a.btn.btn-outline-info.btn-lg(href='/learninghub/list/', role='button') List of Learning Hub Entries
     .listbutton
-    .searchbutton
-      a.btn.btn-outline-info.btn-lg(href='/learninghub/list/', role='button') List of Learning Hub Entries
 
-    .lower
+    .fourth
       h4= inputinfo
       .searchbutton2.col-md-12.text-center
         a.btn.btn-primary.btn-lg(href='/learninghub/new/', role='button') Create your entry here
+
+  .fith
+  h4= sampleinfo
+      .searchbutton.col-md-12.text-center
+        a.btn.btn-outline-info.btn-lg(onclick='myFunction()') Check Sample below
+    .card.mb-3
+      h5.card-header= name
+      .card-body
+          li.list-group-item= artType
+          li.list-group-item= disType
+          li.list-group-item= text
+          li.list-group-item= date
+          li.list-group-item= continent
+      .card-body

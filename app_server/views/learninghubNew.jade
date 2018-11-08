@@ -3,6 +3,7 @@
 extends layout
 
 block content
+  br
   h1= title
   .inputform.form-group
   .form-group
@@ -39,5 +40,5 @@ block content
       option North America
       option South America
     small#emailHelp.form-text.text-muted Select any of the continents this article applies to
-  .button.btn#btn-primarySubmit
+  a.btn.btn-primary.btn-lg(href='/learninghub/new/thanks/', role='button') Submit
   .inputform

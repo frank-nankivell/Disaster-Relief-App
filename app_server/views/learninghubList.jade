@@ -4,15 +4,27 @@ extends layout
 
 block content
         h1= title
-        h5= info
+        br
+
+        h4= info
+        br
+        h5= thoughts
+        b
 
         .listView
             each obj in data
-                .card-body= obj.Name
+                .card.mb-3
+                h3.card-header= obj.Name
+                .card-body
                   p.card-text= obj.hubtext
                     br
                 ul.list-group.list-group-flush
-                  li.list-group-item= obj.articleType
-                  li.list-group-item= obj.disasterType
-                  li.list-group-item= obj.createdDate
-                  li.list-group-item= obj.continent
+                  li.list-group-item= header1+obj.articleType
+                  li.list-group-item= header2+obj.disasterType
+                  li.list-group-item= header3+obj.continent
+                .card-body
+                  p= obj.createdDate
+        br
+        .input
+          h6= inputidea
+          a.btn.btn-primary.btn-lg(href='/learninghub/new/', role='button') Create your entry here

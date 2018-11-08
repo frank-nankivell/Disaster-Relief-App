@@ -12,6 +12,7 @@ router.get('/learninghub',ctrllearninghub.home);
 router.get('/learninghub/list',ctrllearninghub.list);
 router.get('/learninghub/comment',ctrllearninghub.comment);
 router.get('/learninghub/new',ctrllearninghub.new);
+router.get('/learninghub/new/thanks',ctrllearninghub.thanks);
 
 // report routes
 router.get('/reporttool',ctrlreporttool.home);

@@ -12,22 +12,9 @@ block content
       h4= info
     .informationSection
   .second
-
+  br
   .third
-  h4= listinfo
-    .Listbutton.col-md-12.text-center
-      a.btn.btn-outline-info.btn-lg(href='/learninghub/list/', role='button') List of Learning Hub Entries
-    .listbutton
-
-    .fourth
-      h4= inputinfo
-      .searchbutton2.col-md-12.text-center
-        a.btn.btn-primary.btn-lg(href='/learninghub/new/', role='button') Create your entry here
-
-  .fith
   h4= sampleinfo
-      .searchbutton.col-md-12.text-center
-        a.btn.btn-outline-info.btn-lg(onclick='myFunction()') Check Sample below
     .card.mb-3
       h5.card-header= name
       .card-body
@@ -37,6 +24,22 @@ block content
           li.list-group-item= date
           li.list-group-item= continent
           li.list-group-item= map
+  .fourth
+  br
+  h4= listinfo
+    .Listbutton.col-md-12.text-left
+    br
+    a.btn.btn-outline-info.btn-lg(href='/learninghub/list/', role='button') List of Learning Hub Entries
+    .listbutton
+    br
+
+    .fifth
+      h4= inputinfo
+      .searchbutton2.col-md-12.text-left
+        a.btn.btn-primary.btn-lg(href='/learninghub/new/', role='button') Create your entry here
+
+
+
 
 
   .card-body

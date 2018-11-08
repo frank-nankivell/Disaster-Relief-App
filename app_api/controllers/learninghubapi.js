@@ -7,8 +7,6 @@ var sendJSONresponse = function(res, status, content) {
   res.json(content);
 };
 
-
-
 // Search by Date - Provides list of all values ordered by date
 module.exports.learninghubByCreatedDate = function(req, res) {
   console.log('Finding all learninghub entries Ordered by date')
@@ -34,27 +32,6 @@ var buildLearninghubList = function(req, res, x) {
   });
   return lhEntries;
 };
-
-// If using a DB would just use .findBy() rather than this longer approach
-module.exports.learninghubReadOne = function(req, res) {
-}
-
-var buildLearingHubOutput = function(req, res) {
-    var output;
-      x.forEach(function(doc)
-      {
-      lhEntries.push({
-        Name: doc.hubentryName,
-        disasterType: doc.disasterType,
-        articleType: doc.articleType,
-        createdDate: doc.createdOn,
-        hubtext: doc.hubtext,
-        _id: doc._id,
-        continent: doc.relatedContinent
-      });
-    });
-    return lhEntries;
-  };
 
 //to create a record within mongoDB
 module.exports.learninghubCreate = function (req, res) {

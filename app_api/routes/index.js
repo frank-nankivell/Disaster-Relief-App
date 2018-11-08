@@ -9,8 +9,6 @@ router.get('/learninghub/list/date', ctrllearninghub.learninghubByCreatedDate);
 // Page to create record
 router.post('/learninghub/new',ctrllearninghub.learninghubCreate);
 
-router.get('/learninghub/get/:learninghubid',ctrllearninghub.learninghubReadOne);
-
 router.put('/learninghub/get/:learninghubid',ctrllearninghub.learninghubUpdateOne);
 
 router.delete('/learninghub/del:learninhubid',ctrllearninghub.learninghubDeleteOne);

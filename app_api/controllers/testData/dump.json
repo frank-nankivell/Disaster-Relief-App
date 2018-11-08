@@ -1,0 +1,31 @@
+[
+{
+    "articleType":"How-to Guide",
+  "disasterType":"Forrest Fire",
+  "relatedContinent":["Europe"],
+  "_id":"123",
+  "hubentryName":"How to survie a Forrest Fire",
+  "hubtext":"1st Test data",
+  "createdOn":"2018-10-28T09:27:03.343Z",
+  "__v":0
+},
+{
+    "articleType":"How-to Guide",
+  "disasterType":"Drought",
+  "relatedContinent":["Europe"],
+  "_id":"124",
+  "hubentryName":"How to Survie a Drought",
+  "hubtext":"2nd Test data",
+  "createdOn":"2018-11-28T09:27:03.343Z",
+  "__v":0
+},
+{
+    "articleType":"Question",
+  "disasterType":"Storm",
+  "relatedContinent":["Europe"],
+  "_id":"125",
+  "hubentryName":"What do you do in a Storm?",
+  "hubtext":"3rd Test data",
+  "createdOn":"2018-12-28T09:27:03.343Z",
+  "__v":0
+}]

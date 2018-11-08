@@ -1,18 +1,19 @@
 var request =  require('request');
-
 var localserver = "http:///localhost:3000"
 var tbc = 'Page coming soon...'
+var testdata = require('./testData/dump.json');
 //if (process.env.NODE_ENV === 'production') {
 //  apiOptions.server = "http://inserturl"
 //};
 
+
 // Variable of the render learninghub list //
 var renderLearninghublist = function(req, res, responseBody) {
+  var obj = JSON.parse(responseBody)
   res.render('learninghubList', {
     title: 'List of Learning hub entries thus far',
     info: 'Below you find a list of entries that have been entered this far',
-    data: responseBody
-
+    data: obj
   });
 };
 
@@ -20,7 +21,7 @@ var renderLearninghublist = function(req, res, responseBody) {
 module.exports.list = function(req, res ) {
   var requestOptions;
   requestOptions = {
-    url : 'http://localhost:3000/api/learninghub/list',
+    url : 'http://localhost:3000/api/learninghub/list/date',
     method :'GET',
     json : '',
     qs: ''
@@ -29,6 +30,7 @@ module.exports.list = function(req, res ) {
     requestOptions,
     function (err, response, body) {
       renderLearninghublist(req, res, body)
+
 
     }
   );
@@ -45,15 +47,8 @@ module.exports.new = function(req, res) {
 };
 
 var renderlearninghome = function(req, res, samplebody)  {
-  console.log(samplebody)
+  var a =
   //var cont = samplebody.getElementById('relatedContient')
-  var n = 'Europe';
-  renderImageLocation(req, res, n)
-  console.log(n)
-  var x = renderImageLocation.latitude;
-  var y = renderImageLocation.longitude;
-  console.log(x)
-  console.log(y)
   res.render('learninghub', {
     title: 'The Learning Hub',
     Qinfo: 'What is the learning hub for, why am I here?',
@@ -94,7 +89,7 @@ var renderImageLocation = function(req, res, continent) {
 module.exports.home = function(req, res) {
   var requestOptions;
   requestOptions = {
-    url : 'http://localhost:3000/api/learninghub/get/5bd580d1b76608678ff1102e',
+    url : 'http://localhost:3000/api/learninghub/get/123',
     method :'GET',
     json : '',
     qs: ''

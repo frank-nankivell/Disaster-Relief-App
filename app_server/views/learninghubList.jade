@@ -5,4 +5,14 @@ extends layout
 block content
         h1= title
         h5= info
-        p= data 
+
+        .listView
+            each obj in data
+                .card-body= obj.Name
+                  p.card-text= obj.hubtext
+                    br
+                ul.list-group.list-group-flush
+                  li.list-group-item= obj.articleType
+                  li.list-group-item= obj.disasterType
+                  li.list-group-item= obj.createdDate
+                  li.list-group-item= obj.continent

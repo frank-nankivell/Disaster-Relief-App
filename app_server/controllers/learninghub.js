@@ -45,9 +45,15 @@ module.exports.new = function(req, res) {
 };
 
 var renderlearninghome = function(req, res, samplebody)  {
-  console.log(samplebody) // this - parses JSON in the console no problem
-  var n = (samplebody.hubentryName) // this does not work
-  console.log(n) // =
+  console.log(samplebody)
+  //var cont = samplebody.getElementById('relatedContient')
+  var n = 'Europe';
+  renderImageLocation(req, res, n)
+  console.log(n)
+  var x = renderImageLocation.latitude;
+  var y = renderImageLocation.longitude;
+  console.log(x)
+  console.log(y)
   res.render('learninghub', {
     title: 'The Learning Hub',
     Qinfo: 'What is the learning hub for, why am I here?',
@@ -60,11 +66,30 @@ var renderlearninghome = function(req, res, samplebody)  {
     disType: "Forrest Fire",
     text: "Don't get burnt in a fire",
     date: "2018-05-10",
-    continent: "Europe"
+    continent: "Europe",
+    api_KEY: 'AIzaSyDeZhtVpwaxLEb0AMw-tHtQvNgVvy9HWbU'
 
   });
 };
 
+
+
+var renderImageLocation = function(req, res, continent) {
+  var latitude, longitude;
+  if (continent == '')
+  {
+    return ''
+  }
+  else{
+    if(continent == 'Europe') {
+      latitude = '49.368876'
+      longitude = '11.768920'
+    }
+    else latitude = '', longitude = '';
+  }
+  return latitude, longitude;
+  console.log('print this'+ latitude, longitude)
+}
 
 module.exports.home = function(req, res) {
   var requestOptions;
@@ -78,6 +103,7 @@ module.exports.home = function(req, res) {
     requestOptions,
     function (err, response, body) {
       renderlearninghome(req, res, body)
+
     }
   );
 };

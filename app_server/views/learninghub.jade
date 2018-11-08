@@ -4,6 +4,29 @@ block content
   .top
     h1= title
   .top
+  #map
+  h2 maps demo
+    .script
+    function initMap() {
+
+    var uluru = {
+    lat: -25.344,
+    lng: 131.036
+    };
+
+    var map = new google.maps.Map(
+      document.getElementById('map'), {
+        zoom: 4,
+        center: uluru
+        });
+    var marker = new google.maps.Marker({
+      position: uluru,
+      map: map
+      });
+    }
+    script(async='', defer='', src='https://maps.googleapis.com/maps/api/js?key=AIzaSyDeZhtVpwaxLEb0AMw-tHtQvNgVvy9HWbU&callback=initMap')
+    script.
+
 
   .second
     .jumbotron
@@ -36,4 +59,7 @@ block content
           li.list-group-item= text
           li.list-group-item= date
           li.list-group-item= continent
-      .card-body
+          li.list-group-item= map
+
+
+  .card-body

@@ -4,15 +4,5 @@ extends layout
 
 block content
         h1= title
-
-        .repeat-Entry
-        for v in data
-          .card.mb-3
-            h5.card-header= v.hubentryName
-            .card-body
-                li.list-group-item= v.articleType
-                li.list-group-item= v.disasterType
-                li.list-group-item= v.createOn
-                li.list-group-item= v.hubtext
-                li.list-group-item= v.relatedContinent
-            .card-body
+        h5= info
+        p= data 

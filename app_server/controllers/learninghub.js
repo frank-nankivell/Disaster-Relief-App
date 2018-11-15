@@ -40,7 +40,7 @@ module.exports.list = function(req, res ) {
 };
 
 
-var renderlearninghome = function(req, res, samplebody)  {
+var renderLearningHome = function(req, res, samplebody)  {
   var obj = JSON.parse(samplebody)
   console.log()
   console.log(samplebody.Name)
@@ -99,10 +99,53 @@ module.exports.home = function(req, res) {
 module.exports.comment = function(req, res) {
   res.render('learninghub', {title: 'Comments',tbc});
 };
-//  page for the learning hub
-module.exports.new = function(req, res) {
-  res.render('learninghubNew', {title: 'Upload a new Hub Entry',tbc});
+
+var renderLearningNew =  function(req, res) {
+  res.render('learninghubNew',{title: 'Upload a new Hub Entry'
+});
+
+
+module.exports.new = function(req, res){
+  var requestOptions, path, lhid, postdata;
+  locationid = req.params.locationid;
+  path = "/api/learninghub/new" + lhid;
+  postdata = {
+    hubentryName: req.body.hubentryName,
+    articleType: req.body.articleType,
+    disasterType: req.body.disasterType,
+    relatedContient: req.body.relatedContient,
+    createdOn: '',
+    author: req.body.author,
+    hubtext: req.body.hubtext,
+  };
+  requestOptions = {
+    url : apiOptions.server + path,
+    method : "POST",
+    json : postdata
+  };
+  if (!postdata.hubentryName || !postdata.author ) {
+    res.redirect('/learninghub/new' + learninghubid + 'err=val');
+  } else {
+    request(
+      requestOptions,
+      function(err, response, body) {
+        renderLearningNew(req, res, body)
+
+      // this doesnt render - could pack it all in one push 
+        if (response.statusCode === 201) {
+          res.redirect('/learninghub/thanks' + learninghubid);
+        } else if (response.statusCode === 400 && body.name && body.name === "ValidationError" ) {
+          res.redirect('//learninghub/new/' + learninghubid + '/?err=val');
+        } else {
+          console.log(body);
+          _showError(req, res, response.statusCode);
+        }
+      }
+      }
+    );
+  }
 };
+
 module.exports.thanks = function(req, res) {
   res.render('learninghubthanks', {
     title: 'Thankyou for submitting your entry',

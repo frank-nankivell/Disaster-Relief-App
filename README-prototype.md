@@ -3,6 +3,8 @@
 The prototype focuses on the Learninghub module of the rescApp application.
 The prototype has focused on evidencing a number of simple views that will be expanded on for the MVP of the application. In particular the application documents how to run an API request from some test data stored within the app_api folder.
 
+The submission_
+
 ## Getting Started
 
 To run the application:

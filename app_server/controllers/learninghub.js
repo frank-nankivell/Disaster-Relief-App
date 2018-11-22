@@ -1,14 +1,11 @@
 var request =  require('request');
-var localserver = "http:///localhost:3000"
-var tbc = 'Page coming soon...'
-//var testdata = require('./testData/dump.json');
-//if (process.env.NODE_ENV === 'production') {
-//  apiOptions.server = "http://inserturl"
-//};
+var localserver = "http:///localhost:3000";
+var tbc = 'Page coming soon...';
 
 // Variable of the render learninghub list //
 var renderLearninghublist = function(req, res, responseBody) {
-  var obj = JSON.parse(responseBody)
+  var obj = responseBody;
+ // var obj = JSON.parse(responseBody)
   res.render('learninghubList', {
     title: 'List of Learning hub entries thus far',
     info: 'Below you find a list of entries that have been entered this far',
@@ -19,6 +16,25 @@ var renderLearninghublist = function(req, res, responseBody) {
     header3: "Related Continent  ",
     date: " Created Date",
     data: obj
+  });
+};
+
+var _showError = function (req, res, status) {
+  var title, content;
+  if (status === 404) {
+    title = "404, page not found";
+    content = "Cannot find page";
+  } else if (status === 500) {
+    title = "500, internal server error";
+    content = "Issue with server";
+  } else {
+    title = status + ", something's gone wrong";
+    content = "Something, somewhere, has gone just a little bit wrong.";
+  }
+  res.status(status);
+  res.render('generic-text', {
+    title : title,
+    content : content
   });
 };
 
@@ -39,12 +55,10 @@ module.exports.list = function(req, res ) {
   );
 };
 
-
-var renderLearningHome = function(req, res, samplebody)  {
-  var obj = JSON.parse(samplebody)
-  console.log()
-  console.log(samplebody.Name)
-  //var cont = samplebody.getElementById('relatedContient')
+// home page and info
+var renderlearninghome = function(req, res, samplebody)  {
+ // var obj = JSON.parse(samplebody)
+    var obj = samplebody;
   res.render('learninghub', {
     title: 'The Learning Hub',
     Qinfo: 'What is the learning hub for, why am I here?',
@@ -58,10 +72,57 @@ var renderLearningHome = function(req, res, samplebody)  {
     text: "Don't get burnt in a fire",
     date: "2018-05-10",
     continent: "Europe",
-    api_KEY: 'AIzaSyDeZhtVpwaxLEb0AMw-tHtQvNgVvy9HWbU'
+    api_KEY: 'AIzaSyDeZhtVpwaxLEb0AMw-tHtQvNgVvy9HWbU',
+    data: obj
 
   });
 };
+
+// for getting a single learninghub by ID
+var getLearninghub = function (req, res, callback) {
+  var requestOptions, path;
+  path = "/api/learninghub/" + req.params.locationid;
+  requestOptions = {
+    url : localserver + path,
+    method : "GET",
+    json : {}
+  };
+  request(
+    requestOptions,
+    function(err, response, body) {
+      var data = body;
+      if (response.statusCode === 200) {
+        callback(req, res, data);
+      } else {
+        _showError(req, res, response.statusCode);
+      }
+    }
+  );
+};
+
+
+var getRecentLearninghub = function (req, res, callback) {
+  var requestOptions, path;
+  path = "/api/learninghub/" + req.params.locationid;
+  requestOptions = {
+    url : localserver + path,
+    method : "GET",
+    json : {}
+  };
+  request(
+    requestOptions,
+    function(err, response, body) {
+      var data = body;
+      if (response.statusCode === 200) {
+        callback(req, res, data);
+      } else {
+        _showError(req, res, response.statusCode);
+      }
+    }
+  );
+};
+
+
 // Work in progress
 var renderImageLocation = function(req, res, continent) {
   var latitude, longitude;
@@ -80,6 +141,13 @@ var renderImageLocation = function(req, res, continent) {
   console.log('print this'+ latitude, longitude)
 }
 
+// comment page for the learning hub
+module.exports.comment = function(req, res) {
+  res.render('learninghub', {title: 'Comments',tbc});
+};
+
+
+
 module.exports.home = function(req, res) {
   var requestOptions;
   requestOptions = {
@@ -95,60 +163,54 @@ module.exports.home = function(req, res) {
     }
   );
 };
-// comment page for the learning hub
-module.exports.comment = function(req, res) {
-  res.render('learninghub', {title: 'Comments',tbc});
+
+var renderCreate = function(req, res) {
+  res.render('learninghubNew',{
+    title: 'Upload a new Hub Entry',
+    error: req.query.err,
+    url: req.originalUrl
+  });
+}
+
+module.exports.new = function(req, res) {
+  renderCreate(req,res)
 };
 
-var renderLearningNew =  function(req, res) {
-  res.render('learninghubNew',{title: 'Upload a new Hub Entry'
-});
-
-
-module.exports.new = function(req, res){
-  var requestOptions, path, lhid, postdata;
+module.exports.newAdd = function(req, res) {
+  console.log('Posting add to DB')
+  var requestOptions, path, postdata;
   locationid = req.params.locationid;
-  path = "/api/learninghub/new" + lhid;
+  // path = "/api/learninghub/new" + lhid;
   postdata = {
     hubentryName: req.body.hubentryName,
     articleType: req.body.articleType,
     disasterType: req.body.disasterType,
-    relatedContient: req.body.relatedContient,
-    createdOn: '',
+    relatedContinent: req.body.relatedContinent,
     author: req.body.author,
-    hubtext: req.body.hubtext,
+    hubtext: req.body.hubtext
   };
   requestOptions = {
-    url : apiOptions.server + path,
+    // need to amend below for production
+    url : 'localhost:3000/api/learninghub/new',
     method : "POST",
     json : postdata
   };
-  if (!postdata.hubentryName || !postdata.author ) {
-    res.redirect('/learninghub/new' + learninghubid + 'err=val');
-  } else {
+  console.log(postdata),
     request(
       requestOptions,
-      function(err, response, body) {
-        renderLearningNew(req, res, body)
+        function(err, response, body) {
+        });
+      };
 
-      // this doesnt render - could pack it all in one push 
-        if (response.statusCode === 201) {
-          res.redirect('/learninghub/thanks' + learninghubid);
-        } else if (response.statusCode === 400 && body.name && body.name === "ValidationError" ) {
-          res.redirect('//learninghub/new/' + learninghubid + '/?err=val');
-        } else {
-          console.log(body);
-          _showError(req, res, response.statusCode);
-        }
-      }
-      }
-    );
-  }
-};
-
-module.exports.thanks = function(req, res) {
+// This would ideally be rendered from the create 
+module.exports.thanks = function(req, res, x) {
+  var input, obj;
+  input = x;
+  getLearninghub(input, res, data)
   res.render('learninghubthanks', {
     title: 'Thankyou for submitting your entry',
-    info: 'further functionality not in place for prototype'
-  });
+    info: 'further functionality not in place for prototype',
+    data: obj
+    }
+    );
 };

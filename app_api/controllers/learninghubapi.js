@@ -7,15 +7,15 @@ var sendJSONresponse = function(res, status, content) {
   res.json(content);
 };
 
-module.exports.learninghubReadOne = function(req, res) {
-  console.log("Find me a lh Entry", req.params);
+module.exports.learninghubGet = function(req, res) {
+  console.log("Find me a Learninghub... Entry", req.params);
   if(req.params && req.params.learninghubid) {
     lh
-      .findById(req.params.learninhubid)
+      .findById(req.params.learninghubid)
       .exec(function(err, learninghub) {
         if (!learninghub) {
-          ssendJSONresponse(res, 404, {
-            "message": "ID NOT FOUND"
+          sendJSONresponse(res, 404, {
+            "message": "No record with ID FOUND"
           });
           return;
         } else if (err) {
@@ -23,36 +23,29 @@ module.exports.learninghubReadOne = function(req, res) {
           sendJSONresponse(res, 404, err);
           return;
         }
-        console.log(location);
-        sendJSONresponse(res, 200, location);
+        console.log(learninghub);
+        sendJSONresponse(res, 200, learninghub);
       });
   } else {
-    console.log('No ID specified');
+    console.log('No ID Given');
     sendJSONresponse(res, 404, {
       "message": "No ID in request"
     });
   }
 };
 
-
-
-
-
-
-
-
 // Search by Date - Provides list of all values ordered by date
 module.exports.learninghubByCreatedDate = function(req, res) {
   console.log('Finding all learninghub entries Ordered by date')
-    var lh = testdata;
-    list = buildLearninghubList(req, res, data)
+    list = buildLearninghubList(req, res)
     console.log()
     sendJSONresponse(res, 201, list);
 };
 
-var buildLearninghubList = function(req, res, x) {
+// This needs to be amended to only search for using
+var buildLearninghubList = function(req, res) {
   var lhEntries = [];
-    x.forEach(function(doc)
+    lh.find(-
     {
     lhEntries.push({
       Name: doc.hubentryName,

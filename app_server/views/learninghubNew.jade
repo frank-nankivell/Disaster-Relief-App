@@ -5,20 +5,22 @@ extends layout
 block content
   br
   h1= title
-  .inputform.form-group
+  form.inputform.form-group(action="#{url}", method="post", role="form")
+    - if (error == "val")
+      .alert.alert-danger(role="alert") Fields required, please try again
   .form-group
-    label Entry Name
+    label(for="entryName") Entry Name
     input#inputName.form-control(type='text', aria-describedby='textHelp', placeholder='Entry Name ')
     small#inputNameHelp.form-text.text-muted An article name can by anything you want!
   .form-group
-    label Entry Type
+    label(for="hubType") Entry Type
     select#inputType.form-control
       option How-to Guide
       option Advice
       option Question?
       option Other
   .form-group
-    label(for='/inserturl') Disaster Type
+    label(for="disasterType") Disaster Type
     select#inputDisaster.form-control
       option Forrest Fire
       option Storm
@@ -26,11 +28,11 @@ block content
       option Flood
       option Other
   .form-group
-    label(for='hubentry') Your entry
+    label(for= "hubtext") Your entry
     textarea#inputText.form-control(rows='3')
     small#emailHelp.form-text.text-muted Go on just start writing...
   .form-group
-    label Related Continent
+    label(for="relatedContinent") Related Continent
     select#inputContinent.form-control
       option Antartica
       option Asia
@@ -40,5 +42,5 @@ block content
       option North America
       option South America
     small#emailHelp.form-text.text-muted Select any of the continents this article applies to
-  a.btn.btn-primary.btn-lg(href='/learninghub/new/thanks/', role='button') Submit
+  button.btn.btn-primary.btn-lg Submit
   .inputform

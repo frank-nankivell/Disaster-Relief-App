@@ -5,42 +5,61 @@ extends layout
 block content
   br
   h1= title
-  form.inputform.form-group(action="#{url}", method="post", role="form")
-    - if (error == "val")
-      .alert.alert-danger(role="alert") Fields required, please try again
-  .form-group
-    label(for="entryName") Entry Name
-    input#inputName.form-control(type='text', aria-describedby='textHelp', placeholder='Entry Name ')
-    small#inputNameHelp.form-text.text-muted An article name can by anything you want!
-  .form-group
-    label(for="hubType") Entry Type
-    select#inputType.form-control
-      option How-to Guide
-      option Advice
-      option Question?
-      option Other
-  .form-group
-    label(for="disasterType") Disaster Type
-    select#inputDisaster.form-control
-      option Forrest Fire
-      option Storm
-      option Drought
-      option Flood
-      option Other
-  .form-group
-    label(for= "hubtext") Your entry
-    textarea#inputText.form-control(rows='3')
-    small#emailHelp.form-text.text-muted Go on just start writing...
-  .form-group
-    label(for="relatedContinent") Related Continent
-    select#inputContinent.form-control
-      option Antartica
-      option Asia
-      option Africa
-      option Australasia
-      option Europe
-      option North America
-      option South America
-    small#emailHelp.form-text.text-muted Select any of the continents this article applies to
-  button.btn.btn-primary.btn-lg Submit
-  .inputform
+  .row
+    .row
+    .col-md-12.md-center
+      form.form-horizontal(action="#{url}", method="post", role="form")
+        - if (error == "val")
+          .alert.alert-dismissible.alert-danger
+            button.close(type='button', data-dismiss='alert') ×
+            strong Oh snap!
+            a.alert-link(href='#') Please make sure all values are completed 
+            |  and try submitting again.
+        .form-group
+          label.control-label(for="hubentryName") Entry Name
+          .col-md-12.md-center
+            input#name.form-control(name="hubentryName")
+            small#nameHelp.form-text.text-muted An article name can by anything you want!
+        .form-group
+          label.col-md-12.md-center.control-label(for="articleType") Article Type
+            select#articleType.form-control.input-sm(name="articleType")
+              option How-to Guide
+              option Advice
+              option Question?
+              option Other
+        .form-group
+          label.control-label(for="disasterType") Disaster Type
+          .col-md-12.md-center
+            select#articleType.form-control.input-sm(name="disasterType")
+              option Forrest Fire
+              option Storm
+              option Drought
+              option Flood
+              option Other
+        .form-group
+          label.control-label(for="hubtext") Hub Text
+          .col-md-12.md-center
+            input#hubtext.form-control(name="hubtext")
+            small#hubtextHelp.form-text.text-muted Go on have a write
+        .form-group
+          label.control-label(for="relatedContinent") Related Continent
+          .col-md-12.md-center
+            select#relatedContinent.form-control.input-sm(name="relatedContinent")
+              option Antartica
+              option Asia
+              option Africa
+              option Australasia
+              option Europe
+              option North America
+              option South America
+          .col-sm-10
+        .form-group
+            label.control-label(for="author") Author's Name
+            .col-md-12.md-center
+              input#name.form-control(name="author")
+              small#nameHelp.form-text.text-muted An article name can by anything you want!
+        .col-md-12.md-center
+        button.btn.btn-primary.btn-lg.col-md-12.md-center Submit
+    .col-md-12.md-center
+
+

@@ -1,5 +1,5 @@
 var request =  require('request');
-var localserver = "http:///localhost:3000";
+var localserver = 'http://localhost:3000';
 var tbc = 'Page coming soon...';
 
 // Variable of the render learninghub list //
@@ -179,8 +179,7 @@ module.exports.new = function(req, res) {
 module.exports.newAdd = function(req, res) {
   console.log('Posting add to DB')
   var requestOptions, path, postdata;
-  locationid = req.params.locationid;
-  // path = "/api/learninghub/new" + lhid;
+  path = "/api/learninghub/new";
   postdata = {
     hubentryName: req.body.hubentryName,
     articleType: req.body.articleType,
@@ -189,28 +188,45 @@ module.exports.newAdd = function(req, res) {
     author: req.body.author,
     hubtext: req.body.hubtext
   };
+  //console.log('test values are' + JSON.stringify(test))
+ // console.log('correct values are ' + JSON.stringify(requestOptions))
   requestOptions = {
     // need to amend below for production
-    url : 'localhost:3000/api/learninghub/new',
+    url : localserver + path,
     method : "POST",
     json : postdata
   };
-  console.log(postdata),
+  if (!postdata.hubentryName || !postdata.author || !postdata.hubtext) {
+      res.redirect('/learninghub/new?err=val');
+  } else {
     request(
       requestOptions,
-        function(err, response, body) {
-        });
-      };
+      function(err, response, body) {
+        if (err) {
+          console.log(err)
+        }
+        if (response.statusCode === 201) {
+         console.log(response.statusCode);
+         res.redirect('/learninghub/thanks');
+         // this then invokes search by recent request
+        } else if (response.statusCode === 400 && body.name && body.name === "ValidationError" ) {
+          res.redirect('/learninghub/new?err=val');
+          console.log(response.statusCode);
+        } else {
+          console.log(body);
+          _showError(req, res, response.statusCode);
+        }
+      }
+    );
+  };
+};
 
 // This would ideally be rendered from the create 
-module.exports.thanks = function(req, res, x) {
-  var input, obj;
-  input = x;
-  getLearninghub(input, res, data)
+module.exports.thanks = function(req, res, entryDetail) {
   res.render('learninghubthanks', {
-    title: 'Thankyou for submitting your entry',
-    info: 'further functionality not in place for prototype',
-    data: obj
+    title: 'Thankyou for submitting your entry' + entryDetail.hubentryName,
+    info: 'further functionality not in place for prototype'
+   // data: obj
     }
-    );
+  );
 };

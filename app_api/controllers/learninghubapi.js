@@ -42,22 +42,10 @@ module.exports.learninghubByCreatedDate = function(req, res) {
     sendJSONresponse(res, 201, list);
 };
 
-// This needs to be amended to only search for using
+// This needs to be amended to only search for using .Find()
 var buildLearninghubList = function(req, res) {
-  var lhEntries = [];
-    lh.find(-
-    {
-    lhEntries.push({
-      Name: doc.hubentryName,
-      disasterType: doc.disasterType,
-      articleType: doc.articleType,
-      createdDate: doc.createdOn,
-      hubtext: doc.hubtext,
-      _id: doc._id,
-      continent: doc.relatedContinent
-    });
-  });
-  return lhEntries;
+    lh
+      .find().pretty()
 };
 
 //to create a record within mongoDB

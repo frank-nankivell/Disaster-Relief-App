@@ -5,7 +5,7 @@ var ctrllearninghub = require('../controllers/learninghubapi');
 //var ctrlreporttool = require('../controllers/reporttool');
 
 // Request to get single record
-router.get('/learninghub/:learninghubid', ctrllearninghub.learninghubGet);
+router.get('/learninghub:learninghubid', ctrllearninghub.learninghubGet);
 
 // Request to get List of records by Date
 router.get('/learninghub/list/date', ctrllearninghub.learninghubByCreatedDate);

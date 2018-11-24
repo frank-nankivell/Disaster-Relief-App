@@ -13,7 +13,10 @@ router.get('/learninghub/list',ctrllearninghub.list);
 router.get('/learninghub/comment',ctrllearninghub.comment);
 router.get('/learninghub/new',ctrllearninghub.new);
 router.post('/learninghub/new',ctrllearninghub.newAdd);
-router.get('/learninghub/thanks',ctrllearninghub.thanks);
+router.get('/learninghub/thanks:learninghubid',ctrllearninghub.thanks);
+
+// test functionality
+router.get('/check',ctrllearninghub.check);
 
 // report routes
 router.get('/reporttool',ctrlreporttool.home);

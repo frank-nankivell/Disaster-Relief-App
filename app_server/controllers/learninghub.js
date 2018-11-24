@@ -32,7 +32,7 @@ var _showError = function (req, res, status) {
     content = "Something, somewhere, has gone just a little bit wrong.";
   }
   res.status(status);
-  res.render('generic-text', {
+  res.render('ERRROR', {
     title : title,
     content : content
   });
@@ -78,10 +78,18 @@ var renderlearninghome = function(req, res, samplebody)  {
   });
 };
 
+// test functionality 
+module.exports.check = function(req, res) {
+  getLearninghub('5bf9b80bff8ba35f96f58a0f', res, function(req, res, data) {
+    var a = data.articleType;
+    console.log("heres's the data" + a);
+  });
+};
+
 // for getting a single learninghub by ID
 var getLearninghub = function (req, res, callback) {
   var requestOptions, path;
-  path = "/api/learninghub/" + req.params.locationid;
+  path = "/api/learninghub" + req;
   requestOptions = {
     url : localserver + path,
     method : "GET",
@@ -103,9 +111,9 @@ var getLearninghub = function (req, res, callback) {
 
 var getRecentLearninghub = function (req, res, callback) {
   var requestOptions, path;
-  path = "/api/learninghub/" + req.params.locationid;
+  path = "/api/learninghub" + req.params._id;
   requestOptions = {
-    url : localserver + path,
+    url : 'http://localhost:3000' + path,
     method : "GET",
     json : {}
   };
@@ -206,9 +214,15 @@ module.exports.newAdd = function(req, res) {
           console.log(err)
         }
         if (response.statusCode === 201) {
-         console.log(response.statusCode);
-         res.redirect('/learninghub/thanks');
-         // this then invokes search by recent request
+         var x = body._id
+         console.log(x)
+         getLearninghub(x, res, function(req, res, data) {
+           a = data.hubentryName
+           console.log("WORK WORK" + a)
+           renderThanksForm(req, res, data);
+       //    console.log("heres the" + data)
+         });
+          console.log()
         } else if (response.statusCode === 400 && body.name && body.name === "ValidationError" ) {
           res.redirect('/learninghub/new?err=val');
           console.log(response.statusCode);
@@ -221,12 +235,12 @@ module.exports.newAdd = function(req, res) {
   };
 };
 
-// This would ideally be rendered from the create 
-module.exports.thanks = function(req, res, entryDetail) {
+var renderThanksForm = function(req, res, detail) {
   res.render('learninghubthanks', {
-    title: 'Thankyou for submitting your entry' + entryDetail.hubentryName,
-    info: 'further functionality not in place for prototype'
-   // data: obj
-    }
-  );
+    title: 'Thankyou for submitting your entry:  ' + detail.hubentryName,
+    data: detail
+   // error: req.query.err
+  });
 };
+
+module.exports.thanks = function(req, res) {}

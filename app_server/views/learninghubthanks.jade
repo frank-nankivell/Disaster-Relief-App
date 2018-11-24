@@ -4,3 +4,20 @@ extends layout
 block content
   br
   h1= title
+    .card.mb-3
+      h3.card-header= data.Name
+      .card-body
+        p.card-text= data.hubtext
+          br
+      ul.list-group.list-group-flush
+        li.list-group-item= data.articleType
+        li.list-group-item= data.disasterType
+        li.list-group-item= data.continent
+      .card-body
+        p= data.createdDate
+        p= data.author
+        
+
+    
+
+

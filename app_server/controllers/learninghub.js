@@ -4,8 +4,8 @@ var tbc = 'Page coming soon...';
 
 // Variable of the render learninghub list //
 var renderLearninghublist = function(req, res, responseBody) {
-  var obj = responseBody;
- // var obj = JSON.parse(responseBody)
+ // var obj = responseBody;
+  var obj = JSON.parse(responseBody)
   res.render('learninghubList', {
     title: 'List of Learning hub entries thus far',
     info: 'Below you find a list of entries that have been entered this far',
@@ -17,6 +17,26 @@ var renderLearninghublist = function(req, res, responseBody) {
     date: " Created Date",
     data: obj
   });
+};
+
+
+// list page for the learning hub //
+module.exports.list = function(req, res ) {
+  var requestOptions, path;
+  path = '/api/learninghub/list/date'
+  requestOptions = {
+    url : localserver + path,
+    method :'GET',
+    json : '',
+    qs: ''
+  };
+  request (
+    requestOptions,
+    function (err, response, body) {
+     // console.log(body)
+      renderLearninghublist(req, res, body)
+    }
+  );
 };
 
 var _showError = function (req, res, status) {
@@ -36,23 +56,6 @@ var _showError = function (req, res, status) {
     title : title,
     content : content
   });
-};
-
-// list page for the learning hub //
-module.exports.list = function(req, res ) {
-  var requestOptions;
-  requestOptions = {
-    url : 'http://localhost:3000/api/learninghub/list/date',
-    method :'GET',
-    json : '',
-    qs: ''
-  };
-  request (
-    requestOptions,
-    function (err, response, body) {
-      renderLearninghublist(req, res, body)
-    }
-  );
 };
 
 // home page and info
@@ -88,10 +91,14 @@ module.exports.check = function(req, res) {
 
 // for getting a single learninghub by ID
 var getLearninghub = function (req, res, callback) {
-  var requestOptions, path;
-  path = "/api/learninghub" + req;
+  console.log("checking check" + req.check) 
+  console.log("checking ID" + req.learninghubid)
+  var requestOptions, thankpath, commentpath;
+  thankPath = "/api/learninghub" + req;
+  //commentpath = "/api/learninghub" + req.params.learninghubid;
+  thankpath = "/api/learninghub" + req;
   requestOptions = {
-    url : localserver + path,
+    url : localserver + thankpath,
     method : "GET",
     json : {}
   };
@@ -111,7 +118,7 @@ var getLearninghub = function (req, res, callback) {
 
 var getRecentLearninghub = function (req, res, callback) {
   var requestOptions, path;
-  path = "/api/learninghub" + req.params._id;
+  path = "/api/learninghub" + req;
   requestOptions = {
     url : 'http://localhost:3000' + path,
     method : "GET",
@@ -149,12 +156,24 @@ var renderImageLocation = function(req, res, continent) {
   console.log('print this'+ latitude, longitude)
 }
 
+
+var renderCommentForm = function (req, res, obj) {
+//  console.log("here's the request" + obj.hubentryName)
+  res.render('learninghubComment', {
+    title: 'Comments' + obj.hubentryName,
+    data: obj
+  });
+  //  error: req.query.err,
+  //  url: req.originalUrl
+};
 // comment page for the learning hub
 module.exports.comment = function(req, res) {
-  res.render('learninghub', {title: 'Comments',tbc});
+  val = req.params.learninghubid;
+  console.log(val + " thats the ID")
+  getLearninghub(val, res, function(req, res, cb) {
+    renderCommentForm(req, res, cb);
+  });
 };
-
-
 
 module.exports.home = function(req, res) {
   var requestOptions;
@@ -182,6 +201,45 @@ var renderCreate = function(req, res) {
 
 module.exports.new = function(req, res) {
   renderCreate(req,res)
+};
+
+module.exports.commentAdd = function(req, res) { 
+  console.log('Posting comment to DB')
+  var requestOptions, path, lhid, postdata;
+  lhid = req.params.learninghubid;
+  path = '/api/learninghub/new' + lhid + '/comment';
+  postdata = {
+    comment: req.body.commentText,
+    author: req.body.author
+  };
+  requestOptions = {
+    url : localserver + path,
+    method : "POST",
+    json : postdata
+};
+if (!postdata.commentTet || !postdata.author || !lhid) {
+  res.redirect('/learninghub/new?err=val');
+} else {
+request(
+  requestOptions,
+  function(err, response, body) {
+    if (err) {
+      console.log(err)
+    }
+    // need to add exception handlong for when DB is offline
+    if (response.statusCode === 201) {
+      val = body._id;
+      console.log(response.statusCode)
+    } else if (response.statusCode === 400 && body.name && body.name === "ValidationError" ) {
+      res.redirect('/learninghub/comment?err=val');
+      console.log(response.statusCode);
+    } else {
+      console.log(body);
+      _showError(req, res, response.statusCode);
+    }
+  }
+);
+};
 };
 
 module.exports.newAdd = function(req, res) {
@@ -213,14 +271,15 @@ module.exports.newAdd = function(req, res) {
         if (err) {
           console.log(err)
         }
+        // need to add exception handlong for when DB is offline
         if (response.statusCode === 201) {
-         var x = body._id
-         console.log(x)
-         getLearninghub(x, res, function(req, res, data) {
-           a = data.hubentryName
-           console.log("WORK WORK" + a)
+          val = body._id;
+   //      console.log(x)
+         getLearninghub(val, res, function(req, res, data) {
+    //       a = data.hubentryName
+        //   console.log("test test test " + a)
            renderThanksForm(req, res, data);
-       //    console.log("heres the" + data)
+       //    console.log("test test test test data " + data)
          });
           console.log()
         } else if (response.statusCode === 400 && body.name && body.name === "ValidationError" ) {
@@ -237,7 +296,7 @@ module.exports.newAdd = function(req, res) {
 
 var renderThanksForm = function(req, res, detail) {
   res.render('learninghubthanks', {
-    title: 'Thankyou for submitting your entry:  ' + detail.hubentryName,
+    title: 'Thankyou for submitting your entry ',
     data: detail
    // error: req.query.err
   });

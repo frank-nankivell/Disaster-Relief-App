@@ -12,6 +12,9 @@ router.get('/learninghub/list/date', ctrllearninghub.learninghubByCreatedDate);
 
 // Request to create record
 router.post('/learninghub/new',ctrllearninghub.learninghubCreate);
+
+router.post('/learninghub/new/:learninghubid/comment', ctrllearninghub.learninghubComment);
+
 // Request to update records
 router.put('/learninghub/get/:learninghubid',ctrllearninghub.learninghubUpdateOne);
 

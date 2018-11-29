@@ -35,17 +35,18 @@ module.exports.learninghubGet = function(req, res) {
 };
 
 // Search by Date - Provides list of all values ordered by date
-module.exports.learninghubByCreatedDate = function(req, res) {
-  console.log('Finding all learninghub entries Ordered by date')
-    list = buildLearninghubList(req, res)
-    console.log()
-    sendJSONresponse(res, 201, list);
-};
-
 // This needs to be amended to only search for using .Find()
-var buildLearninghubList = function(req, res) {
-    lh
-      .find().pretty()
+module.exports.learninghubByCreatedDate = function(req, res) {
+    lh.find().sort([['createdOn', 1]]).exec(function(err, learninghub) {
+        if (err) {
+          console.log(err);
+          sendJSONresponse(res, 400, err);
+        } else {
+          console.log(learninghub);
+          sendJSONresponse(res, 201, learninghub);
+        }
+      }
+    );
 };
 
 //to create a record within mongoDB
@@ -70,6 +71,72 @@ module.exports.learninghubCreate = function (req, res) {
         }
     });
   }
+
+  module.exports.learninghubComment = function (req, res) {
+    var x = req.params.learninghubid
+    console.log(x +"check")
+    if(req.params.learninghubid) {
+      console.log()
+      lh
+        .findById(x)
+        .select('comment')
+        .exec(
+          function(err, learninghub) {
+            if (err) {
+              sendJSONresponse(res, 400, err);
+            } else {
+              doAddComment(req, res, learninghub);
+            }
+          }
+      );
+    } else {
+        sendJSONresponse(res, 404, {
+          "message": "Not happenin, LH ID required"
+        });
+      }
+    };
+
+    var doAddComment = function(req, res, learninghub) {
+      console.log(learninghub + 'check me')
+      if (!learninghub) {
+        sendJSONresponse(res, 404, "LH ID aint about" + learninghub);
+      } else {
+        learninghub.comment.push({
+          commentText: req.body.commentText,
+          author: req.body.author
+        });
+        learninghub.save(function(err, learninghub) {
+          var thisComment;
+          if (err) {
+            sendJSONresponse(res, 400, err);
+          } else {
+            thisComment = learninghub.comment[learninghub.comment.length - 1];
+            sendJSONresponse(res, 201, thisComment);
+          }
+        });
+      }
+    };
+    module.exports.learninghubCreate = function (req, res) {
+      console.log(req.body);
+      lh.create({
+        hubentryName: req.body.hubentryName,
+        articleType: req.body.articleType,
+        disasterType: req.body.disasterType,
+        relatedContient: req.body.relatedContient,
+        createdOn: '',
+        author: req.body.author,
+        hubtext: req.body.hubtext,
+        },
+        function(err, learninghub) {
+          if (err) {
+            console.log(err);
+            sendJSONresponse(res, 400, err);
+          } else {
+            console.log(learninghub);
+            sendJSONresponse(res, 201, learninghub);
+          }
+      });
+    };
 
 module.exports.learninghubReadbyCD = function (req, res){
 };

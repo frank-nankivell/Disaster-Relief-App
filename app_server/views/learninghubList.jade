@@ -10,21 +10,29 @@ block content
         br
         h5= thoughts
         b
+          h6= inputidea
+            br
+            br
+          a.btn.btn-primary.btn-lg(href='/learninghub/new/', role='button') Create your entry here
 
         .listView
             each obj in data
                 .card.mb-3
-                h3.card-header= obj.Name
+                h4= obj.articleType
+                h3.card-header= obj.hubName
                 .card-body
                   p.card-text= obj.hubtext
                     br
                 ul.list-group.list-group-flush
-                  li.list-group-item= header1+obj.articleType
-                  li.list-group-item= header2+obj.disasterType
-                  li.list-group-item= header3+obj.continent
+                    br
+                  h5= header2
+                  ul.list-group.list-group-flush
+                    li.list-group-item= obj.disasterType
+                  h5= header3
+                    li.list-group-item= obj.continent
                 .card-body
                   p= obj.createdDate
+                  p What do you think?
+                  a.btn.ptn-secondary-btn-lg(href='/learninghub/#{obj._id}/comment') Comment Here
+
         br
-        .input
-          h6= inputidea
-          a.btn.btn-primary.btn-lg(href='/learninghub/new/', role='button') Create your entry here

@@ -1,5 +1,6 @@
 
 extends layout
+include mixins 
 
 block content
   br
@@ -16,6 +17,9 @@ block content
       .card-body
         p= data.createdDate
         p= data.author
+  .button
+  a.btn.btn-outline-info.btn-lg(href='/learninghub', role='button') Back
+
         
 
     

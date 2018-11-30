@@ -78,13 +78,13 @@ module.exports.learninghubCreate = function (req, res) {
     if(req.params.learninghubid) {
       console.log()
       lh
-        .findById(x)
+        .findById(req.params.learninghubid)
         .select('comment')
-        .exec(
-          function(err, learninghub) {
+        .exec(function(err, learninghub) {
             if (err) {
               sendJSONresponse(res, 400, err);
             } else {
+              console.log(learninghub)
               doAddComment(req, res, learninghub);
             }
           }
@@ -96,8 +96,8 @@ module.exports.learninghubCreate = function (req, res) {
       }
     };
 
+
     var doAddComment = function(req, res, learninghub) {
-      console.log(learninghub + 'check me')
       if (!learninghub) {
         sendJSONresponse(res, 404, "LH ID aint about" + learninghub);
       } else {

@@ -207,9 +207,9 @@ module.exports.commentAdd = function(req, res) {
   console.log('Posting comment to DB')
   var requestOptions, path, lhid, postdata;
   lhid = req.params.learninghubid;
-  path = '/api/learninghub/new' + lhid + '/comment';
+  path = '/api/learninghub/new/' + lhid + '/comment';
   postdata = {
-    comment: req.body.commentText,
+    commentText: req.body.commentText,
     author: req.body.author
   };
   requestOptions = {
@@ -217,7 +217,7 @@ module.exports.commentAdd = function(req, res) {
     method : "POST",
     json : postdata
 };
-if (!postdata.commentTet || !postdata.author || !lhid) {
+if (!postdata.commentText || !postdata.author || !lhid) {
   res.redirect('/learninghub/new?err=val');
 } else {
 request(
@@ -228,8 +228,8 @@ request(
     }
     // need to add exception handlong for when DB is offline
     if (response.statusCode === 201) {
-      val = body._id;
       console.log(response.statusCode)
+      res.redirect('/learninghub/' + lhid + '/comment')
     } else if (response.statusCode === 400 && body.name && body.name === "ValidationError" ) {
       res.redirect('/learninghub/comment?err=val');
       console.log(response.statusCode);

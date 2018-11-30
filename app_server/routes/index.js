@@ -11,7 +11,7 @@ router.get('/',ctrlMain.main);
 router.get('/learninghub',ctrllearninghub.home);
 router.get('/learninghub/list',ctrllearninghub.list);
 router.get('/learninghub/:learninghubid/comment',ctrllearninghub.comment);
-router.post('/learninghub/:learningbudid/comment',ctrllearninghub.commentAdd);
+router.post('/learninghub/:learninghubid/comment',ctrllearninghub.commentAdd);
 router.get('/learninghub/new',ctrllearninghub.new);
 router.post('/learninghub/new',ctrllearninghub.newAdd);
 router.get('/learninghub/thanks:learninghubid',ctrllearninghub.thanks);

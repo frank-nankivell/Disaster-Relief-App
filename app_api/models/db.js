@@ -1,4 +1,5 @@
 var mongoose = require( 'mongoose' );
+mongoose.set('useCreateIndex', true);
 var gracefulShutdown;
 var readLine = require ("readline");
 if (process.platform === "win32"){
@@ -57,4 +58,4 @@ process.once('SIGTERM', function() {
 });
 
 require('./learninghub');
-//require('./companies');
+require('./users');

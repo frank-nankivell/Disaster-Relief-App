@@ -1,0 +1,30 @@
+extends layout 
+doctype html
+html(lang='en')
+
+block content
+    title Login / Register
+    .info
+      h4 info
+
+      .body.col-md-12.md-center
+      form.from-horizonral(action='api/login', method='POST',rol='form')
+          - if (error == "val")
+            .alert.alert-dismissible.alert-danger
+              button.close(type='button', data-dismiss='alert') ×
+              strong Oh snap!
+              a.alert-link(href='#') Please make sure all values are completed 
+              |  and try submitting again.
+        .form-group
+          label.control-label(for="email") Email
+            .col-md-12.md-center
+              input#email.form-control(name="email")
+              small#nameHelp.form-text.text-muted Please enter valid email address
+        .form-group
+          label.control-label(for="password") Password
+            .col-md-12.md-center
+              input#email.form-control(name="passsword")
+              small#nameHelp.form-text.text-muted Please enter your password
+          .reporthome.col-md-12.text-center
+        button.btn.btn-primary.btn-lg.col-md-.md-center Submit
+      

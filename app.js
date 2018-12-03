@@ -6,9 +6,12 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var logger = require('morgan');
 var passport = require('passport');
+var jwt = require('express-jwt');
+
 
 require('./app_api/models/db');
 require('./app_api/config/passport');
+
 var routes = require('./app_server/routes/index');
 var routesAPi = require('./app_api/routes/index');
 var usersRouter = require('./app_server/routes/users');
@@ -18,6 +21,8 @@ var app = express();
 // view engine setup
 app.set('views', path.join(__dirname,'app_server', 'views'));
 app.set('view engine', 'jade');
+
+app.use(express.static('public'));
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -30,22 +35,18 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(passport.initialize());
 
+
 app.use('/', routes);
 app.use('/api', routesAPi);
 app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  next(createError(404));
+  var err = new Error('Not Found');
+  err.status = 404;
+  next(err);
 });
 
-// unathorised error handler
-app.use(function(err, req, res, next) {
-  if (err.name === 'UnauthorisedError') {
-    res.status(401);
-    res.json({'message ': err.name + ":"+ err.message});
-  }
-}); 
 
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development

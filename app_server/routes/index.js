@@ -7,6 +7,7 @@ var ctrlabout = require('../controllers/about');
 
 // route for the main home page
 router.get('/',ctrlMain.main);
+router.get('/login-register', ctrlMain.loginRegister);
 // learning hub routes for its pages
 router.get('/learninghub',ctrllearninghub.home);
 router.get('/learninghub/list',ctrllearninghub.list);
@@ -16,8 +17,6 @@ router.get('/learninghub/new',ctrllearninghub.new);
 router.post('/learninghub/new',ctrllearninghub.newAdd);
 router.get('/learninghub/thanks:learninghubid',ctrllearninghub.thanks);
 
-// test functionality
-router.get('/check',ctrllearninghub.check);
 
 // report routes
 router.get('/reporttool',ctrlreporttool.home);

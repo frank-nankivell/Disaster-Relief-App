@@ -16,12 +16,15 @@ var learninghubSchema = new mongoose.Schema({
       required: true
     },
     articleType: [], // How to guide etc
-    disasterType: [], // Forrest Fire','Earthquake','Storm','Drought'
+    disasterType: [], // Forest Fire','Earthquake','Storm','Drought'
     hubtext: {
       type: String,
       required: true
     },
-    relatedContinent: [],
+    relatedCountry: {
+      type: String,
+      required: true
+    },
     createdOn: {
         type: Date,
        "default": Date.now

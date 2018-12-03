@@ -59,35 +59,45 @@ var _showError = function (req, res, status) {
 };
 
 // home page and info
-var renderlearninghome = function(req, res, samplebody)  {
- // var obj = JSON.parse(samplebody)
-    var obj = samplebody;
+var renderLearninghome = function(req, res, samplebody)  {
+  var obj = JSON.stringify(samplebody)
+  //console.log('countries' + obj)
   res.render('learninghub', {
     title: 'The Learning Hub',
     Qinfo: 'What is the learning hub for, why am I here?',
     info: 'The Learning Hub is a space for users to post, search and find ways to save yourself from a future disaster!',
-    sampleinfo: 'Check out an example entry below...',
-    listinfo:'...However if you want to view all current entires then you can also do that',
-    inputinfo: 'or more importantly... its  a space for you to contribute to the community and make articles, and ask questions of your own',
-    name: 'Sample Entry on Forrest Fires',
-    artType: 'Sample Entry',
-    disType: "Forrest Fire",
-    text: "Don't get burnt in a fire",
-    date: "2018-05-10",
-    continent: "Europe",
-    api_KEY: 'AIzaSyDeZhtVpwaxLEb0AMw-tHtQvNgVvy9HWbU',
-    data: obj
-
+    MapInfo: obj
   });
 };
 
-// test functionality 
-module.exports.check = function(req, res) {
-  getLearninghub('5bf9b80bff8ba35f96f58a0f', res, function(req, res, data) {
-    var a = data.articleType;
-    console.log("heres's the data" + a);
-  });
+module.exports.home = function(req, res) {
+  var requestOptions, path;
+  path = '/api/learninghub/visAll';
+  requestOptions = {
+    url : localserver + path,
+    method : "GET",
+    json : {}
 };
+request(
+  requestOptions,
+  function(err, response, body) {
+    if (err) {
+      console.log(err)
+    }
+    if (response.statusCode === 201) {
+      console.log(response.statusCode)
+      renderLearninghome(req, res, body)
+    } else if (response.statusCode === 400 && body.name && body.name === "ValidationError" ) {
+      console.log(response.statusCode);
+    } else {
+      console.log(body);
+      _showError(req, res, response.statusCode);
+    }
+  }
+);
+};
+
+
 
 // for getting a single learninghub by ID
 var getLearninghub = function (req, res, callback) {
@@ -138,25 +148,6 @@ var getRecentLearninghub = function (req, res, callback) {
 };
 
 
-// Work in progress
-var renderImageLocation = function(req, res, continent) {
-  var latitude, longitude;
-  if (continent == '')
-  {
-    return ''
-  }
-  else{
-    if(continent == 'Europe') {
-      latitude = '49.368876'
-      longitude = '11.768920'
-    }
-    else latitude = '', longitude = '';
-  }
-  return latitude, longitude;
-  console.log('print this'+ latitude, longitude)
-}
-
-
 var renderCommentForm = function (req, res, obj) {
 //  console.log("here's the request" + obj.hubentryName)
   res.render('learninghubComment', {
@@ -175,21 +166,6 @@ module.exports.comment = function(req, res) {
   });
 };
 
-module.exports.home = function(req, res) {
-  var requestOptions;
-  requestOptions = {
-    url : 'http://localhost:3000/api/learninghub/list/date',
-    method :'GET',
-    json : '',
-    qs: ''
-  };
-  request (
-    requestOptions,
-    function (err, response, body) {
-      renderlearninghome(req, res, body)
-    }
-  );
-};
 
 var renderCreate = function(req, res) {
   res.render('learninghubNew',{
@@ -250,7 +226,7 @@ module.exports.newAdd = function(req, res) {
     hubentryName: req.body.hubentryName,
     articleType: req.body.articleType,
     disasterType: req.body.disasterType,
-    relatedContinent: req.body.relatedContinent,
+    relatedCountry: req.body.relatedCountry,
     author: req.body.author,
     hubtext: req.body.hubtext
   };

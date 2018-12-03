@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var lh = mongoose.model('Learninghub');
+var User = mongoose.model('User');
 //var testdata = require('./testData/dump.json');
 
 var sendJSONresponse = function(res, status, content) {
@@ -37,7 +38,10 @@ module.exports.learninghubGet = function(req, res) {
 // Search by Date - Provides list of all values ordered by date
 // This needs to be amended to only search for using .Find()
 module.exports.learninghubByCreatedDate = function(req, res) {
-    lh.find().sort([['createdOn', 1]]).exec(function(err, learninghub) {
+    lh
+      .find()
+      .sort([['createdOn', 1]])
+      .exec(function(err, learninghub) {
         if (err) {
           console.log(err);
           sendJSONresponse(res, 400, err);
@@ -48,9 +52,56 @@ module.exports.learninghubByCreatedDate = function(req, res) {
       }
     );
 };
+module.exports.countryVisualisation = function(req, res) {
+  lh
+    .find()
+    .select('relatedCountry')
+    .sort([['relatedCountry', 1]])
+    .exec(function(err, learninghub) {
+      if (err) {
+        console.log(err);
+        sendJSONresponse(res, 400, err);
+      } else {
+        console.log(learninghub);
+        sendJSONresponse(res, 201, learninghub);
+      }
+    }
+  );
+};
+
+
+var getAuthor = function(req, res, callback) {
+  console.log("Finding author with email " + req.payload.email);
+  if (req.payload.email) {
+    User
+      .findOne({ email : req.payload.email })
+      .exec(function(err, user) {
+        if (!user) {
+          sendJSONresponse(res, 404, {
+            "message": "User not found"
+          });
+          return;
+        } else if (err) {
+          console.log(err);
+          sendJSONresponse(res, 404, err);
+          return;
+        }
+        console.log(user);
+        callback(req, res, user.name);
+      });
+
+  } else {
+    sendJSONresponse(res, 404, {
+      "message": "User not found"
+    });
+    return;
+  }
+
+};
 
 //to create a record within mongoDB
 module.exports.learninghubCreate = function (req, res) {
+  getAuthor(req, res, function(req, res, username)  {
     console.log(req.body);
     lh.create({
       hubentryName: req.body.hubentryName,
@@ -70,9 +121,12 @@ module.exports.learninghubCreate = function (req, res) {
           sendJSONresponse(res, 201, learninghub);
         }
     });
-  }
+  });
+
+};
 
   module.exports.learninghubComment = function (req, res) {
+    getAuthor(req, res, function(req, res, username) {
     var x = req.params.learninghubid
     console.log(x +"check")
     if(req.params.learninghubid) {
@@ -85,7 +139,7 @@ module.exports.learninghubCreate = function (req, res) {
               sendJSONresponse(res, 400, err);
             } else {
               console.log(learninghub)
-              doAddComment(req, res, learninghub);
+              doAddComment(req, res, learninghub, username);
             }
           }
       );
@@ -94,16 +148,17 @@ module.exports.learninghubCreate = function (req, res) {
           "message": "Not happenin, LH ID required"
         });
       }
-    };
+    });
+  };
 
 
-    var doAddComment = function(req, res, learninghub) {
+    var doAddComment = function(req, res, learninghub, author) {
       if (!learninghub) {
         sendJSONresponse(res, 404, "LH ID aint about" + learninghub);
       } else {
         learninghub.comment.push({
           commentText: req.body.commentText,
-          author: req.body.author
+          author: author
         });
         learninghub.save(function(err, learninghub) {
           var thisComment;
@@ -122,7 +177,7 @@ module.exports.learninghubCreate = function (req, res) {
         hubentryName: req.body.hubentryName,
         articleType: req.body.articleType,
         disasterType: req.body.disasterType,
-        relatedContient: req.body.relatedContient,
+        relatedCountry: req.body.relatedCountry,
         createdOn: '',
         author: req.body.author,
         hubtext: req.body.hubtext,
@@ -137,6 +192,8 @@ module.exports.learninghubCreate = function (req, res) {
           }
       });
     };
+
+
 
 module.exports.learninghubReadbyCD = function (req, res){
 };

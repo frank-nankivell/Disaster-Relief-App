@@ -2,7 +2,11 @@
 module.exports.main = function(req, res) {
   res.render('home', {
     title: 'home',
-    info: 'your rescApp is... "an online community, supporting each other when disasters strike internationally',
-    prototype: 'This is an app in prototype stage. Please navigate to the Learninghub section to see current prototyped functionality.'
+    info: 'RescApp is a Global online community of people helping you or wanting to help others in need',
+    community: 'To access your local community please login or, in an emergency you can report a disaster now'
 });
+};
+
+module.exports.loginRegister = function(req, res) {
+  res.render('login-register', {});
 };

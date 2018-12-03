@@ -5,23 +5,37 @@ include mixins
 block content
   br
   h1= title
-    .card.mb-3
-      h3.card-header= data.Name
-      .card-body
-        p.card-text= data.hubtext
-          br
-      ul.list-group.list-group-flush
-        li.list-group-item= data.articleType
-        li.list-group-item= data.disasterType
-        li.list-group-item= data.continent
-      .card-body
-        p= data.createdDate
+     .jumbotron
+        h3.display-4= data.articleType
+        h4.display-3= data.Name
+        p.lead= data.hubtext
+          | The more people support the community the better we will become!
+        hr.my-4
         p= data.author
-  .button
-  a.btn.btn-outline-info.btn-lg(href='/learninghub', role='button') Back
-
-        
-
-    
-
+        p.lead
+        .blah
+          | Visualization: Map
+          | Your map should help the local people of 
+          script(type='text/javascript', src='https://www.gstatic.com/charts/loader.js')
+          script(type='text/javascript').
+            google.charts.load('current', {
+            'packages':['geochart'],
+            // Note: you will need to get a mapsApiKey for your project.
+            //FRANKS_MAP_API_KEY=AIzaSyAPvir7Z2lcufXof9HTRehQ9SzmSMZ1qz0
+            'mapsApiKey': 'AIzaSyAPvir7Z2lcufXof9HTRehQ9SzmSMZ1qz0'
+            });
+            google.charts.setOnLoadCallback(drawRegionsMap);
+            function drawRegionsMap() {
+              var data = google.visualization.arrayToDataTable([
+                ['Country', 'Popularity'],
+                ['Germany', 200],
+              ]);
+            var options = {};
+            var chart = new google.visualization.GeoChart(document.getElementById('regions_div'));
+            chart.draw(data, options);
+            }
+        body
+          #regions_div(style='width: 500px; height: 400px;')
+          .back
+          a.btn.btn-outline-info.btn-lg(href='/learninghub', role='button') Back
 

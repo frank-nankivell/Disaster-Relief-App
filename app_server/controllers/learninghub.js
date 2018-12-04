@@ -58,17 +58,20 @@ var _showError = function (req, res, status) {
   });
 };
 
+
+
 // home page and info
 var renderLearninghome = function(req, res, samplebody)  {
-  var obj = JSON.stringify(samplebody)
-  //console.log('countries' + obj)
-  res.render('learninghub', {
-    title: 'The Learning Hub',
-    Qinfo: 'What is the learning hub for, why am I here?',
-    info: 'The Learning Hub is a space for users to post, search and find ways to save yourself from a future disaster!',
-    MapInfo: obj
-  });
-};
+      var obj = JSON.stringify(samplebody); 
+      obj.replace(/(&quot\;)/g,"\"");
+      console.log(obj + "check")    //console.log('countries' + obj)
+      res.render('learninghub', {
+        title: 'The Learning Hub',
+        Qinfo: 'What is the learning hub for, why am I here?',
+        info: 'The Learning Hub is a space for users to post, search and find ways to save yourself from a future disaster!',
+        MapInfo: obj
+      });
+    };
 
 module.exports.home = function(req, res) {
   var requestOptions, path;

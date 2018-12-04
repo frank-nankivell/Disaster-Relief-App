@@ -3,6 +3,35 @@ var lh = mongoose.model('Learninghub');
 var User = mongoose.model('User');
 //var testdata = require('./testData/dump.json');
 
+var getAuthor = function(req, res, callback) {
+  console.log("Finding author with email " + req.payload.email);
+  if (req.payload.email) {
+    User
+      .findOne({ email : req.payload.email })
+      .exec(function(err, user) {
+        if (!user) {
+          sendJSONresponse(res, 404, {
+            "message": "User not found"
+          });
+          return;
+        } else if (err) {
+          console.log(err);
+          sendJSONresponse(res, 404, err);
+          return;
+        }
+        console.log(user);
+        callback(req, res, user.name);
+      });
+
+  } else {
+    sendJSONresponse(res, 404, {
+      "message": "User not found"
+    });
+    return;
+  }
+
+};
+
 var sendJSONresponse = function(res, status, content) {
   res.status(status);
   res.json(content);
@@ -67,36 +96,6 @@ module.exports.countryVisualisation = function(req, res) {
       }
     }
   );
-};
-
-
-var getAuthor = function(req, res, callback) {
-  console.log("Finding author with email " + req.payload.email);
-  if (req.payload.email) {
-    User
-      .findOne({ email : req.payload.email })
-      .exec(function(err, user) {
-        if (!user) {
-          sendJSONresponse(res, 404, {
-            "message": "User not found"
-          });
-          return;
-        } else if (err) {
-          console.log(err);
-          sendJSONresponse(res, 404, err);
-          return;
-        }
-        console.log(user);
-        callback(req, res, user.name);
-      });
-
-  } else {
-    sendJSONresponse(res, 404, {
-      "message": "User not found"
-    });
-    return;
-  }
-
 };
 
 //to create a record within mongoDB

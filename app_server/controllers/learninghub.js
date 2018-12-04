@@ -19,6 +19,29 @@ var renderLearninghublist = function(req, res, responseBody) {
   });
 };
 
+var getDisasterIcon = function(input) {
+  var y, theIcons;
+  theIcons = {
+  'Drought': '/images/icons/drought_icon1.png',
+  'Earthquake' : '/images/icons/earthquake_icon.png',
+  'Flood' : '/images/icons/flood_icon1.png',
+  'Forest Fire' : '/images/icons/forestFire_icon1.png',
+  'Landslide' : '/images/icons/landslide.png',
+  'Other' : '/images/icons/other_icon1.png',
+  'Storm' : '/images/icons/typhoon_icon1.png',
+  'Volcanic Eruption' : '/images/icons/volcano_icon1.png',
+  'Lightning' : ''
+  };
+  if (theIcons.hasOwnProperty(input)) {
+  y = theIcons[input];
+  console.log(y);
+  } else { 
+    (err)
+    console.log("wrong value"+ err)
+  }
+  return y;
+};
+
 
 // list page for the learning hub //
 module.exports.list = function(req, res ) {
@@ -274,9 +297,14 @@ module.exports.newAdd = function(req, res) {
 };
 
 var renderThanksForm = function(req, res, detail) {
+  var a, y;
+  a = detail.disasterType; 
+  y = getDisasterIcon(a);
+  console.log("Icon location" + y);
   res.render('learninghubthanks', {
     title: 'Thankyou for submitting your entry ',
-    data: detail
+    data: detail,
+    val: y
    // error: req.query.err
   });
 };

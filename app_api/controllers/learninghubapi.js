@@ -38,7 +38,7 @@ var sendJSONresponse = function(res, status, content) {
 };
 
 module.exports.learninghubGet = function(req, res) {
-  console.log("Find me a Learninghub... Entry", req.params);
+  console.log("Find me a Learninghub... Entry", + req.params);
   if(req.params && req.params.learninghubid) {
     lh
       .findById(req.params.learninghubid)

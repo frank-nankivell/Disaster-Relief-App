@@ -3,7 +3,8 @@ extends layout
 include mixins 
 
 block content
-  br
+  .imgTitle
+      img.logo(src=val, alt="Disaster Relief Icon", style='width:5px/height:5px;')
   h1= title
   p.lead The more people who support the community the stronger we will become!
      .jumbotron
@@ -35,7 +36,15 @@ block content
             var chart = new google.visualization.GeoChart(document.getElementById('regions_div'));
             chart.draw(data, options);
             }
-        body
+        .more
+        .script(type='text/javascript').
+
+          // make user object accessible for javascript
+          var user = !{JSON.stringify(userObject)};
+
+          script(src="/js/user-functions.js")  
+        
+        .body
           #regions_div(style='width: 500px; height: 400px;')
           .back
           a.btn.btn-outline-info.btn-lg(href='/learninghub', role='button') Back

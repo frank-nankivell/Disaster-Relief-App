@@ -1,10 +1,14 @@
 var mongoose = require('mongoose');
-var lh = mongoose.model('reportTool');
+var rT = mongoose.model('reportTool');
 var User = mongoose.model('User');
 
 var sendJSONresponse = function(res, status, content) {
   res.status(status);
   res.json(content);
+};
+
+var userLocal = function(req, res, name, user, callback) {
+  // method to insert 1) request with country info, 2) user, = return filtered values based on author
 };
 
 var getAuthor = function(req, res, callback) {
@@ -24,7 +28,7 @@ var getAuthor = function(req, res, callback) {
           return;
         }
         console.log(user);
-        callback(req, res, user.name);
+        callback(req, res, user.name, user);
       });
 
   } else {
@@ -35,47 +39,24 @@ var getAuthor = function(req, res, callback) {
   }
 };
 
-module.exports.getReport = function(req, res) {
-console.log("Find me a Report... Entry", req.params);
-  if(req.params && req.params.reportID) {
-    lh
-      .findById(req.params.reportID)
-      .exec(function(err, reportTool) {
-        if (!reportID) {
-          sendJSONresponse(res, 404, {
-            "message": "No record with ID FOUND"
-          });
-          return;
-        } else if (err) {
-          console.log(err);
-          sendJSONresponse(res, 404, err);
-          return;
-        }
-        console.log(reportTool);
-        sendJSONresponse(res, 200, reportTool);
-      });
-  } else {
-    console.log('No ID Given');
-    sendJSONresponse(res, 404, {
-      "message": "No ID in request"
-    });
-  };
+module.exports.getReport = function(req, res) { 
+  console.log("you fucker")
 };
 
+
 module.exports.newReport = function(req, res) {
-    getAuthor(req, res, function(req, res, username)  {
       console.log(req.body);
-      lh.create({
+      rT.create({
         reportName: req.body.reportName,
+        img: req.body.img,
         disasterType: req.body.disasterType,
-        coords: req.body.coords,
+        coords: [parseFloat(req.body.lng), parseFloat(req.body.lat)],
         reporterNeeds: req.body.reporterNeeds,
         noPeopleAffected: req.body.noPeopleAffected,
         onGoing: req.body.onGoing,
         dateStart: req.body.dateStart,
         author: req.body.author,
         createdOn: ''
-        hubtext: req.body.hubtext,
         },
         function(err, learninghub) {
           if (err) {
@@ -86,12 +67,71 @@ module.exports.newReport = function(req, res) {
             sendJSONresponse(res, 201, learninghub);
           }
       });
-    });
-  
+    };
+
+module.exports.reportCreatedDate = function(req, res) {
+  console.log("Finding all reports by Date")
+  rT
+    .find()
+    .sort([['createdOn', 1]])
+    .exec(function(err, reportTool) {
+      if (err) {
+        console.log(err);
+        sendJSONresponse(res, 400, err);
+      } else {
+        console.log(reportTool);
+        sendJSONresponse(res, 201, reportTool);
+      }
+  }
+);
+};
+
+module.exports.newReportComment = function(req, res) {
+    var x = req.params.reportID
+    console.log(x + "check")
+    if(req.params.reportID) {
+      console.log()
+      rT
+        .findById(req.params.reportID)
+        .select('reportToolComments')
+        .exec(function(err, reportool) {
+            if (err) {
+              sendJSONresponse(res, 400, err);
+            } else {
+              console.log(reportool)
+              doAddComment(req, res, reportool, username);
+            }
+          }
+      );
+    } else {
+        sendJSONresponse(res, 404, {
+          "message": "Not happenin, LH ID required"
+        });
+      }
+    };
+
+  var doAddComment = function(req, res, reportool, author) {
+    if (!reportool) {
+      sendJSONresponse(res, 404, "RT ID aint about" + reportool);
+    } else {
+      reportool.comment.push({
+        commentText: req.body.commentText,
+        author: req.body.author
+      });
+      reportool.save(function(err, reportool) {
+        var thisComment;
+        if (err) {
+          sendJSONresponse(res, 400, err);
+        } else {
+          thisComment = reportool.comment[reportool.comment.length - 1];
+          sendJSONresponse(res, 201, thisComment);
+        }
+      });
+    }
   };
-  
-module.exports.newReportComment = function(req, res) {};
-module.exports.reportCommentUpdate = function(req, res) {};
+
+module.exports.reportCommentUpdate = function(req, res) {
+};
 module.exports.reportCommentDeleteOne = function(req, res) {};
 module.exports.learninghubDeleteOne = function(req, res) {};
 module.exports.reportUpdate = function(req, res) {};

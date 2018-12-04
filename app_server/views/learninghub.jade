@@ -24,9 +24,6 @@ block content
       //FRANKS_MAP_API_KEY=AIzaSyAPvir7Z2lcufXof9HTRehQ9SzmSMZ1qz0
       'mapsApiKey': 'AIzaSyAPvir7Z2lcufXof9HTRehQ9SzmSMZ1qz0'
       });
-      function parsedata() {
-
-      }
       google.charts.setOnLoadCallback(drawRegionsMap);
       function drawRegionsMap() {
         var results = JSON.parse#{MapInfo};
@@ -62,7 +59,8 @@ block content
       h4= inputinfo
       .searchbutton2.col-md-12.text-left
         a.btn.btn-primary.btn-lg(href='/learninghub/new/', role='button') Create your entry here
-
+    .imgTitle
+      img.logo(src="/images/logo-rescapp.001.jpeg", alt="Disaster Relief Icon", style='width:200px/height:200px;')
 
 
 

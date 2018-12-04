@@ -1,5 +1,27 @@
 var mongoose = require('mongoose');
 
+var reportToolComment = new mongoose.Schema({
+        author: String,
+        commentText: {type:String, required: true},
+        createdOn: {
+            type: Date,
+           "default": Date.now
+         }
+});
+
+var reportToolResponse = new mongoose.Schema({
+        author: String,
+        responseTitle: {
+            type:String, 
+            required: true},
+        canRespond: Boolean,
+        responseType: String,
+        createdOn: {
+            type: Date,
+           "default": Date.now
+         }
+    });
+
 var reportToolSchema = new mongoose.Schema({
     reportName: {
       type:String,
@@ -22,25 +44,7 @@ var reportToolSchema = new mongoose.Schema({
         type: Date,
        "default": Date.now
      },
-    reporttoolResponse: { // nesting this schema but unsure if it should be seperately
-        authorResponse: String,
-        responseTitle: {
-            type:String, 
-            required: true},
-        canRespond: Boolean,
-        responseType: String,
-        createdOn: {
-            type: Date,
-           "default": Date.now
-         },
-    },
-    reporttoolComment: {
-        authorComment: String,
-        comment: {type:String, required: true},
-        createdOn: {
-            type: Date,
-           "default": Date.now
-         },
-    }
+    reportToolResponses: [reportToolResponse],
+    reportToolComments: [reportToolComment]
 });
 mongoose.model('reportTool', reportToolSchema);

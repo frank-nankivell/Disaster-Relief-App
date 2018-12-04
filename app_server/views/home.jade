@@ -8,16 +8,21 @@ includes mixins
   block content
       .top
         h2= title
+      .somescript
       .info.md
         h6=info
       .imgTitle
-        img.logo(src="images/logo-rescapp.001.jpeg", alt="Rescapp Logo", style='width:200px/height:200px;')
+        img.logo(src=val, alt="Rescapp Logo", style='width:200px/height:200px;')
+  
+      .somescript
       .jumbotron
         p.lead
+
         h4= community
       .reporthome.col-md-12.text-center
         a.btn.btn-danger.btn-lg(href='/reporttool/', role='button') Report a Disaster
         col-md-12.text-right
         a.button.btn.btn-secondary.my-2.my-sm-0btn-lg(href='/login-register/', role='button') Login / Register
       .reporthome
+
 

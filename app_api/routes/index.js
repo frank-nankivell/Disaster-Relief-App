@@ -17,7 +17,7 @@ var auth = jwt({
 // !! No Authentication for these routes !!
 
 // View single report by ID
-router.get('/reporttool/:reportID', ctrlreportTool.getReport);
+router.get('/reporttool:reportID', ctrlreportTool.getReport);
 // Create new Report 
 router.post('/reporttool/new', ctrlreportTool.newReport);
 
@@ -25,7 +25,7 @@ router.post('/reporttool/new', ctrlreportTool.newReport);
 // Get all values by date 
 router.get('/reporttool/date',ctrlreportTool.reportCreatedDate);
 // Comment on existing report
-router.post('/reporttool/new:reportID/comment', ctrlreportTool.newReportComment);
+router.post('/reporttool:reportID/comment', ctrlreportTool.newReportComment);
 // Update existing report comment
 router.put('/reporttool/new:reportID/comment', ctrlreportTool.reportCommentUpdate);
 // Delete existing report Comment
@@ -52,7 +52,7 @@ router.get('/learninghub/list/date', ctrllearninghub.learninghubByCreatedDate);
 // Create new LH
 router.post('/learninghub/new', ctrllearninghub.learninghubCreate);
 // Comment on existing LH
-router.post('/learninghub/new/:learninghubid/comment', ctrllearninghub.learninghubComment);
+router.post('/learninghub/:learninghubid/comment', auth, ctrllearninghub.learninghubComment);
 // Update to existing LH
 router.put('/learninghub/get/:learninghubid',ctrllearninghub.learninghubUpdateOne);
 // Delete existing LH

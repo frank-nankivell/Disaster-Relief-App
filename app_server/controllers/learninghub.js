@@ -23,7 +23,7 @@ var getDisasterIcon = function(input) {
   var y, theIcons;
   theIcons = {
   'Drought': '/images/icons/drought_icon1.png',
-  'Earthquake' : '/images/icons/earthquake_icon.png',
+  'Earthquake' : '/images/icons/earthquake_icon1.png',
   'Flood' : '/images/icons/flood_icon1.png',
   'Forest Fire' : '/images/icons/forestFire_icon1.png',
   'Landslide' : '/images/icons/landslide.png',
@@ -178,10 +178,11 @@ var renderCommentForm = function (req, res, obj) {
 //  console.log("here's the request" + obj.hubentryName)
   res.render('learninghubComment', {
     title: 'Comments' + obj.hubentryName,
+    error: req.query.err,
+    url: req.originalUrl,
     data: obj
   });
-  //  error: req.query.err,
-  //  url: req.originalUrl
+    
 };
 // comment page for the learning hub
 module.exports.comment = function(req, res) {
@@ -205,21 +206,21 @@ module.exports.new = function(req, res) {
   renderCreate(req,res)
 };
 
+// Amended so comments only possible to be made if user logged in
 module.exports.commentAdd = function(req, res) { 
   console.log('Posting comment to DB')
   var requestOptions, path, lhid, postdata;
   lhid = req.params.learninghubid;
   path = '/api/learninghub/new/' + lhid + '/comment';
   postdata = {
-    commentText: req.body.commentText,
-    author: req.body.author
+    commentText: req.body.commentText
   };
   requestOptions = {
     url : localserver + path,
     method : "POST",
     json : postdata
 };
-if (!postdata.commentText || !postdata.author || !lhid) {
+if (!postdata.commentText || !lhid) {
   res.redirect('/learninghub/new?err=val');
 } else {
 request(

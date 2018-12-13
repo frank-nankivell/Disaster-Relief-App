@@ -3,17 +3,16 @@ extends layout
 include mixins 
 
 block content
-  .imgTitle
-      img.logo(src=val, alt="Disaster Relief Icon", style='width:5px/height:5px;')
   h1= title
   p.lead The more people who support the community the stronger we will become!
      .jumbotron
-        h3.display-4= data.articleType
+        h3.display-4.md-right= data.articleType 
+          img.logo(src=val, alt="Disaster Relief Icon", style='width:10px/height:10px;')
         p.lead-h4= data.hubentryName
         p.lead= data.hubtext
           br
         hr.my-4
-        p.lead-h3 Submitted by #{data.author}
+        p.lead-h3 Submitted by #{data.author} 
           br
         p.lead
         .blah

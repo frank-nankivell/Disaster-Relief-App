@@ -49,6 +49,11 @@ app.use(function(req, res, next) {
   next(err);
 });
 
+app.use(function(req, res, next) {
+  var err = new Error('Validation Error');
+  err.status = 401;
+  next(err);
+});
 
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development

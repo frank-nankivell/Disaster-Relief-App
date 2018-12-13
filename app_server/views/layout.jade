@@ -30,23 +30,15 @@ html( lang="en" )
           li.nav-item
             a.nav-link(href='/about/') About
         form.form-inline.my-2.my-lg-0
-          button.btn.btn-secondary.my-2.my-sm-0(href='/login-register/', role='button') Login/register
-
+          button.btn.btn-secondary.my-2.my-sm-0-link(href='/login-register/', role='button') Login/Register
     .container
       block content
 
 
     .footer
-      br
-      br
-      br
-      br
-
-      ul
-        li
-          a(href="/team") Team
-        li
-          a(href="/privacy") Privacy
-        p
-          | Frank<br>
-          | &copy; 3000, All Rights Reserved
+        a.nav-link(href="/team") Team
+          br
+        a.nav-link(href="/privacy") Privacy
+      p
+        | rescApp 
+        | &copy; The Future, All Rights Reserved

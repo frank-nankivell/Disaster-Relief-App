@@ -16,6 +16,7 @@ var userSchema = new mongoose.Schema({
     type: String, 
     required: true
   },
+  rating: Number,
   hash: String,
   salt: String
 });

@@ -1,0 +1,14 @@
+[{
+    "About":  {
+    "info" : "This website has been designed as a MVP for a disaster relief application, supporting communities locally and over the globe",
+    "lastUpdated" : "2018-12-05"
+    },
+    "Team" : {
+    "info" : "A one man team",
+    "lastUpdated" : "2018-12-05"
+    },
+    "Privacy" : {
+    "info" : "As per GDPR standards in the UK, and xx in US and non European countries you have a ",
+    "lastUpdated" : "2018-12-05"
+    }
+}]

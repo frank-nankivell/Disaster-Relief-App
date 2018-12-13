@@ -8,6 +8,8 @@ var ctrlabout = require('../controllers/about');
 // route for the main home page
 router.get('/',ctrlMain.main);
 router.get('/login-register', ctrlMain.loginRegister);
+router.post('/login-register/log', ctrlMain.login);
+router.post('/login-register/reg',ctrlMain.registerNew);
 // learning hub routes for its pages
 router.get('/learninghub',ctrllearninghub.home);
 router.get('/learninghub/list',ctrllearninghub.list);

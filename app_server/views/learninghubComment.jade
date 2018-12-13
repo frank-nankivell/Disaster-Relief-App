@@ -1,27 +1,49 @@
 extends layout
 
 block content
-        h1= title
-        br
+  h1= title
+    .jumbotron
+        h3.display-4.md-right= data.articleType 
+        img.logo(src=val, alt="Disaster Relief Icon", style='width:10px/height:10px;')
+        p.lead-h4= data.hubentryName
+        p.lead= data.hubtext
+          br
+        hr.my-4
+        p.lead-h3 Submitted by #{data.author} 
+          br
+        p.lead
+        .blah
+          | Visualization: Map, 
+          | Showing the country your article is about.
+          script(type='text/javascript', src='https://www.gstatic.com/charts/loader.js')
+          script(type='text/javascript').
+            google.charts.load('current', {
+            'packages':['geochart'],
+            //FRANKS_MAP_API_KEY=AIzaSyAPvir7Z2lcufXof9HTRehQ9SzmSMZ1qz0
+            'mapsApiKey': 'AIzaSyAPvir7Z2lcufXof9HTRehQ9SzmSMZ1qz0'
+            });
+            google.charts.setOnLoadCallback(drawRegionsMap);
+            function drawRegionsMap() {
+              var data = #{data.relatedCountry};
+              data = new google.visualization.DataTable();
+              data.addColumn('String','Country')
 
-        h4= info
-        br
-        h5= thoughts
-        b
+            var options = {};
+            var chart = new google.visualization.GeoChart(document.getElementById('regions_div'));
+            chart.draw(data, options);
+            }
+        .more
+        .script(type='text/javascript').
 
-        .listView
-                .card.mb-3
-                h3.card-header= data.huu
-                .card-body
-                  p.card-text= data.hubtext
-                    br
-                ul.list-group.list-group-flush
-                  li.list-group-item= data.articleType
-                  li.list-group-item= data.disasterType
-                  li.list-group-item= data.continent
-                .card-body
-                  p= data.createdDate
-        .listView
+          // make user object accessible for javascript
+          var user = !{JSON.stringify(userObject)};
+
+          script(src="/js/user-functions.js")  
+        
+        .body
+          #regions_div(style='width: 500px; height: 400px;')
+          .back
+          a.btn.btn-outline-info.btn-lg(href='/learninghub', role='button') Back
         .commentView
           form.form-horizontal(action="#{url}", method="post", role="form")
               - if (error == "val")
@@ -42,7 +64,3 @@ block content
                   small#nameHelp.form-text.text-muted Whatever you want
               button.btn.btn-primary.btn-lg.col-md-12.md-center Submit)
           .col-md-12.md-center
-
-
-
-    2

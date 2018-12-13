@@ -29,8 +29,8 @@ var getAuthor = function(req, res, callback) {
     });
     return;
   }
-
 };
+
 
 var sendJSONresponse = function(res, status, content) {
   res.status(status);
@@ -98,6 +98,24 @@ module.exports.countryVisualisation = function(req, res) {
   );
 };
 
+
+var addRating = function(username) {
+  console.log("adding User Rating for", username);
+  User
+      .findOneAndUpdate({ name : username  }),
+      { $inc: { rating: 1 } }
+      .exec(
+        function(err, user) {
+          if (err)
+          { console.log(err);
+          } else {
+            console.log("User rating is now ", user.rating)
+          }
+        });
+  };
+
+
+
 //to create a record within mongoDB
 module.exports.learninghubCreate = function (req, res) {
   getAuthor(req, res, function(req, res, username)  {
@@ -125,9 +143,10 @@ module.exports.learninghubCreate = function (req, res) {
 };
 
   module.exports.learninghubComment = function (req, res) {
+    console.log(req.body.username, "testing")
     getAuthor(req, res, function(req, res, username) {
     var x = req.params.learninghubid
-    console.log(x +"check")
+    console.log(x + "check")
     if(req.params.learninghubid) {
       console.log()
       lh
@@ -138,7 +157,9 @@ module.exports.learninghubCreate = function (req, res) {
               sendJSONresponse(res, 400, err);
             } else {
               console.log(learninghub)
+              console.log ('username' + username)
               doAddComment(req, res, learninghub, username);
+              addRating(username);
             }
           }
       );

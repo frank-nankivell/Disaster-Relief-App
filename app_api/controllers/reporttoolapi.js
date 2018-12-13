@@ -40,10 +40,33 @@ var getAuthor = function(req, res, callback) {
 };
 
 module.exports.getReport = function(req, res) { 
-  console.log("you fucker")
+  console.log("Finding record with ID " + req.params.reportID);
+  if (req.params.reportID) {
+    rT
+      .findById(req.params.reportID)
+      .exec(function(err, reporttool) {
+        if (!reporttool) {
+          sendJSONresponse(res, 404, {
+            "message": "Report not found"
+          });
+          return;
+        } else if (err) {
+          console.log(err);
+          sendJSONresponse(res, 404, err);
+          return;
+        }
+        console.log("getReport" + reporttool);
+        sendJSONresponse(res, 200, reporttool);
+      });
+
+  } else {
+    console.log("No ID given)")
+    sendJSONresponse(res, 404, {
+      "message": "No ID given"
+    });
+    return;
+  }
 };
-
-
 module.exports.newReport = function(req, res) {
       console.log(req.body);
       rT.create({
@@ -74,13 +97,13 @@ module.exports.reportCreatedDate = function(req, res) {
   rT
     .find()
     .sort([['createdOn', 1]])
-    .exec(function(err, reportTool) {
+    .exec(function(err, reporttool) {
       if (err) {
         console.log(err);
         sendJSONresponse(res, 400, err);
       } else {
-        console.log(reportTool);
-        sendJSONresponse(res, 201, reportTool);
+        console.log(reporttool);
+        sendJSONresponse(res, 201, reporttool);
       }
   }
 );
@@ -94,12 +117,12 @@ module.exports.newReportComment = function(req, res) {
       rT
         .findById(req.params.reportID)
         .select('reportToolComments')
-        .exec(function(err, reportool) {
+        .exec(function(err, reporttool) {
             if (err) {
               sendJSONresponse(res, 400, err);
             } else {
-              console.log(reportool)
-              doAddComment(req, res, reportool, username);
+              console.log(reporttool)
+              doAddComment(req, res, reporttool);
             }
           }
       );
@@ -110,20 +133,20 @@ module.exports.newReportComment = function(req, res) {
       }
     };
 
-  var doAddComment = function(req, res, reportool, author) {
-    if (!reportool) {
-      sendJSONresponse(res, 404, "RT ID aint about" + reportool);
+  var doAddComment = function(req, res, Reporttool, author) {
+    if (!Reporttool) {
+      sendJSONresponse(res, 404, "RT ID aint about" + Reporttool);
     } else {
-      reportool.comment.push({
+      Reporttool.comment.push({
         commentText: req.body.commentText,
         author: req.body.author
       });
-      reportool.save(function(err, reportool) {
+      reportool.save(function(err, Reporttool) {
         var thisComment;
         if (err) {
           sendJSONresponse(res, 400, err);
         } else {
-          thisComment = reportool.comment[reportool.comment.length - 1];
+          thisComment = Reporttool.comment[Reporttool.comment.length - 1];
           sendJSONresponse(res, 201, thisComment);
         }
       });
@@ -136,4 +159,3 @@ module.exports.reportCommentDeleteOne = function(req, res) {};
 module.exports.learninghubDeleteOne = function(req, res) {};
 module.exports.reportUpdate = function(req, res) {};
 module.exports.reportDeleteOne = function(req, res) {};
-module.exports.getReport = function(req, res) {};

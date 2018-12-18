@@ -178,7 +178,7 @@ module.exports.learninghubCreate = function (req, res) {
       } else {
         learninghub.comment.push({
           commentText: req.body.commentText,
-          author: author
+          author: author,
         });
         learninghub.save(function(err, learninghub) {
           var thisComment;

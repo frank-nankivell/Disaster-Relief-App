@@ -12,6 +12,9 @@ if (process.platform === "win32"){
     });
 }
 const dbURI = "mongodb://localhost:27017/DRAP";
+if (process.env.NODE_ENV === 'production') {
+  dbURI = process.env.MONGO_DB_URI;
+}
 const mongo = mongoose.connect(dbURI, {useNewUrlParser: true });
 mongo.then(() => {
 console.log('connected');

@@ -24,14 +24,14 @@ router.post('/reporttool/new', ctrlreportTool.newReport);
 // !! Authentication required for these routes !!
 // Get all values by date 
 router.get('/reporttool/date',ctrlreportTool.reportCreatedDate);
+// Update existing report
+router.put('/reporttool:reportID', ctrlreportTool.reportUpdate);
 // Comment on existing report
 router.post('/reporttool:reportID/comment', ctrlreportTool.newReportComment);
 // Update existing report comment
-router.put('/reporttool/new:reportID/comment', ctrlreportTool.reportCommentUpdate);
+router.put('/reporttool:reportID/comment:repcommentID', ctrlreportTool.reportCommentUpdate);
 // Delete existing report Comment
 router.delete('/reporttool/del:reportID',ctrlreportTool.reportCommentDeleteOne);
-// Update existing report
-router.put('/reporttool/new:reportID', ctrlreportTool.reportUpdate);
 // Delete existing report
 router.delete('/reporttool/:reportID', ctrlreportTool.reportDeleteOne);
 

@@ -27,6 +27,8 @@ router.post('/reporttool',ctrlreporttool.new);
 router.get('/reporttool/info',ctrlreporttool.info);
 
 
+
+
 //router.get('/reporttool/new',ctrlreporttool.reporttoolNew);
 // router etc
 

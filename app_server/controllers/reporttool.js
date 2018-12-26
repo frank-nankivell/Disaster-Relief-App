@@ -28,9 +28,11 @@ var _showError = function (req, res, status) {
 
 // home for the report tool
 module.exports.home = function(req, res) {
+  var mapKey = process.env.FRANKS_MAP_API_KEY;
   res.render('reporttool/reporttool', 
   {title: 'Report A Disaster Here', 
-  info: "If you have been affected by a disaster please enter information below. Your response will be captured immediately."
+  info: "If you have been affected by a disaster please enter information below. Your response will be captured immediately.",
+  a: mapKey
   });
 };
 
@@ -66,14 +68,14 @@ var getReporttool = function (req, res, callback) {
 };
 
 module.exports.new = function(req, res) {
+  console.log(req.body.latlng)
   console.log("Posting Report to API")
     var requestOptions, path, postdata;
     path = "/api/reporttool/new";
     postdata = {
       reportName: req.body.reportName,
       img: req.body.img,
-      lat : req.body.lat,
-      lng : req.body.lng,
+      latlng : req.body.latlng,
       disasterType: req.body.disasterType,
       reporterNeeds: req.body.reporterNeeds,
       noPeopleAffected: req.body.noPeopleAffected,
@@ -88,7 +90,7 @@ module.exports.new = function(req, res) {
       json : postdata
     };
     if (!postdata.reportName || !postdata.disasterType || !postdata.reporterNeeds) {
-        res.redirect('/reporttool/new?err=val');
+        res.redirect('/reporttool/?err=val');
     } else {
       request(
         requestOptions,
@@ -100,7 +102,7 @@ module.exports.new = function(req, res) {
           if (response.statusCode === 201) {
             val = body._id;
             getReporttool(val, res, function(req, res, data) {
-             renderThanksForm(req, res, data);
+            renderThanksForm(req, res, data);
            });
             console.log("posted succesfully")
           } else if (response.statusCode === 400 && body.name && body.name === "ValidationError" ) {

@@ -3,3 +3,8 @@ node_modules
 
 # Environment variables
 .env
+.vscode/settings.json
+.vscode
+Dockerfile
+docker-compose.yml
+docker-compose.debug.yml

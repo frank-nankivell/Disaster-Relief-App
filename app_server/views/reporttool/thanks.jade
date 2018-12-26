@@ -1,10 +1,8 @@
-
-extends layout
-include mixins 
+extends ../layout
 
 block content
   h1= title
-  p.lead The more people who support the community the stronger we will become!
+  p.lead We will be posting your report to our users now. We will keep you updated as much as possible.
      .jumbotron
         h3.display-4.md-right= data.articleType 
           img.logo(src=val, alt="Disaster Relief Icon", style='width:10px/height:10px;')
@@ -47,4 +45,3 @@ block content
           #regions_div(style='width: 500px; height: 400px;')
           .back
           a.btn.btn-outline-info.btn-lg(href='/learninghub', role='button') Back
-

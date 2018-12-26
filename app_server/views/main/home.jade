@@ -1,0 +1,31 @@
+extends ../layout
+
+block content
+    .top
+      h2= title
+    .somescript
+    .info.md
+      h6=info
+    .imgTitle
+    .somescript
+    .jumbotron
+      p.lead
+
+      h4= community
+    .reporthome.col-md-12.text-center
+      a.btn.btn-danger.btn-lg(href='/reporttool/', role='button') Report a Disaster
+      col-md-12.text-right
+      a.button.btn.btn-secondary.my-2.my-sm-0btn-lg(href='/login-register/', role='button') Login / Register
+    .reporthome
+    .like_button
+      p.lead The button should be below
+      #like_button_container
+      // Load React
+      // Note: when deploying, replace "development.js" with "production.min.js".
+      script(src='https://unpkg.com/react@16/umd/react.development.js', crossorigin='')
+      script(src='https://unpkg.com/react-dom@16/umd/react-dom.development.js', crossorigin='')
+      // Load our React component.
+      script(src='react/like_button.js')
+
+
+

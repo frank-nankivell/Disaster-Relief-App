@@ -196,55 +196,45 @@ module.exports.newReportComment = function(req, res) {
     }
   };
 
+// not quite working 
 module.exports.reportCommentUpdate = function(req, res) {
-  if (!req.params.reportID || !req.params.repcommentID) {
+  if (!req.params.reportID || !req.params.repcommentID) 
     sendJSONresponse(res, 404, {
       "message": "Not found, locationid and reviewid are both required"
     });
-    return;
+    else {
+    var r = req.params.reportID;
+    var c = req.params.repcommentID;
   }
   rT
-    .findById(req.params.reportID)
-    .select('reportToolComments')
-    .exec(
-      function(err, reporttool) {
-        var thisComment;
-        if (!reporttool) {
-          sendJSONresponse(res, 404, {
-            "message": "Report ID not found"
-          });
-          return;
-        } else if (err) {
-          sendJSONresponse(res, 400, err);
-          return;
-        }
-        if (reporttool.reportToolComments && reporttool.reportToolComments.length > 0) {
-          thisComment = location.reviews.id(req.params.reviewid);
-          if (!thisComment) {
-            sendJSONresponse(res, 404, {
-              "message": "reviewid not found"
-            });
-          } else {
-            thisComment.author = req.body.author;
-            thisComment.rating = req.body.rating;
-            thisReview.reviewText = req.body.reviewText;
-            thisComment.save(function(err, location) {
-              if (err) {
-                sendJSONresponse(res, 404, err);
-              } else {
-                updateAverageRating(location._id);
-                sendJSONresponse(res, 200, thisReview);
-              }
-            });
+    .findOneAndUpdate(
+    {
+        '_id': r,
+        'reportToolComments': {
+          '$elemMatch': { // <------- use $elemMatch
+            '_id': c,
           }
-        } else {
-          sendJSONresponse(res, 404, {
-            "message": "No comment to update"
-          });
         }
+    },
+    {
+        '$set': {
+            'reportToolComments.author': req.body.author,
+            'reportToolComments.commentText': req.body.commentText,
+        }
+    },
+    {
+        'upsert': false,
+        'new': false
+    },
+    function (err, res) {
+      if(err)
+      {
+        console.log(err)
       }
-  );
-};
+      else 
+      console.log(res)
+    });
+  }
 
 module.exports.reportCommentDeleteOne = function(req, res) {};
 

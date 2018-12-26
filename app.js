@@ -18,12 +18,14 @@ var usersRouter = require('./app_server/routes/users');
 // need to require mongoose to get db to work
 var app = express();
 
+app.use(express.static(path.join(__dirname, './app_client/src'))); // this is where your built react js files are
+
 // view engine setup
 app.set('views', path.join(__dirname,'app_server', 'views'));
 app.set('view engine', 'jade');
 
 app.use(express.static('public'));
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '/public')));
 
 
 app.use(logger('dev'));

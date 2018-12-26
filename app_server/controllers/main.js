@@ -8,7 +8,7 @@ module.exports.main = function(req, res) {
 
 var renderMain = function(req, res, status) {
   x = getImage;
-  res.render('home', {
+  res.render('main/home', {
     title: 'home',
     info: 'RescApp is a Global online community of people helping you or wanting to help others in need',
     community: 'To access your local community please login or, in an emergency you can report a disaster now',

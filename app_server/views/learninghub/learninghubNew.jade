@@ -1,6 +1,6 @@
 //This is view d) create/update - Tor Task1 of the Prototype submission
 
-extends layout
+extends ../layout
 
 block content
   br
@@ -49,6 +49,7 @@ block content
           label.control-label(for="relatedCountry") Related Country 
           .col-md-12.md-center
             select#relatedCountry.form-control.input-sm(name="relatedCountry")
+              option Unknown 
               option Afghanistan
               option Albania
               option Algeria

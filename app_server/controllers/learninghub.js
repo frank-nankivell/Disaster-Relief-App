@@ -1,12 +1,16 @@
 var request =  require('request');
-var localserver = 'http://localhost:3000';
-var tbc = 'Page coming soon...';
+var apiOptions = {
+  server : "http://localhost:3000"
+};
+if (process.env.NODE_ENV === 'production') {
+  apiOptions.server = "";
+}
 
 // Variable of the render learninghub list //
 var renderLearninghublist = function(req, res, responseBody) {
  // var obj = responseBody;
   var obj = JSON.parse(responseBody)
-  res.render('learninghubList', {
+  res.render('learninghub/learninghubList', {
     title: 'List of Learning hub entries thus far',
     info: 'Below you find a list of entries that have been entered this far',
     thoughts: 'What do you think of what has been written so far?',
@@ -48,7 +52,7 @@ module.exports.list = function(req, res ) {
   var requestOptions, path;
   path = '/api/learninghub/list/date'
   requestOptions = {
-    url : localserver + path,
+    url : apiOptions.server + path,
     method :'GET',
     json : '',
     qs: ''
@@ -81,14 +85,12 @@ var _showError = function (req, res, status) {
   });
 };
 
-
-
 // home page and info
 var renderLearninghome = function(req, res, samplebody)  {
       var obj = JSON.stringify(samplebody); 
       obj.replace(/(&quot\;)/g,"\"");
       console.log(obj + "check")    //console.log('countries' + obj)
-      res.render('learninghub', {
+      res.render('learninghub/learninghub', {
         title: 'The Learning Hub',
         Qinfo: 'What is the learning hub for, why am I here?',
         info: 'The Learning Hub is a space for users to post, search and find ways to save yourself from a future disaster!',
@@ -100,7 +102,7 @@ module.exports.home = function(req, res) {
   var requestOptions, path;
   path = '/api/learninghub/visAll';
   requestOptions = {
-    url : localserver + path,
+    url : apiOptions.server + path,
     method : "GET",
     json : {}
 };
@@ -134,7 +136,7 @@ var getLearninghub = function (req, res, callback) {
   //commentpath = "/api/learninghub" + req.params.learninghubid;
   thankpath = "/api/learninghub" + req;
   requestOptions = {
-    url : localserver + thankpath,
+    url : apiOptions.server + thankpath,
     method : "GET",
     json : {}
   };
@@ -176,7 +178,7 @@ var getRecentLearninghub = function (req, res, callback) {
 
 var renderCommentForm = function (req, res, obj) {
 //  console.log("here's the request" + obj.hubentryName)
-  res.render('learninghubComment', {
+  res.render('learninghub/learninghubComment', {
     title: 'Comments' + obj.hubentryName,
     error: req.query.err,
     url: req.originalUrl,
@@ -195,7 +197,7 @@ module.exports.comment = function(req, res) {
 
 
 var renderCreate = function(req, res) {
-  res.render('learninghubNew',{
+  res.render('learninghub/learninghubNew',{
     title: 'Upload a new Hub Entry',
     error: req.query.err,
     url: req.originalUrl
@@ -216,7 +218,7 @@ module.exports.commentAdd = function(req, res) {
     commentText: req.body.commentText
   };
   requestOptions = {
-    url : localserver + path,
+    url : apiOptions.server + path,
     method : "POST",
     json : postdata
 };
@@ -261,7 +263,7 @@ module.exports.newAdd = function(req, res) {
  // console.log('correct values are ' + JSON.stringify(requestOptions))
   requestOptions = {
     // need to amend below for production
-    url : localserver + path,
+    url : apiOptions.server + path,
     method : "POST",
     json : postdata
   };
@@ -302,7 +304,7 @@ var renderThanksForm = function(req, res, detail) {
   a = detail.disasterType; 
   y = getDisasterIcon(a);
   console.log("Icon location" + y);
-  res.render('learninghubthanks', {
+  res.render('learninghub/learninghubthanks', {
     title: 'Thankyou for submitting your entry ',
     data: detail,
     val: y

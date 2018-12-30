@@ -35,6 +35,10 @@ router.delete('/reporttool/del:reportID',ctrlreportTool.reportCommentDeleteOne);
 // Delete existing report
 router.delete('/reporttool/:reportID', ctrlreportTool.reportDeleteOne);
 
+// Validation API call to check and send email to any users with this country
+router.get('/user/country:countryID',ctrlAuth.checkCountryOnUser);
+// // Validation API call to check and send provide alert to logged in user
+router.get('/user/user:userID', ctrlAuth.checkCountryOnUser);
 
 // LEARNINGHUB ROUTES BELOW
 
@@ -47,7 +51,6 @@ router.get('/learninghub/visAll', ctrllearninghub.countryVisualisation);
 // Request to get List of all records ordered by Date
 router.get('/learninghub/list/date', ctrllearninghub.learninghubByCreatedDate);
 
-//!! Need Authentication to access these LH Routes!!
 
 // Create new LH
 router.post('/learninghub/new', ctrllearninghub.learninghubCreate);

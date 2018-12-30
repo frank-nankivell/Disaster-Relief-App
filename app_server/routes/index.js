@@ -22,10 +22,12 @@ router.get('/learninghub/thanks:learninghubid',ctrllearninghub.thanks);
 
 // report routes
 router.get('/reporttool',ctrlreporttool.home);
+// post to API for new report
 router.post('/reporttool',ctrlreporttool.new);
 // reportinfo routes
 router.get('/reporttool/info',ctrlreporttool.info);
-
+// page for list of reports
+router.get('/reporttool/list',ctrlreporttool.list);
 
 
 

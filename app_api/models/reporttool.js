@@ -27,6 +27,8 @@ var reportToolSchema = new mongoose.Schema({
       type:String,
       required: true
     },
+    country: String,
+    Open: Boolean,
     img: String, // Needs to be re-implemented as per mongo docs
     disasterType: String, // Should this be it's own table in Postgres?
     coords: {
@@ -35,7 +37,6 @@ var reportToolSchema = new mongoose.Schema({
         },
     reporterNeeds: String, 
     noPeopleAffected: Number,
-    onGoing: Boolean,
     dateStart: {
         type: Date,
     },
@@ -44,6 +45,7 @@ var reportToolSchema = new mongoose.Schema({
         type: Date,
        "default": Date.now
      },
+
     reportToolResponses: [reportToolResponse],
     reportToolComments: [reportToolComment]
 });

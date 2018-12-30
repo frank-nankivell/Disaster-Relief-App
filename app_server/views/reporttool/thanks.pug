@@ -1,0 +1,49 @@
+extends ../layout
+
+block content
+  h1= title
+  p.lead We will be posting your report to our users now. We will keep you updated as much as possible.
+     .jumbotron
+      h4= info 
+        
+        h3.display-4.md-right= data.disasterType 
+          img.logo(src=!{icon}, alt="Disaster Relief Icon", style='width:10px/height:10px;')
+        p.lead-h4= data.author
+        p.lead= data.createdDate
+          br
+        hr.my-4
+        p.lead-h3 Submitted by #{data.author} 
+          br
+        .mapinformation
+          | Visualization: Map, 
+          | Showing where you said you had been affected
+        style.
+              /* Set the size of the div element that contains the map */
+            #map {
+              height: 400px;  /* The height is 400 pixels */
+              width: 100%;  /* The width is the width of the web page */
+              }
+        #map
+        script.
+            function initMap() {
+
+            var map = new google.maps.Map(document.getElementById('map'));
+            // User denied geolocation prompt - default to Australia
+            map.setCenter(new google.maps.LatLng(!{data.coords}));
+            map.setZoom(5);
+            var latlng = new google.maps.LatLng(!{data.coords});
+
+            var marker = new google.maps.Marker({
+                    position: latlng,
+                    map: map
+                });
+              };
+
+            // Need a way of importing key securely and to whitelist IP's on deployment
+        script(async='', defer='', src='https://maps.googleapis.com/maps/api/js?key=AIzaSyAPvir7Z2lcufXof9HTRehQ9SzmSMZ1qz0&callback=initMap')
+        .body
+          #regions_div(style='width: 500px; height: 400px;')
+          .moreinfo 
+          | There are approximately /// x number of people available to respond in your area 
+          | This is the number of people
+          a.btn.btn-outline-info.btn-lg(href='/learninghub', role='button') Back

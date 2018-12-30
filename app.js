@@ -22,7 +22,7 @@ app.use(express.static(path.join(__dirname, './app_client/src'))); // this is wh
 
 // view engine setup
 app.set('views', path.join(__dirname,'app_server', 'views'));
-app.set('view engine', 'jade');
+app.set('view engine', 'pug');
 
 app.use(express.static('public'));
 app.use(express.static(path.join(__dirname, '/public')));

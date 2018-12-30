@@ -1,4 +1,5 @@
 var request =  require('request');
+var mapkey = process.env.FRANKS_MAP_API_KEY;
 var apiOptions = {
   server : "http://localhost:3000"
 };
@@ -6,23 +7,7 @@ if (process.env.NODE_ENV === 'production') {
   apiOptions.server = "";
 }
 
-// Variable of the render learninghub list //
-var renderLearninghublist = function(req, res, responseBody) {
- // var obj = responseBody;
-  var obj = JSON.parse(responseBody)
-  res.render('learninghub/learninghubList', {
-    title: 'List of Learning hub entries thus far',
-    info: 'Below you find a list of entries that have been entered this far',
-    thoughts: 'What do you think of what has been written so far?',
-    inputidea: '...Why dont you create youre own today',
-    header1: "The Article Type is ",
-    header2: "The Disaster Type ",
-    header3: "Related Continent  ",
-    date: " Created Date",
-    data: obj
-  });
-};
-
+// function to get url for disaster icons
 var getDisasterIcon = function(input) {
   var y, theIcons;
   theIcons = {
@@ -30,7 +15,7 @@ var getDisasterIcon = function(input) {
   'Earthquake' : '/images/icons/earthquake_icon1.png',
   'Flood' : '/images/icons/flood_icon1.png',
   'Forest Fire' : '/images/icons/forestFire_icon1.png',
-  'Landslide' : '/images/icons/landslide.png',
+  'Landslide' : '/images/icons/landslide_icon1.png',
   'Other' : '/images/icons/other_icon1.png',
   'Storm' : '/images/icons/typhoon_icon1.png',
   'Volcanic Eruption' : '/images/icons/volcano_icon1.png',
@@ -44,6 +29,26 @@ var getDisasterIcon = function(input) {
     console.log("wrong value"+ err)
   }
   return y;
+};
+
+
+
+// function of the render learninghub list //
+var renderLearninghublist = function(req, res, responseBody) {
+  var obj = JSON.stringify(responseBody);
+  var key = JSON.stringify(mapkey);
+  res.render('learninghub/learninghubList', {
+    title: 'List of Learning hub entries thus far',
+    info: 'Below you find a list of entries that have been entered this far',
+    thoughts: 'What do you think of what has been written so far?',
+    inputidea: '...Why dont you create youre own today',
+    header1: "The Article Type is ",
+    header2: "The Disaster Type ",
+    header3: "Related Continent  ",
+    date: " Created Date",
+    a: key,
+    data: obj
+  });
 };
 
 
@@ -87,16 +92,26 @@ var _showError = function (req, res, status) {
 
 // home page and info
 var renderLearninghome = function(req, res, samplebody)  {
-      var obj = JSON.stringify(samplebody); 
-      obj.replace(/(&quot\;)/g,"\"");
-      console.log(obj + "check")    //console.log('countries' + obj)
+  var key = JSON.stringify(mapkey);
+  console.log(key)
+  var obj = JSON.stringify(samplebody);
+  console.log(obj)
+  //console.log(obj + "check")    //console.log('countries' + obj)
       res.render('learninghub/learninghub', {
         title: 'The Learning Hub',
         Qinfo: 'What is the learning hub for, why am I here?',
         info: 'The Learning Hub is a space for users to post, search and find ways to save yourself from a future disaster!',
-        MapInfo: obj
+        MapInfo: obj,
+        a: key
       });
     };
+
+var testData = {
+   "_id": '5c063aa2842487b3f7c9ee08', "relatedCountry": 'Australia',
+   "_id": '5c063aa2842487b3f7c9ee09', "relatedCountry": 'Bahamas',
+   "_id": '5c063aa2842487b3f7c9ee10', "relatedCountry": 'Belarus',
+   "_id": '5c063aa2842487b3f7c9ee11', "relatedCountry": 'Russia',
+};
 
 module.exports.home = function(req, res) {
   var requestOptions, path;
@@ -303,7 +318,6 @@ var renderThanksForm = function(req, res, detail) {
   var a, y;
   a = detail.disasterType; 
   y = getDisasterIcon(a);
-  console.log("Icon location" + y);
   res.render('learninghub/learninghubthanks', {
     title: 'Thankyou for submitting your entry ',
     data: detail,

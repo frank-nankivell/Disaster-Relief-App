@@ -1,0 +1,143 @@
+extends ../Layout
+
+block content
+  head
+    jumbotron
+      p.lead
+      h1= title
+      p.lead
+      
+
+      .jumbotron.text-center
+        h4= info
+      .comingsoon
+        h2= tbc
+      .comingsoon
+
+      .reportform.col-md-12.md-center
+        form.form-horizontal(action='', method="post", role="form")
+          - if (error == "val")
+            .alert.alert-dismissible.alert-danger
+              button.close(type='button', data-dismiss='alert') ×
+              strong Oh snap!
+              a.alert-link(href='#') Please make sure all values are completed 
+              |  and try submitting again.
+          .form-group
+            h6 Drop a pin somewhere in the area of where the disaster occured
+            style.
+              /* Set the size of the div element that contains the map */
+              #map {
+              height: 400px;  /* The height is 400 pixels */
+              width: 100%;  /* The width is the width of the web page */
+              }
+            #map
+          script.
+            function initMap() {
+
+            var map = new google.maps.Map(document.getElementById('map'));
+
+            navigator.geolocation.getCurrentPosition(function(position) {
+            // Center on user's current location if geolocation prompt allowed
+                var initialLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                map.setCenter(initialLocation);
+                map.setZoom(12);
+              }, function(positionError) {
+                // User denied geolocation prompt - default to Australia
+                map.setCenter(new google.maps.LatLng(	-33.865143, 151.209900));
+                map.setZoom(5);
+              });
+            var geocoder = new google.maps.Geocoder;
+
+            var marker;
+            function placeMarker(location) {
+            if ( marker ) {
+            marker.setPosition(location);
+            } else {
+            marker = new google.maps.Marker({
+            position: location,
+            map: map
+            });
+            }
+            }
+            google.maps.event.addListener(map, 'click', function(event) {
+            placeMarker(event.latLng);
+
+            document.getElementById("lat").value = marker.getPosition().lat();
+            document.getElementById("lng").value = marker.getPosition().lng();
+            });
+            }
+            // Need a way of importing key securely and to whitelist IP's on deployment
+          script(async='', defer='', src='https://maps.googleapis.com/maps/api/js?key=AIzaSyAPvir7Z2lcufXof9HTRehQ9SzmSMZ1qz0&callback=initMap')
+          .form-group-text-white(for='country')
+            input#country.form-control(for='country', type='hidden',readonly='yes')
+          .form-group.text-white(for='lat')
+            input#lat.form-control(name='lat', type="hidden", readonly='yes')
+          .form-group.text-white(for='lng')
+            input#lng.form-control(name='lng', type="hidden", readonly='yes')
+          .form-group
+            label.control-label(for="dateStart") Date the disaster started 
+            .col-md-12.md-center
+              input#name.form-control(name="dateStart", type ="date")
+              small#nameHelp.form-text.text-muted Please try to describe the topic as best you can
+          .form-group
+            label.control-label(for="disasterType") Disaster Type
+            .col-md-12.md-center
+              select#disasterType.form-control.input-sm(name="disasterType")
+                option N/A
+                option Landslide
+                option Volcanic Eruption
+                option Lightning
+                option Forest Fire
+                option Storm
+                option Drought
+                option Flood
+                option Earthquake
+                option Other
+          .form-group
+            label.control-label(for="reporterNeeds") What do you need today?
+            .col-md-12.md-center
+              select#reporterNeeds.form-control.input-sm(name="reporterNeeds")
+                option Nothing 
+                option Transport
+                option Food 
+                option Medicine
+                option A friendly face
+                option Clothing
+                option Other
+          .form-group
+            label.control-label(for="instantDanger") Do you think you are in danger now?
+            .col-md-12.md-center
+              select#instantDanger.form-control.input-sm(name="instantDanger")
+                option Dont know
+                option Yes
+                option No
+          .form-group
+            label.control-label(for="instantDanger") Are you in danger right now?
+            .col-md-12.md-center
+                textarea#hubtext.form-control(name="instantDanger", rows='4',type="checkbox")
+                small#hubtextHelp.form-text.text-muted ...  
+          .form-group
+            label.control-label(for="noPeopleAffected") How many people have been affected with you?
+            .col-md-12.md-center
+              textarea#hubtext.form-control(name="noPeopleAffected", rows='1', type="text", onkeypress="return event.charCode >= 48 && event.charCode <= 57")
+              small#hubtextHelp.form-text.text-muted You can only enter numbers into this field
+          .form-group 
+              label.control-label(for="author") Author's Name
+              .col-md-12.md-center
+                input#name.form-control(name="author")
+                small#nameHelp.form-text.text-muted ... 
+          .col-md-12.md-center
+          button.btn.btn-primary.btn-lg.col-md-12.md-center Submit
+          br
+          br
+      
+      .jumbotron.center
+        h5.text-center If you are logged in you may want to view disasters to support. Please check here if so
+      .reportbutton.col-md-12.md-center
+        a.btn.btn-info.btn-lg.center.col-md-12.md-center(href='/reporttool/info/') If you are looking for a current disaster - click here
+      .reportbutton
+
+
+
+
+

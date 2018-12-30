@@ -7,10 +7,9 @@ var sendJSONresponse = function(res, status, content) {
   res.json(content);
 };
 
-var userLocal = function(req, res, name, user, callback) {
-  // method to insert 1) request with country info, 2) user, = return filtered values based on author
-};
 
+
+// function to get single users
 var getAuthor = function(req, res, callback) {
   console.log("Finding author with email " + req.payload.email);
   if (req.payload.email) {
@@ -38,6 +37,7 @@ var getAuthor = function(req, res, callback) {
     return;
   }
 };
+
 
 module.exports.getReport = function(req, res) { 
   console.log("Finding record with ID " + req.params.reportID);
@@ -79,7 +79,9 @@ module.exports.newReport = function(req, res) {
         onGoing: req.body.onGoing,
         dateStart: req.body.dateStart,
         author: req.body.author,
-        createdOn: ''
+        createdOn: req.body.createdOn,
+        Open: false,
+        country: req.body.country
         },
         function(err, reporttool) {
           if (err) {
@@ -88,9 +90,12 @@ module.exports.newReport = function(req, res) {
           } else {
             console.log(reporttool);
             sendJSONresponse(res, 201, reporttool);
+            return;
+            
           }
       });
     };
+
 
 module.exports.reportCreatedDate = function(req, res) {
   console.log("Finding all reports by Date")
@@ -138,6 +143,8 @@ module.exports.reportUpdate = function(req, res) {
           reporttool.onGoing = req.body.onGoing,
           reporttool.dateStart = req.body.dateStart,
           reporttool.author = req.body.author,
+          reporttool.country = req.body.country,
+          reporttool.Open = req.body.open,
           reporttool.save(function(err, reporttool) {
 
             if (err) {
@@ -235,6 +242,15 @@ module.exports.reportCommentUpdate = function(req, res) {
       console.log(res)
     });
   }
+
+
+
+/* A function to be called whenever a report is made
+It checks if a user has the same country and marks in DB 
+*/
+
+var userReportCheck = function(report) { };
+
 
 module.exports.reportCommentDeleteOne = function(req, res) {};
 

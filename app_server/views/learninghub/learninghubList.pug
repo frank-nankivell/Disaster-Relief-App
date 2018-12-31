@@ -1,38 +1,34 @@
-//This is view c) The Collection - Tor Task1 of the Prototype submission
-
 extends ../layout
 
 block content
-        h1= title
-        br
+    h1= title
+    br
 
-        h4= info
+    h4= info
+    br
+    h5= thoughts
+    b
+      h6= inputidea
         br
-        h5= thoughts
-        b
-          h6= inputidea
-            br
-            br
-          a.btn.btn-primary.btn-lg(href='/learninghub/new/', role='button') Create your entry here
-
-        .listView
-            each obj in data
-                .card.mb-3
-                h4= obj.articleType
-                h3.card-header= obj.hubName
-                .card-body
-                  p.card-text= obj.hubtext
-                    br
-                ul.list-group.list-group-flush
-                    br
-                  h5= header2
-                  ul.list-group.list-group-flush
-                    li.list-group-item= obj.disasterType
-                  h5= header3
-                    li.list-group-item= obj.continent
-                .card-body
-                  p= obj.createdDate
-                  p What do you think?
-                  a.btn.ptn-secondary-btn-lg(href='/learninghub/#{obj._id}/comment') Comment Here
-
         br
+      a.btn.btn-primary.btn-lg(href='/learninghub/new/', role='button') Create your entry here
+
+    .listView
+        each obj in data
+            .card.mb-3
+            h4= obj.articleType
+            h3.card-header= obj.hubName
+            .card-body
+              p.card-text= obj.hubtext
+                br
+            ul.list-group.list-group-flush
+                br
+            h5= header2
+              ul.list-group.list-group-flush
+                li.list-group-item= obj.disasterType
+            h5= header3
+                li.list-group-item= obj.continent
+            .card-body
+            p= obj.createdDate
+            p What do you think?
+            a.btn.ptn-secondary-btn-lg(href='/learninghub/#{obj._id}/comment') Comment Here

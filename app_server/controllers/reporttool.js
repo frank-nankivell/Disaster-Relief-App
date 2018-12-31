@@ -164,26 +164,45 @@ var getReporttool = function (req, res, callback) {
   );
 };
 
+
 // Function to create random coded name string for provenance
 // Rather than have users manually enter
-var createName = function(req, res, callback) {
-  var dis, date, mm, today, name, ran;
-  today = new Date;
-  ran = Math.floor((Math.random() * 100) + 1);
-  mm = today.toLocaleString('en-us', { month: 'long' });; // Takes current month
-  dis = (req.body.disasterType).substring(0,3); // Takes first three letters of disaster type
-  date = (req.body.dateStart).substring(0,8); // Takes month and year of date start
-  name = ((dis.concat(date)).concat(mm)).concat(ran);
-    console.log("below")
-    console.log(name)
-    return name;
-};
 
 // Function to post new report to API
 module.exports.new = function(req, res, callback) {
+  getReportNumber(req, res, function(req, res, data) {
+    console.log(data,"check on line")
+    postNew(req, res, data, callback)
+  });
+};
+
+  // function to get single report tool back
+var getReportNumber = function (req, res, callback) {
+  var requestOptions, path;
+ path = "/api/reporttool/num";
+ requestOptions = {
+   url : apiOptions.server + path,
+   method : "GET",
+   json : {}
+ };
+ request(
+   requestOptions,
+   function(err, response, body) {
+     if (response.statusCode === 200 || response.statusCode === 201) {
+       var code, oo;
+       oo = 'REP.v1000';
+       code = oo + body;
+       callback(req, res, code);
+     } else {
+       _showError(req, res, response.statusCode);
+     }
+   }
+ );
+};
+
+var postNew = function(req, res, name, callback) {
+  console.log(name, "check")
   var today = new Date;
-  var name = createName(req, res);
-  console.log(name, "name")
   console.log("Posting Report to API")
     var requestOptions, path, postdata;
     path = "/api/reporttool/new";
@@ -222,8 +241,8 @@ module.exports.new = function(req, res, callback) {
             getReporttool(val, res, function(req, res, data) {
             // Need some exceptions here
             renderThanksForm(req, res, data);
-            const country = data.country;
-            validateOnUsers(country, res, callback);
+          //  const country = data.country;
+         //   validateOnUsers(country, res, callback);
            });
             console.log("posted succesfully")
           } else if (response.statusCode === 400 && body.name && body.name === "ValidationError" ) {
@@ -256,7 +275,7 @@ module.exports.new = function(req, res, callback) {
           bigmailFunction();
          };
          callback(req, res, data); {
-          _showError(req, res, response.statusCode);
+        _showError(req, res, response.statusCode);
       }
     }
   );

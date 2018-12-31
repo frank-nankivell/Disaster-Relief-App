@@ -38,6 +38,22 @@ var getAuthor = function(req, res, callback) {
   }
 };
 
+module.exports.reportCount = function(req, res) {
+  console.log("Finding a count of all the reports so far")
+  rT
+    .find()
+    .countDocuments()
+    .exec(function(err, reporttool) {
+      if (err) {
+        console.log(err);
+        sendJSONresponse(res, 400, err);
+      } else {
+        console.log(reporttool);
+        sendJSONresponse(res, 201, reporttool);
+      }
+  }
+);
+};
 
 module.exports.getReport = function(req, res) { 
   console.log("Finding record with ID " + req.params.reportID);
@@ -113,6 +129,7 @@ module.exports.reportCreatedDate = function(req, res) {
   }
 );
 };
+
 module.exports.reportUpdate = function(req, res) {
     if (!req.params.reportID) {
       sendJSONresponse(res, 404, {

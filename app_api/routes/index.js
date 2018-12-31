@@ -24,6 +24,8 @@ router.post('/reporttool/new', ctrlreportTool.newReport);
 // !! Authentication required for these routes !!
 // Get all values by date 
 router.get('/reporttool/date',ctrlreportTool.reportCreatedDate);
+// Count number of reports issued
+router.get('/reporttool/num',ctrlreportTool.reportCount);
 // Update existing report
 router.put('/reporttool:reportID', ctrlreportTool.reportUpdate);
 // Comment on existing report

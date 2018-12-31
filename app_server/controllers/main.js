@@ -3,10 +3,12 @@ var localserver = 'http://localhost:3000';
 
 /* home page */
 module.exports.main = function(req, res,) {
-  renderMain(req, res, testUser)
+  renderMain(req, res)
 };
 
-var renderMain = function(req, res, status) {
+
+var renderMain = function(req, res) {
+  var x, status;
   x = getImage;
   res.render('main/home', {
     title: 'home',
@@ -14,8 +16,6 @@ var renderMain = function(req, res, status) {
     community: 'To access your local community please login or, in an emergency you can report a disaster now',
     urlReg: 'login-register/reg',
     urlLog: 'login-register/log',
-    user: loggedin,
-    check: true,
     number: '5',
     Status: status,
     val: x

@@ -37,6 +37,9 @@ router.delete('/reporttool/del:reportID',ctrlreportTool.reportCommentDeleteOne);
 // Delete existing report
 router.delete('/reporttool/:reportID', ctrlreportTool.reportDeleteOne);
 
+// Create response for report from when email is sent
+router.post('/reporttool:reportID/response', ctrlreportTool.newResponse); // need to make
+
 // Validation API call to check and send email to any users with this country
 router.get('/user/country:countryID',ctrlAuth.checkCountryOnUser);
 // // Validation API call to check and send provide alert to logged in user

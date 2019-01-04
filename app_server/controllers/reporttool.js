@@ -2,6 +2,7 @@ var request =  require('request');
 var nodemailer = require('nodemailer');
 var mapKey = process.env.FRANKS_MAP_API_KEY;
 var gmailPass = process.env.GMAIL_PASS;
+var async = require('async')
 var apiOptions = {
   server : "http://localhost:3000"
 };
@@ -30,7 +31,12 @@ var _showError = function (req, res, status) {
 
 // function to get url for disaster icons
 var getDisasterIcon = function(input) {
-  var y, theIcons;
+  if(!input)
+  {
+    _showError(input, "error", 404)
+    console.log("no input provided")
+  };
+  console.log('input check', input)
   theIcons = {
   'Drought': '/images/icons/drought_icon1.png',
   'Earthquake' : '/images/icons/earthquake_icon1.png',
@@ -40,14 +46,15 @@ var getDisasterIcon = function(input) {
   'Other' : '/images/icons/other_icon1.png',
   'Storm' : '/images/icons/typhoon_icon1.png',
   'Volcanic Eruption' : '/images/icons/volcano_icon1.png',
-  'Lightning' : ''
+  'Lightning' : '',
+  'N/A': 'images/icons/other_icon1.png'
   };
   if (theIcons.hasOwnProperty(input)) {
   y = theIcons[input];
-  console.log(y);
+  console.log(y, 'icon path');
   } else {
-    console.log("wrong value")
-    _showError(req, res, y);
+    console.log("Wrong value passed to function")
+   raise(error);
   }
   return y;
 };
@@ -156,6 +163,10 @@ var getReporttool = function (req, res, callback) {
     function(err, response, body) {
       var data = body;
       if (response.statusCode === 200) {
+        body.coords = {
+          lng : data.coords[0],
+          lat : data.coords[1]
+        };
         callback(req, res, data);
       } else {
         _showError(req, res, response.statusCode);
@@ -170,12 +181,36 @@ var getReporttool = function (req, res, callback) {
 
 // Function to post new report to API
 module.exports.new = function(req, res, callback) {
+
   getReportNumber(req, res, function(req, res, data) {
-    console.log(data,"check on line")
-    postNew(req, res, data, callback)
+
+    postNew(req, res, data, function(req, res, body) {
+      var id = body._id
+      console.log('testing id', id);
+
+      getReporttool(id, res, function(req, res, data2) {
+
+        renderThanksForm(data2, res, function(req, res, country) {
+          console.log(country);
+
+          validateOnUsers(country, res, function(req, res, users) {
+
+            bigmailFunction(req, res, users, callback)
+          });
+          return;
+        });
+        return;
+      });
+      return;
+    });
+    return;
   });
+  return;
 };
 
+
+// Validation post to ensure that the record is as it should be 
+module.exports.val = function(req, res, callback) {};
   // function to get single report tool back
 var getReportNumber = function (req, res, callback) {
   var requestOptions, path;
@@ -190,14 +225,17 @@ var getReportNumber = function (req, res, callback) {
    function(err, response, body) {
      if (response.statusCode === 200 || response.statusCode === 201) {
        var code, oo;
-       oo = 'REP.v1000';
-       code = oo + body;
+       oo = 'REP.v1000'; // Version 1 of code creator
+       code = oo + body; 
        callback(req, res, code);
+       return;
      } else {
        _showError(req, res, response.statusCode);
+       return;
      }
    }
  );
+ return;
 };
 
 var postNew = function(req, res, name, callback) {
@@ -235,27 +273,53 @@ var postNew = function(req, res, name, callback) {
           if (err) {
             console.log(err)
           }
-          // need to add exception handlong for when DB is offline
+
           if (response.statusCode === 201) {
-            val = body._id;
-            getReporttool(val, res, function(req, res, data) {
-            // Need some exceptions here
-            renderThanksForm(req, res, data);
-          //  const country = data.country;
-         //   validateOnUsers(country, res, callback);
-           });
             console.log("posted succesfully")
+            callback(req, res, body);
           } else if (response.statusCode === 400 && body.name && body.name === "ValidationError" ) {
             res.redirect('/reporttool/?err=val');
             console.log(response.statusCode);
           } else {
             console.log(body);
             _showError(req, res, response.statusCode);
+            return;
           }
         }
       );
     };
   };
+
+// Function to render thanks form
+var renderThanksForm = function(req, res, callback) {
+
+  if(!req.disasterType || !req.reportName) {
+    console.log(req.disasterType);
+    _showError(req, res, res.statusCode);
+    console.log(res.statusCode, 'Error with rendering thanks form');
+    return;
+  };
+
+  var disType, icon, country;
+  country = req.country;
+  disType = req.disasterType;
+  icon = getDisasterIcon(disType);
+
+  console.log('Rendering thanks form with icon link:', icon)
+
+  res.render('reporttool/thanks', {
+    title: 'Your report case is now open',
+    info:  'You can close the case once the community has supported you and your needs',
+    code: 'Report Code: ',
+    icon: icon,
+    countrySend: JSON.stringify(req.country),
+    a: mapKey,
+    data: req,
+  });
+
+  callback(req, res, country)
+  return;
+};
 
 /* Gets list of User who have the same country as the request that has just been made */
   var validateOnUsers = function(req, res, callback) {
@@ -272,33 +336,11 @@ var postNew = function(req, res, name, callback) {
          var data = body;
          if(response.statusCode === 200) {
           console.log(body);
-          bigmailFunction();
+          callback(req, res, body); 
+          return;
          };
-         callback(req, res, data); {
         _showError(req, res, response.statusCode);
-      }
-    }
-  );
-};
-
-
-// Function to render thanks form
-  var renderThanksForm = function(req, res, detail) {
-    var repStatus, x, y;
-    if(detail.Open== true)
-    {
-      repStatus = 'Open'
-    }
-    x = detail.disasterType; 
-    y = getDisasterIcon(x);
-    res.render('reporttool/thanks', {
-      title: 'Your report case is now open',
-      info:  'You can close the case once the community has supported you and your needs',
-      status: repStatus,
-      icon: y,
-      a: mapKey,
-      data: detail,
-     // error: req.query.err,
+        return;
     });
   };
 
@@ -327,3 +369,7 @@ var bigmailFunction = function(req, res, data){
     }
     });
 };
+
+
+
+

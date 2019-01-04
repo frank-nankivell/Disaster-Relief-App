@@ -176,7 +176,6 @@ module.exports.reportUpdate = function(req, res) {
   };
 
 module.exports.newReportComment = function(req, res) {
-  console.log(req.body,"1 check");
     var x = req.params.reportID
     console.log(x + "check")
     if(req.params.reportID) {
@@ -261,12 +260,50 @@ module.exports.reportCommentUpdate = function(req, res) {
   }
 
 
+module.exports.newResponse = function(req, res) {
+  if(req.params.reportID) {
+    console.log()
+    rT
+      .findById(req.params.reportID)
+      .select('reportToolResponses')
+      .exec(function(err, reporttool) {
+          if (err) {
+            sendJSONresponse(res, 400, err);
+          } else {
+            console.log(reporttool)
+            doAddResponse(req, res, reporttool);
+          }
+        }
+    );
+  } else {
+      sendJSONresponse(res, 404, {
+        "message": "Not happenin, LH ID required"
+      });
+    }
+  };
 
-/* A function to be called whenever a report is made
-It checks if a user has the same country and marks in DB 
-*/
+var doAddResponse = function(req, res, Reporttool, author) {
+  if (!Reporttool) {
+    sendJSONresponse(res, 404, "RT ID aint about" + Reporttool);
+  } else {
+    Reporttool.reportToolResponse.push({
+      responseSent: req.body.responseSent,
+      userEmails: req.body.userEmails,
+    });
+    Reporttool.markModified('Reporttool');
+    Reporttool.save(function(err, Reporttool) {
+      var thisResponse;
+      if (err) {
+        sendJSONresponse(res, 400, err);
+      } else {
+        thisResponse = Reporttool.reportToolResponse[Reporttool.reportToolResponse.length - 1];
+        sendJSONresponse(res, 201, thisResponse);
+      }
+    });
+  }
+};
 
-var userReportCheck = function(report) { };
+
 
 
 module.exports.reportCommentDeleteOne = function(req, res) {};

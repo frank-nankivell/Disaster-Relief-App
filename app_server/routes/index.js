@@ -24,6 +24,8 @@ router.get('/learninghub/thanks:learninghubid',ctrllearninghub.thanks);
 router.get('/reporttool',ctrlreporttool.home);
 // post to API for new report
 router.post('/reporttool',ctrlreporttool.new);
+// post to validation of the completed form
+router.post('/reporttool/val',ctrlreporttool.val);
 // reportinfo routes
 router.get('/reporttool/info',ctrlreporttool.info);
 // page for list of reports

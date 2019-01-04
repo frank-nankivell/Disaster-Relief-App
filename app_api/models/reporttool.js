@@ -1,5 +1,10 @@
 var mongoose = require('mongoose');
 
+var usersContacted = new mongoose.Schema({
+    userName: String, 
+    email: String,
+});
+
 var reportToolComment = new mongoose.Schema({
         author: String,
         commentText: {type:String, required: true},
@@ -10,16 +15,8 @@ var reportToolComment = new mongoose.Schema({
 });
 
 var reportToolResponse = new mongoose.Schema({
-        author: String,
-        responseTitle: {
-            type:String, 
-            required: true},
-        canRespond: Boolean,
-        responseType: String,
-        createdOn: {
-            type: Date,
-           "default": Date.now
-         }
+        responseSent: Boolean,
+        userEmails: String,
     });
 
 var reportToolSchema = new mongoose.Schema({

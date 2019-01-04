@@ -36,18 +36,22 @@ block content
 
             var map = new google.maps.Map(document.getElementById('map'));
 
-            navigator.geolocation.getCurrentPosition(function(position) {
-            // Center on user's current location if geolocation prompt allowed
-                var initialLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-                map.setCenter(initialLocation);
-                map.setZoom(12);
-              }, function(positionError) {
-                // User denied geolocation prompt - default to Australia
-                map.setCenter(new google.maps.LatLng(	-33.865143, 151.209900));
-                map.setZoom(5);
-              });
-            var geocoder = new google.maps.Geocoder;
+              var defaultLatLng = new google.maps.LatLng(0.000000, 0.000000);
 
+              var mapOptions = {
+                  zoom: 2,
+                  center: defaultLatLng,
+                  mapTypeId: google.maps.MapTypeId.ROADMAP
+              };
+              var map = new google.maps.Map(document.getElementById('map'),
+              mapOptions);
+
+              if (navigator.geolocation) {
+                  navigator.geolocation.getCurrentPosition(function (position) {
+                      initialLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                      map.setCenter(initialLocation);
+                  });
+              }
             var marker;
             function placeMarker(location) {
             if ( marker ) {
@@ -55,7 +59,8 @@ block content
             } else {
             marker = new google.maps.Marker({
             position: location,
-            map: map
+            map: map,
+            title: 'location of where you are now'
             });
             }
             }

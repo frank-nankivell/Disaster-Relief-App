@@ -27,8 +27,11 @@ html( lang="en" )
             a.nav-link(href='/reporttool/') Reporting Tool
           li.nav-item
             a.nav-link(href='/about/') About
+          li.nav-item
+            a.button.btn.btn-primary(href='/login-register/', role='button') Login/Register
         form.form-inline.my-2.my-lg-0
-          button.btn.btn-secondary.my-2.my-sm-0-link(href='/login-register/', role='button') Login/Register
+          input.form-control.mr-sm-2(type='text', placeholder='Search')
+        button.btn.btn-secondary.my-2.my-sm-0(type='submit') Search
     .container
       block content
 

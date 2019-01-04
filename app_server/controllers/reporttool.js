@@ -178,10 +178,11 @@ var getReporttool = function (req, res, callback) {
 
 // Function to create random coded name string for provenance
 // Rather than have users manually enter
-
 // Function to post new report to API
 module.exports.new = function(req, res, callback) {
-
+  if (!req.body.lat || !req.body.lng  || !req.body.disasterType || !req.body.author || !req.body.noPeopleAffected ||!req.body.dateStart) {
+    res.redirect('/reporttool/?err=val');
+  } else {
   getReportNumber(req, res, function(req, res, data) {
 
     postNew(req, res, data, function(req, res, body) {
@@ -195,7 +196,12 @@ module.exports.new = function(req, res, callback) {
 
           validateOnUsers(country, res, function(req, res, users) {
 
-            bigmailFunction(req, res, users, callback)
+            sendMailFunction(body, res, users, function(req, res, number) {
+              console.log('number of users informed has been', number)
+
+            });
+            return;
+
           });
           return;
         });
@@ -206,6 +212,8 @@ module.exports.new = function(req, res, callback) {
     return;
   });
   return;
+};
+
 };
 
 
@@ -255,7 +263,7 @@ var postNew = function(req, res, name, callback) {
       instantDanger: req.body.instantDanger,
       dateStart: req.body.dateStart,
       author: req.body.author,
-      country: 'Belarus', // test data for now
+      country: req.body.country, 
       createdOn: today,
     };
     requestOptions = {
@@ -345,30 +353,50 @@ var renderThanksForm = function(req, res, callback) {
   };
 
 
-var bigmailFunction = function(req, res, data){
-  var transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      user: 'rescueappinternational@gmail.com',
-      pass: gmailPass
-    }
-  });
 
-  var mailOptions = {
-    from: 'rescueappinternational@gmail.com',
-    to: 'franknankivell@gmail.com',
-    subject: 'RescueApp report',
-    text: 'That was easy!'
+var sendMailFunction = function(req, res, users, callback) {
+  if(!users.email)
+    { console.log('error'); };
+
+// Loop through list of users to send emails 
+  var totalEmails = 0;
+  for (var a in users) {
+
+    console.log(users[a].email, 'email of user who is  being emailed about report');
+
+        var transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+          user: 'rescueappinternational@gmail.com',
+          pass: gmailPass
+        }
+      });
+
+      var mailOptions = {
+        from: 'rescueappinternational@gmail.com',
+        to: users[a].email,
+        subject: 'Report has been created:'+ req.reportName,
+        text: 'A new report has been created in the area of: '+ req.country +' to get to this report please go to',
+      };
+
+      transporter.sendMail(mailOptions, function(error, info){
+        if (error) {
+
+          console.log(error);
+        } else {
+
+          console.log('Email sent: ' + info.response + users[a].email);
+          totalEmails+1;
+
+          }
+        });
+      };
+ 
+      callback(req,res, totalEmails)
+      return;
+
   };
 
-  transporter.sendMail(mailOptions, function(error, info){
-    if (error) {
-      console.log(error);
-    } else {
-      console.log('Email sent: ' + info.response);
-    }
-    });
-};
 
 
 

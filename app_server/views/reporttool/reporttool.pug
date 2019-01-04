@@ -1,7 +1,12 @@
 extends ../Layout
 
 block content
-  head
+  .bread
+    li.breadcrumb-item
+      a(href='/reporttool/info/') Find existing disastor 
+    li.breadcrumb-item
+      a(href='#') Library
+    li.breadcrumb-item.active Data
     jumbotron
       p.lead
       h1= title
@@ -23,7 +28,7 @@ block content
               a.alert-link(href='#') Please make sure all values are completed 
               |  and try submitting again.
           .form-group
-            h6 Drop a pin somewhere in the area of where the disaster occured
+            h4 Drop a pin somewhere in the area of where the disaster occured
             style.
               /* Set the size of the div element that contains the map */
               #map {
@@ -36,49 +41,84 @@ block content
 
             var map = new google.maps.Map(document.getElementById('map'));
 
-              var defaultLatLng = new google.maps.LatLng(0.000000, 0.000000);
+            var defaultLatLng = new google.maps.LatLng(0.000000, 0.000000);
 
               var mapOptions = {
-                  zoom: 2,
+                  zoom: 4,
                   center: defaultLatLng,
                   mapTypeId: google.maps.MapTypeId.ROADMAP
               };
               var map = new google.maps.Map(document.getElementById('map'),
               mapOptions);
 
+               var geocoder = new google.maps.Geocoder;
+               var infowindow = new google.maps.InfoWindow;
+
               if (navigator.geolocation) {
                   navigator.geolocation.getCurrentPosition(function (position) {
-                      initialLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-                      map.setCenter(initialLocation);
+                  initialLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                map.setCenter(initialLocation);
                   });
-              }
-            var marker;
-            function placeMarker(location) {
-            if ( marker ) {
-            marker.setPosition(location);
-            } else {
-            marker = new google.maps.Marker({
-            position: location,
-            map: map,
-            title: 'location of where you are now'
-            });
-            }
-            }
-            google.maps.event.addListener(map, 'click', function(event) {
-            placeMarker(event.latLng);
+                  }
+                var marker;
+                function placeMarker(location) {
+                if ( marker ) {
+                marker.setPosition(location);
+                } else {
+                marker = new google.maps.Marker({
+                position: location,
+                map: map,
+                title: 'location of where you are now'
+                });
+                }
+                }
+              
+  
+                google.maps.event.addListener(map, 'click', function(event) {
+                placeMarker(event.latLng);
 
-            document.getElementById("lat").value = marker.getPosition().lat();
-            document.getElementById("lng").value = marker.getPosition().lng();
-            });
-            }
+                var l = event.latLng;
+                var country;
+                var geocoder = new google.maps.Geocoder;
+                var infowindow = new google.maps.InfoWindow;
+                
+                geocoder.geocode({latLng: l}, function(results, status) {
+                if (status === 'OK') { 
+                    infowindow.setContent(results[0].formatted_address);
+                    infowindow.open(map, marker);
+
+                    // parse through results
+                    var  postal_code, locality, sublocality;
+                      for (i = 0; i < results[0].address_components.length; ++i) {
+                          var component = results[0].address_components[i];
+                          if (!sublocality && component.types.indexOf("sublocality") > -1)
+                              sublocality = component.long_name;
+                          else if (!locality && component.types.indexOf("locality") > -1)
+                              locality = component.long_name;
+                          else if (!postal_code && component.types.indexOf("postal_code") > -1)
+                              postal_code = component.long_name;
+                          else if (!country && component.types.indexOf("country") > -1)
+                              country = component.long_name;
+                      }
+                    document.getElementById("country").value = country;
+                  }; 
+                  console.log(status);
+                 // countrynew = results[0].address_components[1].long_name
+                });
+
+              document.getElementById("lat").value = marker.getPosition().lat();
+              document.getElementById("lng").value = marker.getPosition().lng();
+              });
+            };
             // Need a way of importing key securely and to whitelist IP's on deployment
           script(async='', defer='', src='https://maps.googleapis.com/maps/api/js?key=AIzaSyAPvir7Z2lcufXof9HTRehQ9SzmSMZ1qz0&callback=initMap')
-          .form-group-text-white(for='country')
-            input#country.form-control(for='country', type='hidden',readonly='yes')
           .form-group.text-white(for='lat')
             input#lat.form-control(name='lat', type="hidden", readonly='yes')
           .form-group.text-white(for='lng')
             input#lng.form-control(name='lng', type="hidden", readonly='yes')
+          .form-group
+          .form-group-text-white(for='country')
+            input#country.form-control(name='country', type='text',readonly='yes')
           .form-group
             label.control-label(for="dateStart") Date the disaster started 
             .col-md-12.md-center

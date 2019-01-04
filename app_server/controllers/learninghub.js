@@ -94,14 +94,14 @@ var _showError = function (req, res, status) {
 var renderLearninghome = function(req, res, samplebody)  {
   var key = JSON.stringify(mapkey);
   console.log(key)
-  var obj = JSON.stringify(samplebody);
+  var obj = JSON.stringify(samplebody[1]);
   console.log(obj)
   //console.log(obj + "check")    //console.log('countries' + obj)
       res.render('learninghub/learninghub', {
         title: 'The Learning Hub',
         Qinfo: 'What is the learning hub for, why am I here?',
         info: 'The Learning Hub is a space for users to post, search and find ways to save yourself from a future disaster!',
-        MapInfo: obj,
+        MapInfo: samplebody,
         a: key
       });
     };
@@ -128,8 +128,14 @@ request(
       console.log(err)
     }
     if (response.statusCode === 201) {
+      var arr = []
+      for(var a in body) {
+       // console.log(body[a].relatedCountry);
+        arr = body[a].relatedCountry;
+      }
+      console.log(arr[0],'dfdgrtsfd');
       console.log(response.statusCode)
-      renderLearninghome(req, res, body)
+      renderLearninghome(req, res, arr)
     } else if (response.statusCode === 400 && body.name && body.name === "ValidationError" ) {
       console.log(response.statusCode);
     } else {

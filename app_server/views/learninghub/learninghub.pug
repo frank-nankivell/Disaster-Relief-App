@@ -24,7 +24,7 @@ block content
     'mapsApiKey': !{a}
     });
     google.charts.setOnLoadCallback(drawRegionsMap);
-    var array  = JSON.parse(!{MapInfo});
+    var array  = JSON.stringify(#{MapInfo});
       function drawRegionsMap() {
       var data = google.visualization.arrayToDataTable(array,true);
     var options = {};

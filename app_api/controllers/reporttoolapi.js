@@ -7,7 +7,40 @@ var sendJSONresponse = function(res, status, content) {
   res.json(content);
 };
 
+module.exports.search = function(req, res ) {
+  if (!req.params.searchid) {
+      console.log("No Search params given")
+      sendJSONresponse(res, 404, {
+        "message": "No search params Given"
+    });
+  };
+  console.log("Finding record from chars " + req.params.searchid);
+    rT
+      .find({ "reportName": { "$regex": req.params.searchid, "$options": "i" }})
+      .exec(function(err, reporttool) {
+        if (!reporttool)  {
+          sendJSONresponse(res, 404, {
+            "message": "No report not found"
+          });
+          return;
 
+        } else if (err) {
+          console.log(err);
+          sendJSONresponse(res, 404, err);
+          return;
+        }
+        else if (reporttool.length >=1) {
+        console.log("Reports found" + reporttool);
+        sendJSONresponse(res, 200, reporttool);
+        return;
+
+        };
+        console.log("Error" + reporttool);
+        sendJSONresponse(res, 404, {
+          "message": "Error in request"
+      });
+    });
+  };
 
 // function to get single users
 var getAuthor = function(req, res, callback) {
@@ -96,6 +129,7 @@ module.exports.newReport = function(req, res) {
         dateStart: req.body.dateStart,
         author: req.body.author,
         createdOn: req.body.createdOn,
+        contactDetails: req.body.contactDetails,
         Open: false,
         country: req.body.country
         },
@@ -162,6 +196,7 @@ module.exports.reportUpdate = function(req, res) {
           reporttool.author = req.body.author,
           reporttool.country = req.body.country,
           reporttool.Open = req.body.open,
+          reporttool.contactDetails = req.body.contactDetails,
           reporttool.save(function(err, reporttool) {
 
             if (err) {

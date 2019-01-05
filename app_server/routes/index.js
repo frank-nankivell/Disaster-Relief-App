@@ -7,14 +7,15 @@ var ctrlabout = require('../controllers/about');
 
 // route for the main home page
 router.get('/',ctrlMain.main);
-router.get('/login-register', ctrlMain.loginRegister);
-router.post('/login-register/log', ctrlMain.login);
-router.post('/login-register/reg',ctrlMain.registerNew);
+router.get('/signup', ctrlMain.loginRegister);
+router.get('/signup/about', ctrlMain.registerAbout);
+router.post('/signup',ctrlMain.registerNew);
 // learning hub routes for its pages
 router.get('/learninghub',ctrllearninghub.home);
 router.get('/learninghub/list',ctrllearninghub.list);
 router.get('/learninghub/:learninghubid/comment',ctrllearninghub.comment);
 router.post('/learninghub/:learninghubid/comment',ctrllearninghub.commentAdd);
+router.post('/learninghub',ctrllearninghub.homeSearch);
 router.get('/learninghub/new',ctrllearninghub.new);
 router.post('/learninghub/new',ctrllearninghub.newAdd);
 router.get('/learninghub/thanks:learninghubid',ctrllearninghub.thanks);
@@ -30,6 +31,8 @@ router.post('/reporttool/val',ctrlreporttool.val);
 router.get('/reporttool/info',ctrlreporttool.info);
 // page for list of reports
 router.get('/reporttool/list',ctrlreporttool.list);
+//
+router.post('/reporttool/info',ctrlreporttool.search);
 
 
 

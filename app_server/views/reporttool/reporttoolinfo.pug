@@ -1,10 +1,44 @@
-extends ../Layout
+extends ../layout
 
 block content
+  .style 
+    link(rel='stylesheet', href='/../bootstrap/css/bootstrap-flatly.css')
+    script( src='//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js')
   p.lead
     h1= title
   p.lead
   .jumbotron
-  .comingsoon
-    h2= tbc
-  .comingsoon
+    - if (error == "val")
+      .alert.alert-dismissible.alert-danger
+        button.close(type='button', data-dismiss='alert') ×
+        strong Oh snap!
+        a.alert-link(href='#') Please make sure you search for something
+        |  and try submitting again.
+    .searchbox
+      form.form-horizontal(action='', method="post", role="form")
+        .form-group.col-md-12.md-center
+            label.control-label.col-md-12.md-center(for="search") Report code 
+              textarea#search.form-control(name="search", rows='1', type="text")
+              small#hubtextHelp.form-text.text-muted enter the report code you are looking for
+        .detail.col-md-12.md-center
+          h6 You need to authenticate with your username and password
+        .form-group.col-md-12.md-center
+            label.control-label.col-md-12.md-center(for="email") Email
+              textarea#search.form-control.col-md-12.md-center(name="email", rows='1', type="text")
+              small#hubtextHelp.form-text.text-muted Your email
+        .form-group.col-md-12.md-center 
+            label.control-label.col-md-12.md-center(for="password") Password
+              textarea#search.form-control.col-md-12.md-center(name="password", rows='1', type="text")
+              small#hubtextHelp.form-text.text-muted Your password 
+        button.btn.btn-primary.btn-lg.col-md-4.md-center Submit
+        .input
+          - if (!{data} == "val")
+            .alert.alert-dismissible.alert-success
+              button.close(type='button', data-dismiss='alert') ×
+              strong Data is below
+              a.alert-link(href='#') You better read it all
+              |  great stuff
+              p= data.reportName
+
+      
+      

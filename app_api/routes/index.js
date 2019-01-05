@@ -36,6 +36,9 @@ router.put('/reporttool:reportID/comment:repcommentID', ctrlreportTool.reportCom
 router.delete('/reporttool/del:reportID',ctrlreportTool.reportCommentDeleteOne);
 // Delete existing report
 router.delete('/reporttool/:reportID', ctrlreportTool.reportDeleteOne);
+// search for report by rep name
+router.get('/reporttool/search:searchid', ctrlreportTool.search);
+
 
 // Create response for report from when email is sent
 router.post('/reporttool:reportID/response', ctrlreportTool.newResponse); // need to make
@@ -55,6 +58,8 @@ router.get('/learninghub:learninghubid', ctrllearninghub.learninghubGet);
 router.get('/learninghub/visAll', ctrllearninghub.countryVisualisation);
 // Request to get List of all records ordered by Date
 router.get('/learninghub/list/date', ctrllearninghub.learninghubByCreatedDate);
+// variable search
+router.get('/learninghub/:searchID/:disTypeID',ctrllearninghub.learninghubSearch);
 
 
 // Create new LH

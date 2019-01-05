@@ -81,6 +81,38 @@ module.exports.learninghubByCreatedDate = function(req, res) {
       }
     );
 };
+
+module.exports.learninghubSearch = function(req, res) {
+  if(!req.params.disTypeID || !req.params.searchID) {
+    console.log(err);
+    sendJSONresponse(res, 400, {
+      "message": "Incorrect params given"
+    });
+  };
+  console.log(req.params.disTypeID, 'dis,',req.params.searchID)
+  lh
+    .find({$and:[{"hubentryName":{$regex: req.params.searchID, $options: 'i'}},{'disasterType':{$regex: req.params.disTypeID, $options: 'i'}}]})
+    .sort([['createdOn', 1]])
+    .exec(function(err, learninghub) {
+      if (err) {
+        console.log(err);
+        sendJSONresponse(res, 400, err);
+        return;
+      } if (learninghub === undefined || learninghub.length == 0) {
+        console.log('no values found')
+        sendJSONresponse(res, 400, {
+          "message": "no values found in search"
+        });
+        return;
+      }
+       else 
+       console.log(learninghub);
+        sendJSONresponse(res, 201, learninghub);
+      }
+    );
+  };
+
+
 module.exports.countryVisualisation = function(req, res) {
   lh
     .find()

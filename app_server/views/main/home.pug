@@ -8,7 +8,8 @@ block content
     .info.md
       h6=info
     .imgTitle
-    .somescript
+  
+    .h5= !{status}
     .jumbotron
       p.lead
 
@@ -21,14 +22,9 @@ block content
                 | There are currently !{number} reports submitted about disaster in your local area
                 a.alert-link(href='reporttool/list') Best check them out here
                 | .
-
       h4= community
-    .reporthome.float-md-right
-      a.btn.btn-danger.my-2.my-sm-0btn-lg(href='/reporttool/', role='button') Report a Disaster
-    .loginbutton.float-md-left
-      br
-      a.button.btn.btn-secondary.my-2.my-sm-0btn-lg(href='/login-register/', role='button') Login / Register
-
-
+    .row
+    .reporthome.col-md-left
+      a.btn.btn-danger.my-2.my-sm-0btn-lg(href='/reporttool/', role='button') Report a Disaster Now
 
 

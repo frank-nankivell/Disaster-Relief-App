@@ -16,6 +16,10 @@ var userSchema = new mongoose.Schema({
     type: String, 
     required: true
   },
+  skills: String,
+  otherSkill: String,
+  acccessToTransport: String,
+  willingToTravel: String,
   rating: Number,
   hash: String,
   salt: String

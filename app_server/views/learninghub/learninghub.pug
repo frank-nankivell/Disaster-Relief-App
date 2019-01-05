@@ -17,34 +17,74 @@ block content
   | Visualization: Map
   | The Chart below presents locations of Learninghub entries that have been entered so far
   script(type='text/javascript', src='https://www.gstatic.com/charts/loader.js')
-  script(type='text/javascript').
-    google.charts.load('current', {
-    'packages':['geochart'],
+      script(type='text/javascript', src='//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js')
+      script(type='text/javascript').
+        var apiOptions = {
+            server : "http://localhost:3000"
+          };
+        // Load the Visualization API and the piechart package.
+        google.charts.load('current', {'packages':['geochart'],
+        'mapsApiKey': !{a}
+        });
+        // Set a callback to run when the Google Visualization API is loaded.
+        google.charts.setOnLoadCallback(drawChart);
+        function drawChart() {
+        var path = '/api/learninghub/visAll';
+        var URL = apiOptions.server + path;
+        var jsonData = $.ajax({
+        url : URL,
+        dataType: "json",
+        async: false
+        }).responseText;
 
-    'mapsApiKey': !{a}
-    });
-    google.charts.setOnLoadCallback(drawRegionsMap);
-    var array  = JSON.stringify(#{MapInfo});
-      function drawRegionsMap() {
-      var data = google.visualization.arrayToDataTable(array,true);
-    var options = {};
-    var chart = new google.visualization.GeoChart(document.getElementById('regions_div'));
-    chart.draw(data, options);
-    }
-  .input
-    #regions_div(style='width: 900px; height: 500px;')
 
+        // Create our data table out of JSON data loaded from server.
+        var data = new google.visualization.DataTable(jsonData);
+          data.addColumn({label: 'id', type: 'string'});
+          data.addColumn({label: 'Country', type: 'string'});
+          console.log(data);
 
+        // Instantiate and draw our chart, passing in some options.
+        var chart = new google.visualization.GeoChart(document.getElementById('chart_div'));
+        chart.draw(data, {width: 700, height: 340});
+        }
+  body
+  // Div that will hold the pie chart
+  #chart_div
     br
-    a.btn.btn-outline-info.btn-lg(href='/learninghub/list/', role='button') List of Learning Hub Entries
-    .listbutton
     br
-    h4= MapInfo
+  .info
+    h4 Use the search below to find learninghub entries you may be interested in
 
-    .fifth
-      h4= inputinfo
-      .searchbutton2.col-md-12.text-left
-        a.btn.btn-primary.btn-lg(href='/learninghub/new/', role='button') Create your entry here
+  .searchbox
+  .jumbotron
+        form.form-horizontal(action='', method="post", role="form")
+          .form-group.col-md-12.md-center
+              label.control-label.col-md-12.md-center(for="search") Learning hub title  
+                textarea#search.form-control(name="search", rows='1', type="text")
+                small#hubtextHelp.form-text.text-muted enter the topic of a learninghub you are interested in
+          .form-group
+            label.control-label(for="disasterType") Disaster Type
+            .col-md-12.md-center
+              select#disasterType.form-control.input-sm(name="disasterType")
+                option N/A
+                option Landslide
+                option Volcanic Eruption
+                option Lightning
+                option Forest Fire
+                option Storm
+                option Drought
+                option Flood
+                option Earthquake
+                option Other
+              small#hubtextHelp.form-text.text-muted enter the type of disaster you are interested in learning about
+          .col-md-12.md-center
+          button.btn.btn-primary.btn-lg.col-md-12.md-center Search
+
+  .fifth
+    h4= inputinfo
+    .searchbutton2.col-md-12.text-left
+      a.btn.btn-primary.btn-lg(href='/learninghub/new/', role='button') Create your entry here
 
 
 

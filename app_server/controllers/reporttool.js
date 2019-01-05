@@ -71,10 +71,54 @@ module.exports.home = function(req, res) {
 };
 
 module.exports.info = function(req, res) {
-  res.render('reporttool/reporttoolinfo', {title: 'Find Information about a disaster here'});
+  renderInfo(req, res)
+};
+
+var renderInfo = function(req, res, data) {
+  data = 'val';
+  if (data== undefined) {
+    data='';
+  };
+  res.render('reporttool/reporttoolinfo', 
+  {
+    title: 'Search for an existing report here',
+    input: data,
+    error: req.query.err,
+    url: req.originalUrl
+  });
 };
 
 module.exports.select = function(req, res) {};
+
+// Search for a specific entry 
+module.exports.search = function(req, res) {
+  // Validation to ensure search entry provided
+  if(!req.body.search) {
+    res.redirect('/reporttool/info?err=val');
+    console.log('No Search value entered')
+  };
+  // Request to api
+  var requestOptions, path;
+  path = "/api/reporttool/search" + req.body.search;
+  requestOptions = {
+    url : apiOptions.server + path,
+    method : "GET",
+    json : {}
+  };
+  request(
+    requestOptions,
+    function(err, response, body) {
+      var data = body;
+      if (response.statusCode === 200 || response.statusCode === 201) { // To manage two response codes
+        renderList(req, res, body)
+      } else {
+        console.log(err, 'Error')
+        _showError(req, res, response.statusCode);
+      }
+    }
+  );
+};
+
 
 
 // render API call for list view 
@@ -91,7 +135,7 @@ module.exports.list = function(req, res) {
     function(err, response, body) {
       var data = body;
       if (response.statusCode === 200 || response.statusCode === 201) { // To manage two response codes
-        renderList(req, res, data)
+     //   renderList(req, res, data)
       } else {
         _showError(req, res, response.statusCode);
       }
@@ -101,22 +145,12 @@ module.exports.list = function(req, res) {
 
 // function to render list view 
 var renderList = function(req, res, detail) {
-  var mapcoords = detail.map(function(elem) {
-    return {
-      coords: elem.coords
-    }
-  }); 
-  // test data 
-  var testcoords = { coords: [ 148.717556, -20.272325 ] };
-  var b = JSON.stringify(mapcoords)
-  console.log(mapcoords, "coords")
-  getUsersCoords(req, res) // Method to get user coords to centre map
-  res.render('reporttool/reporttool-list', {
-    title: 'Thankyou for submitting your entry ',
-    userLat: '39.826168', // Test data for now
-    userLng: '21.422510', // Test data for now
+  var string = JSON.stringify(detail)
+  res.render('reporttool/reporttoolList', {
+    title: 'Selected entries are below ',
+    info: 'Please review the item youn were searching for',
     a: mapKey, // Map key for google MAPS API
-    data: b, // Data pushed to front as String
+    data: detail, ]
    error: req.query.err
   });
 };
@@ -180,7 +214,7 @@ var getReporttool = function (req, res, callback) {
 // Rather than have users manually enter
 // Function to post new report to API
 module.exports.new = function(req, res, callback) {
-  if (!req.body.lat || !req.body.lng  || !req.body.disasterType || !req.body.author || !req.body.noPeopleAffected ||!req.body.dateStart) {
+  if (!req.body.lat || !req.body.lng  || !req.body.disasterType || !req.body.author || !req.body.noPeopleAffected ||!req.body.dateStart ||!req.body.contactDetails) {
     res.redirect('/reporttool/?err=val');
   } else {
   getReportNumber(req, res, function(req, res, data) {
@@ -265,6 +299,7 @@ var postNew = function(req, res, name, callback) {
       author: req.body.author,
       country: req.body.country, 
       createdOn: today,
+      contactDetails: req.body.contactDetails,
     };
     requestOptions = {
       // need to amend below for production
@@ -316,7 +351,7 @@ var renderThanksForm = function(req, res, callback) {
   console.log('Rendering thanks form with icon link:', icon)
 
   res.render('reporttool/thanks', {
-    title: 'Your report case is now open',
+    title: 'The report case is now open',
     info:  'You can close the case once the community has supported you and your needs',
     code: 'Report Code: ',
     icon: icon,

@@ -46,10 +46,53 @@ var renderLearninghublist = function(req, res, responseBody) {
     header2: "The Disaster Type ",
     header3: "Related Continent  ",
     date: " Created Date",
-    a: key,
+    k: key,
     data: obj
   });
 };
+
+module.exports.homeSearch = function(req, res) {
+  var disTypes = ['Volcanic Eruption', 'N/A','Landslide','Volcanic Eruption','Lightning','Forest Fire','Storm','Drought','Flood','Earthquake','Other'];
+  if (!req.body.search || !req.body.disasterType) {
+  res.redirect('learninghub?err=val') 
+  console.log('break1')
+  };
+    if (disTypes.includes(req.body.disasterType)) {
+      console.log('check', req.body.search, req.body.disasterType)
+      searchFunction(req, res);
+      return;
+  };
+  res.redirect('learninghub?err=val')
+  console.log('break2')
+  return;
+  };
+
+var searchFunction = function(req, res) {
+  var requestOptions, path;
+  path = '/api/learninghub/' + req.body.search + '/' + req.body.disasterType; 
+  requestOptions = {
+    url : apiOptions.server + path,
+    method :'GET',
+    json : '',
+    qs: ''
+  };
+  request (
+    requestOptions,
+    function (err, response, body) {
+      if (response.statusCode === 200 || response.statusCode === 201) {
+        renderLearninghublist(req, res, body)
+        return;
+      } if (response.statusCode === 400 && body.message === "no values found in search") {
+        res.redirect('learninghub?err=empty')
+        console.log('break 3')
+      }
+      else 
+      console.log(err)
+      console.log(res.message,'message is')
+      _showError(req, res, response.statusCode);
+      console.log('break4')
+    });
+  };
 
 
 // list page for the learning hub //
@@ -65,10 +108,11 @@ module.exports.list = function(req, res ) {
   request (
     requestOptions,
     function (err, response, body) {
-     // console.log(body)
+      if (response.statusCode === 200) {
       renderLearninghublist(req, res, body)
-    }
-  );
+    } else 
+    _showError(req, res, response.statusCode);
+  });
 };
 
 var _showError = function (req, res, status) {
@@ -91,18 +135,15 @@ var _showError = function (req, res, status) {
 };
 
 // home page and info
-var renderLearninghome = function(req, res, samplebody)  {
+var renderLearninghome = function(req, res)  {
   var key = JSON.stringify(mapkey);
-  console.log(key)
-  var obj = JSON.stringify(samplebody[1]);
-  console.log(obj)
-  //console.log(obj + "check")    //console.log('countries' + obj)
       res.render('learninghub/learninghub', {
         title: 'The Learning Hub',
         Qinfo: 'What is the learning hub for, why am I here?',
         info: 'The Learning Hub is a space for users to post, search and find ways to save yourself from a future disaster!',
-        MapInfo: samplebody,
-        a: key
+        a: key,
+        error: req.query.err,
+        url: req.originalUrl
       });
     };
 
@@ -114,37 +155,9 @@ var testData = {
 };
 
 module.exports.home = function(req, res) {
-  var requestOptions, path;
-  path = '/api/learninghub/visAll';
-  requestOptions = {
-    url : apiOptions.server + path,
-    method : "GET",
-    json : {}
+  renderLearninghome(req,res) 
 };
-request(
-  requestOptions,
-  function(err, response, body) {
-    if (err) {
-      console.log(err)
-    }
-    if (response.statusCode === 201) {
-      var arr = []
-      for(var a in body) {
-       // console.log(body[a].relatedCountry);
-        arr = body[a].relatedCountry;
-      }
-      console.log(arr[0],'dfdgrtsfd');
-      console.log(response.statusCode)
-      renderLearninghome(req, res, arr)
-    } else if (response.statusCode === 400 && body.name && body.name === "ValidationError" ) {
-      console.log(response.statusCode);
-    } else {
-      console.log(body);
-      _showError(req, res, response.statusCode);
-    }
-  }
-);
-};
+
 
 
 

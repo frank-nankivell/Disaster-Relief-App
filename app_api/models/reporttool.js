@@ -38,11 +38,13 @@ var reportToolSchema = new mongoose.Schema({
         type: Date,
     },
     author: String,
+    contactDetails: String,
     createdOn: {
         type: Date,
        "default": Date.now
      },
-
+    contactDetails: String,
+    repCode: String,
     reportToolResponses: [reportToolResponse],
     reportToolComments: [reportToolComment]
 });

@@ -1,0 +1,73 @@
+extends ../layout
+
+
+block content
+  .styleinformation
+    link(rel='stylesheet', href='/../bootstrap/css/bootstrap-flatly.css')
+    script( src='//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js')
+  .topinformation
+    h1= title
+    p= info
+
+  .listinformation 
+      each a in data 
+          .jumbotron
+            h4= a.reportName
+              img.logo(src= icon, for=('repIcon'),alt="Disaster Relief Icon", style='width:20px/height:20px;')
+              h6.display-4.md-right Report Code: #{a.reportName}
+                h6 Please keep hold of your report code and use it in future correspondence about with community members
+              p.lead-h4 Number of people affected is #{a.noPeopleAffected}
+              p.lead Date submitted #{a.createdOn} + #{a.country}
+                br
+              hr.my-4
+              p.lead-h3 Submitted by #{a.author} 
+                br
+              .demo
+                input#country(src = fuck)
+              .mapinformation
+                | The map below
+                | shows where you said you have been affected
+                br
+                br
+                | All members of the community in the country of #{a.country} 
+                | have been informed about the incident. They will get in contact to provide support
+              style.
+                    /* Set the size of the div element that contains the map */
+                  #map {
+                    height: 400px;  /* The height is 400 pixels */
+                    width: 100%;  /* The width is the width of the web page */
+                    }
+              #map
+              script.
+                  function initMap() {
+
+                    //var map = new google.maps.Map(document.getElementById('map'));
+
+                    var defaultLatLng = new google.maps.LatLng(a.lat, a.lng);
+                    var country = document.getElementById('demo').getAttribute('country');
+                    console.log(country)
+
+                    var mapOptions = {
+                        zoom: 8,
+                        center: defaultLatLng,
+                        mapTypeId: google.maps.MapTypeId.ROADMAP
+                    };
+                    var map = new google.maps.Map(document.getElementById('map'),
+                    mapOptions);
+
+
+                    var marker;
+                    marker = new google.maps.Marker({
+                    position: defaultLatLng,
+                    map: map,
+                    //title: !{data.reportName},
+                  // icon: repIcon
+                    });
+                  };
+        
+
+                  // Need a way of importing key securely and to whitelist IP's on deployment
+              script(async='', defer='', src='https://maps.googleapis.com/maps/api/js?key=AIzaSyAPvir7Z2lcufXof9HTRehQ9SzmSMZ1qz0&callback=initMap')
+              .body
+              #regions_div(style='width: 500px; height: §00px;')
+              .toValidate

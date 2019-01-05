@@ -20,6 +20,10 @@ module.exports.register = function(req, res) {
     user.name = req.body.name;
     user.email = req.body.email;
     user.country = req.body.country;
+    user.skills = req.body.skills;
+    user.otherskill = req.body.otherskills;
+    user.accessToTransport = req.body.accessToTransport;
+    user.willingToTravel = req.body.willingToTravel;
     user.setPassword(req.body.password);
     user.save(function(err) {
       var token;

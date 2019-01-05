@@ -8,17 +8,19 @@ module.exports.main = function(req, res,) {
 
 
 var renderMain = function(req, res) {
-  var x, status;
-  x = getImage;
+  if (req.status == undefined)
+  {
+    req.status = "";
+  }
+  console.log(req.status, 'test test test')
   res.render('main/home', {
     title: 'home',
     info: 'RescApp is a Global online community of people helping you or wanting to help others in need',
     community: 'To access your local community please login or, in an emergency you can report a disaster now',
-    urlReg: 'login-register/reg',
-    urlLog: 'login-register/log',
+    urlReg: 'signup',
+    urlLog: 'signup',
     number: '5',
-    Status: status,
-    val: x
+    status: req.status,
   });
 };
 
@@ -33,7 +35,15 @@ var getRegStatus = function(req) {
 }
 // login/Registration page 
 module.exports.loginRegister = function(req, res) {
-  res.render('login-register', {});
+  if (req.status == undefined)
+  {
+    req.status = "Not registered";
+  }
+  res.render('signup', {
+    status: req.status,
+    error: req.query.err,
+    complete: req.query.com,
+  });
 };
 
 module.exports.login = function(req, res) {
@@ -50,7 +60,7 @@ module.exports.login = function(req, res) {
       json : postdata
     };
     if(!req.body.email || !req.body.password || req.body.name || req.body.country) {
-      res.redirect('/login-register/new?err=val');
+      res.redirect('/signup/?err=val');
       (err) && console.log(err);
     }
     else {
@@ -61,9 +71,9 @@ module.exports.login = function(req, res) {
           console.log(err)
         } if (response.statusCode === 200) {
           console.log(body, "request success")
-          res.redirect('/');
+          res.redirect('/signup/complete=val');
         } else if (response.statusCode === 400 && body.name && body.name === "ValidationError" ) {
-          res.redirect('/login-register/new?err=val');
+          res.redirect('/signup/?err=val');
           console.log(response.statusCode);
         } else {
           console.log(body);
@@ -75,23 +85,29 @@ module.exports.login = function(req, res) {
   };
 
 module.exports.registerNew = function(req, res) {
-  var a = req.name && console.log(a);
+  console.log(req.body)
   var requestOptions, path, postdata;
     path = "/api/register";
     postdata = {
-      name: req.body.name, 
+      name: req.body.fullname, 
       email: req.body.email,
       password: req.body.password,
-      country: req.body.country
+      country: req.body.country,
+      skills: req.body.skills,
+      otherSkill: req.body.otherSkill,
+      accessToTransport: req.body.accessToTransport,
+      willingToTravel: req.body.willingToTravel,
     };
     requestOptions = {
       url : localserver + path,
       method : "POST",
       json : postdata
     };
-    if(!req.body.email || !req.body.password || !req.body.name || !req.body.country) {
-      res.redirect('/login-register/new?err=val');
+
+    if(!req.body.email || !req.body.password || !req.body.fullname || !req.body.country || !req.body.skills || !req.body.accessToTransport ) {
+      res.redirect('/signup/?err=val');
       (err) && console.log(err);
+      return;
     }
     else {
     request(
@@ -101,15 +117,24 @@ module.exports.registerNew = function(req, res) {
           console.log(err)
         } if (response.statusCode === 200) {
           console.log(body, "request success")
-          var x = "Registered";
-          renderMain(req, res, x);
+          res.redirect('/signup/?com=val')
+          
         } else if (response.statusCode === 400 && body.name && body.name === "ValidationError" ) {
-          res.redirect('/login-register/new?err=val');
+          res.redirect('/signup/?err=val');
+          console.log('ERROR 2')
           console.log(response.statusCode);
+          
+        } else if (response.statusCode === 404 && body.name === 'MongoError') {
+          res.redirect('/signup/?err=dup');
+          console.log('ERROR 3')
+          return;
+
         } else {
-          console.log(body);
-          _showError(req, res, response.statusCode);
-        }
+        
+        console.log(body);
+        _showError(req, res, response.statusCode);
+        console.log('ERROR 3')
+        } 
         }
        );
     };
@@ -134,5 +159,7 @@ var _showError = function (req, res, status) {
   });
 };
 
+module.exports.registerAbout = function(req, res) {
+  res.render('signup-about');
 
-
+};

@@ -48,4 +48,4 @@ var reportToolSchema = new mongoose.Schema({
     reportToolResponses: [reportToolResponse],
     reportToolComments: [reportToolComment]
 });
-mongoose.model('reportTool', reportToolSchema);
+mongoose.model('reporttool', reportToolSchema);

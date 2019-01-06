@@ -1,5 +1,10 @@
 var request =  require('request');
-var localserver = 'http://localhost:3000';
+var apiOptions = {
+  server : "http://localhost:3000"
+};
+if (process.env.NODE_ENV === 'production') {
+  apiOptions.server = "https://secret-sands-46525.herokuapp.com/";
+}
 
 /* home page */
 module.exports.main = function(req, res,) {
@@ -55,7 +60,7 @@ module.exports.login = function(req, res) {
       password: req.body.password
     };
     requestOptions = {
-      url : localserver + path,
+      url : apiOptions.server + path,
       method : "POST",
       json : postdata
     };
@@ -99,7 +104,7 @@ module.exports.registerNew = function(req, res) {
       willingToTravel: req.body.willingToTravel,
     };
     requestOptions = {
-      url : localserver + path,
+      url : apiOptions.server + path,
       method : "POST",
       json : postdata
     };

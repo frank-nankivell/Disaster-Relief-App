@@ -14,7 +14,7 @@ if (process.platform === "win32"){
 
 var dbURI = "mongodb://localhost:27017/DRAP";
 if (process.env.NODE_ENV === 'production') {
-  dbURI = 'mongodb://admin:admin01@ds149894.mlab.com:49894/rescapp-01';
+  dbURI = 'mongodb://admin:admin01@ds149914.mlab.com:49914/rescapp-02';
 }
 const mongo = mongoose.connect(dbURI, {useNewUrlParser: true });
 mongo.then(() => {

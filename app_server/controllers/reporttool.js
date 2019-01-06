@@ -7,7 +7,7 @@ var apiOptions = {
   server : "http://localhost:3000"
 };
 if (process.env.NODE_ENV === 'production') {
-  apiOptions.server = "https://secret-sands-46525.herokuapp.com/";
+  apiOptions.server = "https://secret-sands-46525.herokuapp.com";
 }
 
 var _showError = function (req, res, status) {

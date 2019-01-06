@@ -4,7 +4,7 @@ var apiOptions = {
   server : "http://localhost:3000"
 };
 if (process.env.NODE_ENV === 'production') {
-  apiOptions.server = "";
+  apiOptions.server = "https://secret-sands-46525.herokuapp.com";
 }
 
 // function to get url for disaster icons
@@ -304,13 +304,10 @@ module.exports.newAdd = function(req, res) {
         }
         // need to add exception handlong for when DB is offline
         if (response.statusCode === 201) {
+          console.log(response.statusCode)
           val = body._id;
-   //      console.log(x)
          getLearninghub(val, res, function(req, res, data) {
-    //       a = data.hubentryName
-        //   console.log("test test test " + a)
            renderThanksForm(req, res, data);
-       //    console.log("test test test test data " + data)
          });
           console.log()
         } else if (response.statusCode === 400 && body.name && body.name === "ValidationError" ) {

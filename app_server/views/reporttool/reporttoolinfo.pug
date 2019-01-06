@@ -14,6 +14,12 @@ block content
         strong Oh snap!
         a.alert-link(href='#') Please make sure you search for something
         |  and try submitting again.
+    - if (error == "auth")
+      .alert.alert-dismissible.alert-warning
+        button.close(type='button', data-dismiss='alert') ×
+        strong Oh snap!
+        a.alert-link(href='#') Incorrect user and password please
+        |  try submitting again.
     .searchbox
       form.form-horizontal(action='', method="post", role="form")
         .form-group.col-md-12.md-center
@@ -21,7 +27,8 @@ block content
               textarea#search.form-control(name="search", rows='1', type="text")
               small#hubtextHelp.form-text.text-muted enter the report code you are looking for
         .detail.col-md-12.md-center
-          h6 You need to authenticate with your username and password
+          h6 You need to authenticate with your username and password 
+          a.alert-link.col-md-12(href='/signup') or signup here
         .form-group.col-md-12.md-center
             label.control-label.col-md-12.md-center(for="email") Email
               textarea#search.form-control.col-md-12.md-center(name="email", rows='1', type="text")

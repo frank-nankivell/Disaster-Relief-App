@@ -115,9 +115,9 @@ module.exports.learninghubSearch = function(req, res) {
 
 module.exports.countryVisualisation = function(req, res) {
   lh
-    .find()
-    .select('relatedCountry')
-    .sort([['relatedCountry', 1]])
+    .find({}, {'_id':0,'country':1})
+   // .select('country')
+    .sort([['country', 0]])
     .exec(function(err, learninghub) {
       if (err) {
         console.log(err);
@@ -156,7 +156,7 @@ module.exports.learninghubCreate = function (req, res) {
       hubentryName: req.body.hubentryName,
       articleType: req.body.articleType,
       disasterType: req.body.disasterType,
-      relatedContient: req.body.relatedContient,
+      country: req.body.country,
       createdOn: '',
       author: req.body.author,
       hubtext: req.body.hubtext,
@@ -229,7 +229,7 @@ module.exports.learninghubCreate = function (req, res) {
         hubentryName: req.body.hubentryName,
         articleType: req.body.articleType,
         disasterType: req.body.disasterType,
-        relatedCountry: req.body.relatedCountry,
+        country: req.body.country,
         createdOn: '',
         author: req.body.author,
         hubtext: req.body.hubtext,

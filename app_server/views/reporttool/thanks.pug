@@ -20,7 +20,8 @@ block content
           br
           br
           | All members of the community in the country of #{data.country} 
-          | have been informed about the incident. They will get in contact to provide support
+          | have been informed about the incident. They will get in contact to provide support. 
+          | Users will able to have access to the address of #{data.address} once they login to the system.
         style.
               /* Set the size of the div element that contains the map */
             #map {
@@ -59,16 +60,8 @@ block content
         script(async='', defer='', src='https://maps.googleapis.com/maps/api/js?key=AIzaSyAPvir7Z2lcufXof9HTRehQ9SzmSMZ1qz0&callback=initMap')
         .body
         #regions_div(style='width: 500px; height: §00px;')
-        .toValidate
-          p If the above form is correct please select validate to send information to the rest of the community.
-          | If the information is incorrect, please press cancel to return to the previous page
-          
-        form.form-horizontal(action='/reporttool/val', method="post", role="form")
-          .form-group-text-white(for='countrySend')
-            input#country.form-control(type='hidden', name="countrySend", value=data.country)
-          button.btn.btn-primary.btn-lg.col-md-12.md-center Confirm form is correct
-          .dividor
-            br
-            br
+        .diver
+          br
+          br
+      a.btn.btn-outline-info.btn-lg(href='/reporttool', role='button') Go back
 
-        a.btn.btn-outline-info.btn-lg(href='/reporttool', role='button') Cancel

@@ -34,6 +34,8 @@ router.get('/reporttool/list',ctrlreporttool.list);
 //
 router.post('/reporttool/info',ctrlreporttool.search);
 
+router.post('/reporttool:reportID/comment', ctrlreporttool.commentNew);
+
 
 
 //router.get('/reporttool/new',ctrlreporttool.reporttoolNew);

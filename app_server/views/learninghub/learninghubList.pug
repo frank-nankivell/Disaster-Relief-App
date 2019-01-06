@@ -4,31 +4,29 @@ block content
     .style 
     link(rel='stylesheet', href='/../bootstrap/css/bootstrap-flatly.css')
     script( src='//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js')
-        .row
-        .colTitle
-            h1= title
-            h4= info
-            h5= thoughts
-            h6= inputidea
-    br
-    br
-    a.btn.btn-primary.btn-lg(href='/learninghub/new/', role='button') Create your entry here
+    .row
+    .colTitle
+        h1= title
+        h4= info
+        h5= thoughts
+        h6= inputidea
+        .create
+            br
+            a.btn.btn-primary.btn-lg(href='/learninghub/new/', role='button') Create your entry here
         .listView
             each a in data
-                .card.mb-3
-                    h4= a.articleType
-                    h3.card-header= a.hubentryName
-                        .card-body
-                        p.card-text= a.hubtext
-                            br
-                            ul.list-group.list-group-flush
-                            br
-                        h5= header2
-                            ul.list-group.list-group-flush
-                            li.list-group-item= a.disasterType
-                        h5= header3
-                            ist-group-item= a.relatedCountry
-                        .card-body
-                            p= a.createdDate
-                            p What do you think?
-                            a.btn.ptn-secondary-btn-lg(href='/learninghub/#{obj._id}/comment') Comment Here
+                .jumbotron
+                    h3.display-4.md-right The article type is
+                    br 
+                    h4= a.articleType 
+                    img.logo(src=val, alt="Disaster Relief Icon", style='width:10px/height:10px;')
+                    p.lead-h4 The title of the entry is #{a.hubentryName}
+
+                    hr.my-4
+                    p.lead-h3 Submitted by #{a.author} 
+
+                    p.lead The country it is about is !{a.county} 
+                    p.lead The article shows #{a.hubtext}
+                .comments              
+                    p What do you think?
+                    a.btn.ptn-secondary-btn-lg(href='/learninghub/#{a._id}/comment') Comment Here

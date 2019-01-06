@@ -36,25 +36,22 @@ var getDisasterIcon = function(input) {
 // function of the render learninghub list //
 var renderLearninghublist = function(req, res, responseBody) {
   var obj = JSON.stringify(responseBody);
+  var blah = JSON.parse(obj);
   var key = JSON.stringify(mapkey);
   res.render('learninghub/learninghubList', {
     title: 'List of Learning hub entries thus far',
-    info: 'Below you find a list of entries that have been entered this far',
+    info: 'Below you find a list of entries that match your search criteria',
     thoughts: 'What do you think of what has been written so far?',
     inputidea: '...Why dont you create youre own today',
-    header1: "The Article Type is ",
-    header2: "The Disaster Type ",
-    header3: "Related Continent  ",
-    date: " Created Date",
     k: key,
-    data: obj
+    data: blah
   });
 };
 
 module.exports.homeSearch = function(req, res) {
   var disTypes = ['Volcanic Eruption', 'N/A','Landslide','Volcanic Eruption','Lightning','Forest Fire','Storm','Drought','Flood','Earthquake','Other'];
   if (!req.body.search || !req.body.disasterType) {
-  res.redirect('learninghub?err=val') 
+  res.redirect('/learninghub?err=val') 
   console.log('break1')
   };
     if (disTypes.includes(req.body.disasterType)) {
@@ -62,7 +59,7 @@ module.exports.homeSearch = function(req, res) {
       searchFunction(req, res);
       return;
   };
-  res.redirect('learninghub?err=val')
+  res.redirect('/learninghub?err=val')
   console.log('break2')
   return;
   };
@@ -82,8 +79,8 @@ var searchFunction = function(req, res) {
       if (response.statusCode === 200 || response.statusCode === 201) {
         renderLearninghublist(req, res, body)
         return;
-      } if (response.statusCode === 400 && body.message === "no values found in search") {
-        res.redirect('learninghub?err=empty')
+      } if (response.statusCode === 400) {
+        res.redirect('/learninghub?err=empty')
         console.log('break 3')
       }
       else 
@@ -111,6 +108,7 @@ module.exports.list = function(req, res ) {
       if (response.statusCode === 200) {
       renderLearninghublist(req, res, body)
     } else 
+    console.log(err)
     _showError(req, res, response.statusCode);
   });
 };
@@ -143,16 +141,10 @@ var renderLearninghome = function(req, res)  {
         info: 'The Learning Hub is a space for users to post, search and find ways to save yourself from a future disaster!',
         a: key,
         error: req.query.err,
-        url: req.originalUrl
+        url: req.originalUrl,
+      //  empty: req.query.err
       });
     };
-
-var testData = {
-   "_id": '5c063aa2842487b3f7c9ee08', "relatedCountry": 'Australia',
-   "_id": '5c063aa2842487b3f7c9ee09', "relatedCountry": 'Bahamas',
-   "_id": '5c063aa2842487b3f7c9ee10', "relatedCountry": 'Belarus',
-   "_id": '5c063aa2842487b3f7c9ee11', "relatedCountry": 'Russia',
-};
 
 module.exports.home = function(req, res) {
   renderLearninghome(req,res) 
@@ -289,7 +281,7 @@ module.exports.newAdd = function(req, res) {
     hubentryName: req.body.hubentryName,
     articleType: req.body.articleType,
     disasterType: req.body.disasterType,
-    relatedCountry: req.body.relatedCountry,
+    country: req.body.country,
     author: req.body.author,
     hubtext: req.body.hubtext
   };
@@ -334,13 +326,19 @@ module.exports.newAdd = function(req, res) {
 };
 
 var renderThanksForm = function(req, res, detail) {
-  var a, y;
-  a = detail.disasterType; 
-  y = getDisasterIcon(a);
+  var dis, icon, country, keys;
+
+  keys = JSON.stringify(mapkey);
+  country = JSON.stringify(detail.country);
+  dis = detail.disasterType; 
+  icon = getDisasterIcon(dis);
+
   res.render('learninghub/learninghubthanks', {
     title: 'Thankyou for submitting your entry ',
+    key: keys,
+    nation: country,
     data: detail,
-    val: y
+    val: icon
    // error: req.query.err
   });
 };

@@ -17,6 +17,7 @@ module.exports.search = function(req, res ) {
   console.log("Finding record from chars " + req.params.searchid);
     rT
       .find({ "reportName": { "$regex": req.params.searchid, "$options": "i" }})
+      .sort([['reportName', 1]])
       .exec(function(err, reporttool) {
         if (!reporttool)  {
           sendJSONresponse(res, 404, {
@@ -131,7 +132,8 @@ module.exports.newReport = function(req, res) {
         createdOn: req.body.createdOn,
         contactDetails: req.body.contactDetails,
         Open: false,
-        country: req.body.country
+        country: req.body.country,
+        address: req.body.address,
         },
         function(err, reporttool) {
           if (err) {
@@ -196,6 +198,7 @@ module.exports.reportUpdate = function(req, res) {
           reporttool.author = req.body.author,
           reporttool.country = req.body.country,
           reporttool.Open = req.body.open,
+          reporttool.address = req.body.address,
           reporttool.contactDetails = req.body.contactDetails,
           reporttool.save(function(err, reporttool) {
 

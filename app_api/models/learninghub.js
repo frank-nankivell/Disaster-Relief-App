@@ -21,7 +21,7 @@ var learninghubSchema = new mongoose.Schema({
       type: String,
       required: true
     },
-    relatedCountry: {
+    country: {
       type: String,
       required: true
     },

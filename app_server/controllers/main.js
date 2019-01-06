@@ -15,8 +15,8 @@ var renderMain = function(req, res) {
   console.log(req.status, 'test test test')
   res.render('main/home', {
     title: 'home',
-    info: 'RescApp is a Global online community of people helping you or wanting to help others in need',
-    community: 'To access your local community please login or, in an emergency you can report a disaster now',
+    info: 'RescApp is a Global online community of people helping others in need.',
+    community: 'You can pledge support to local community members by registering now, or report a disaster if you are in need.',
     urlReg: 'signup',
     urlLog: 'signup',
     number: '5',

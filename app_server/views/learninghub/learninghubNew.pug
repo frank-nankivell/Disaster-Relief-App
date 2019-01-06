@@ -1,9 +1,12 @@
 extends ../layout
 
 block content
-  br
-  h1= title
-  .row
+  .style
+    link( rel='stylesheet', href='/../bootstrap/css/bootstrap-flatly.css')
+    script( src='//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js')
+  .header
+    h1= title
+  .header
     .row
     .col-md-12.md-center
       form.form-horizontal(action="#{url}", method="post", role="form")
@@ -44,9 +47,9 @@ block content
             textarea#hubtext.form-control(name="hubtext", rows='4')
             small#hubtextHelp.form-text.text-muted Go on have a write
         .form-group
-          label.control-label(for="relatedCountry") Related Country 
+          label.control-label(for="country") Related Country 
           .col-md-12.md-center
-            select#relatedCountry.form-control.input-sm(name="relatedCountry")
+            select#country.form-control.input-sm(name="country")
               option Unknown 
               option Afghanistan
               option Albania

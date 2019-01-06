@@ -1,11 +1,9 @@
 extends ../Layout
 
 block content
-  .buttons.col-md-12.md-center
-    .btn-group(role='group', aria-label='Basic example')
-      button.btn.btn-secondary(type='button') Left
-      button.btn.btn-secondary(type='button') Middle
-      button.btn.btn-secondary(type='button') Right
+  .reportbutton.col-md-12.md-center
+    br
+    a.btn.btn-info.btn-lg.center.col-md-3.md-center(href='/reporttool/info/') Search for current reports
   jumbotron
   p.lead
   h1= title
@@ -100,6 +98,7 @@ block content
                           country = component.long_name;
                   }
                 document.getElementById("country").value = country;
+                document.getElementById("address").value = (results[0].formatted_address);
               }; 
               console.log(status);
             // countrynew = results[0].address_components[1].long_name
@@ -118,6 +117,9 @@ block content
       .form-group
       .form-group-text-white(for='country')
         input#country.form-control(name='country', type='hidden',readonly='yes')
+      .form-group
+      .form-group-text-white(for='address')
+        input#address.form-control(name='address', type='text',readonly='yes')
       .form-group
         label.control-label(for="dateStart") Date the disaster started 
         .col-md-12.md-center
@@ -156,11 +158,6 @@ block content
             option Yes
             option No
       .form-group
-        label.control-label(for="instantDanger") Are you in danger right now?
-        .col-md-12.md-center
-            textarea#hubtext.form-control(name="instantDanger", rows='4',type="checkbox")
-            small#hubtextHelp.form-text.text-muted ...  
-      .form-group
         label.control-label(for="noPeopleAffected") How many people have been affected with you?
         .col-md-12.md-center
           textarea#hubtext.form-control(name="noPeopleAffected", rows='1', type="text", onkeypress="return event.charCode >= 48 && event.charCode <= 57")
@@ -179,12 +176,6 @@ block content
       button.btn.btn-primary.btn-lg.col-md-12.md-center Submit
       br
       br
-  
-  .jumbotron.center
-    h5.text-center If you are logged in you may want to view disasters to support. Please check here if so
-  .reportbutton.col-md-12.md-center
-    a.btn.btn-info.btn-lg.center.col-md-12.md-center(href='/reporttool/info/') If you are looking for a current disaster - click here
-  .reportbutton
 
 
 

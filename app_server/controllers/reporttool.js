@@ -90,36 +90,92 @@ var renderInfo = function(req, res, data) {
 
 module.exports.select = function(req, res) {};
 
-// Search for a specific entry 
-module.exports.search = function(req, res) {
-  // Validation to ensure search entry provided
-  if(!req.body.search) {
-    res.redirect('/reporttool/info?err=val');
-    console.log('No Search value entered')
+var authenticateUser = function(req, res, callback) {
+
+  var requestOptions, path, postdata;
+  postdata = {
+    email: req.body.email,
+    password:req.body.password,
   };
-  // Request to api
-  var requestOptions, path;
-  path = "/api/reporttool/search" + req.body.search;
+  path = "/api/login";
   requestOptions = {
     url : apiOptions.server + path,
-    method : "GET",
-    json : {}
+    method : "POST",
+    json : postdata,
   };
   request(
     requestOptions,
     function(err, response, body) {
-      var data = body;
-      if (response.statusCode === 200 || response.statusCode === 201) { // To manage two response codes
-        renderList(req, res, body)
-      } else {
-        console.log(err, 'Error')
-        _showError(req, res, response.statusCode);
-      }
-    }
-  );
+      if (response.statusCode === 200 || response.statusCode === 201) {
+        console.log(response.statusCode,'code') // To manage two response codes
+        callback(req, res, body)
+        return;
+
+      };
+        console.log(err,'Error, User Not validated')
+        console.log(response.statusCode,'code')
+        res.redirect('/reporttool/info?err=auth');
+        return;
+      });
+    };
+
+
+var authRedirect = function(req, res) {
+  res.render('/reporttool/info?err=val');
+};
+// Search for a specific entry 
+module.exports.search = function(req, res) {
+  // Validation to ensure search entry provided
+  if(!req.body.search || !req.body.email  ||!req.body.password)  {
+    res.redirect('/reporttool/info?err=val');
+    console.log('Incorrect values entered')
+  } else {
+  authenticateUser(req, res, function(req, res, body) {
+
+    reportSearch(req, res, body, function(req, res, body) {
+
+      renderList(req, res, body, function(req, res, body) {
+        console.log('values rendered', body)
+
+        });
+        return;
+
+      });
+      return;
+
+    });
+    return;
+  };
+  return;
 };
 
 
+var reportSearch = function(req, res, body, callback) {
+  if(body.token) {
+    var requestOptions, path;
+    path = "/api/reporttool/search" + req;
+    requestOptions = {
+      url : apiOptions.server + path,
+      method : "GET",
+      json : {}
+    };
+    request(
+      requestOptions,
+      function(err, response, body) {
+        var data = body;
+        if (response.statusCode === 200 || response.statusCode === 201) { // To manage two response codes
+          callback(req, res, body)
+          return;
+
+          } else {
+          console.log(err, 'Error')
+          callback(req, res, body);
+          return;
+        };
+      }
+    );
+  };
+};
 
 // render API call for list view 
 module.exports.list = function(req, res) {
@@ -148,11 +204,12 @@ var renderList = function(req, res, detail) {
   var string = JSON.stringify(detail)
   res.render('reporttool/reporttoolList', {
     title: 'Selected entries are below ',
-    info: 'Please review the item youn were searching for',
+    info: 'Please review the item you were searching for',
     a: mapKey, // Map key for google MAPS API
-    data: detail, ]
+    data: detail, 
    error: req.query.err
   });
+  return;
 };
 
 // Method to check if logged in user and get coords to centre the map on 
@@ -300,6 +357,7 @@ var postNew = function(req, res, name, callback) {
       country: req.body.country, 
       createdOn: today,
       contactDetails: req.body.contactDetails,
+      address: req.body.address,
     };
     requestOptions = {
       // need to amend below for production
@@ -363,6 +421,34 @@ var renderThanksForm = function(req, res, callback) {
   callback(req, res, country)
   return;
 };
+
+module.exports.commentNew = function(req, res) {
+  if(!req.body.commentText || !req.params.reportID || !req.body.author) {
+    res.redirect('.reporttool/')
+    console.log('No Values Entered for comment');
+  };
+  var requestOptions, path;
+    path = "/api/reporttool" + req.params.reportID + '/comment';
+     requestOptions = {
+       url : apiOptions.server + path,
+       method : "GET",
+       json : {}
+     };
+     request(
+       requestOptions,
+       function(err, response, body) {
+         var data = body;
+         if(response.statusCode === 200) {
+          console.log(body);
+          renderList(req, res, body); 
+          return;
+         };
+        _showError(req, res, response.statusCode);
+        return;
+    });
+  };
+
+
 
 /* Gets list of User who have the same country as the request that has just been made */
   var validateOnUsers = function(req, res, callback) {

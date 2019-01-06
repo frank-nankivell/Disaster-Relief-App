@@ -2,7 +2,6 @@ var passport = require('passport');
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
 var rT = mongoose.model('reportTool');
-var global = require('./global.js');
 
 var sendJSONresponse = function(res, status, content) {
     res.status(status);
@@ -39,6 +38,7 @@ module.exports.register = function(req, res) {
   };
   
   module.exports.login = function(req, res) {
+    console.log(req.body, 'check2')
     if(!req.body.email || !req.body.password) {
       sendJSONresponse(res, 400, {
         "message": "All fields required"
@@ -114,5 +114,3 @@ module.exports.checkCountryOnUser = function(req, res) {
 };
 };
 
-
-module.exports.login = function(req, res) { };

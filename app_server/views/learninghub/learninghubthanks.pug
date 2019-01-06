@@ -1,33 +1,42 @@
 extends ../layout
 
 block content
+  .style
+      link( rel='stylesheet', href='/../bootstrap/css/bootstrap-flatly.css')
+      script( src='//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js')
   h1= title
   p.lead The more people who support the community the stronger we will become!
      .jumbotron
-        h3.display-4.md-right= data.articleType 
+        h3.display-4.md-right The article type is
+        br 
+        h4= data.articleType 
           img.logo(src=val, alt="Disaster Relief Icon", style='width:10px/height:10px;')
-        p.lead-h4= data.hubentryName
-        p.lead= data.hubtext
-          br
+          p.lead-h4 The title of the entry is !{data.hubentryName}
+
         hr.my-4
         p.lead-h3 Submitted by #{data.author} 
           br
-        p.lead
-        .blah
-          | Visualization: Map, 
-          | Showing the country your article is about.
+        p.lead The article states: 
+          | !{data.hubtext}
+        .maps
+          | Visualization: Map 
+          | Showing the country the article is about.
           script(type='text/javascript', src='https://www.gstatic.com/charts/loader.js')
           script(type='text/javascript').
             google.charts.load('current', {
             'packages':['geochart'],
             //FRANKS_MAP_API_KEY=AIzaSyAPvir7Z2lcufXof9HTRehQ9SzmSMZ1qz0
-            'mapsApiKey': 'AIzaSyAPvir7Z2lcufXof9HTRehQ9SzmSMZ1qz0'
+            'mapsApiKey': !{key}
             });
             google.charts.setOnLoadCallback(drawRegionsMap);
             function drawRegionsMap() {
-              var data = #{data.relatedCountry};
+
+              var data;
+              var x = !{nation};
               data = new google.visualization.DataTable();
-              data.addColumn('String','Country')
+              data.addColumn('string','Country')
+              data.addColumn('number','data')
+              data.addRow([x,100])
 
             var options = {};
             var chart = new google.visualization.GeoChart(document.getElementById('regions_div'));
@@ -35,11 +44,6 @@ block content
             }
         .more
         .script(type='text/javascript').
-
-          // make user object accessible for javascript
-          var user = !{JSON.stringify(userObject)};
-
-          script(src="/js/user-functions.js")  
         
         .body
           #regions_div(style='width: 500px; height: 400px;')

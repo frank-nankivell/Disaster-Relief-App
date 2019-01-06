@@ -12,62 +12,52 @@ block content
   .listinformation 
       each a in data 
           .jumbotron
-            h4= a.reportName
-              img.logo(src= icon, for=('repIcon'),alt="Disaster Relief Icon", style='width:20px/height:20px;')
+              h4 Report Detail
+              h6 The disaster that occured  is a #{a.disasterType}
               h6.display-4.md-right Report Code: #{a.reportName}
-                h6 Please keep hold of your report code and use it in future correspondence about with community members
+                h6 This report's details are below
               p.lead-h4 Number of people affected is #{a.noPeopleAffected}
-              p.lead Date submitted #{a.createdOn} + #{a.country}
+              p.lead Date submitted #{a.createdOn}. 
+              p.lead This reporter(s) is in need of #{a.reporterNeeds}
                 br
               hr.my-4
-              p.lead-h3 Submitted by #{a.author} 
-                br
-              .demo
-                input#country(src = fuck)
+              p.lead-h3 Submitted by #{a.author}
+              p.lead-h3 If you can support this report, please  get in contact with this community member you can either do so by commenting below, 
+              | or directly with their details here: #{a.contactDetails} (unless the user has left the field blank).
               .mapinformation
-                | The map below
-                | shows where you said you have been affected
+                br
+                | The address of the incident is #{a.address} and the contact detail for the person affected is #{a.contactDetails}
                 br
                 br
-                | All members of the community in the country of #{a.country} 
-                | have been informed about the incident. They will get in contact to provide support
+                | All members of the community in the country of #{a.country}
+                | have been informed about this incident. Please provide support directly to the reporter if you are able to.
               style.
-                    /* Set the size of the div element that contains the map */
-                  #map {
-                    height: 400px;  /* The height is 400 pixels */
-                    width: 100%;  /* The width is the width of the web page */
-                    }
-              #map
-              script.
-                  function initMap() {
-
-                    //var map = new google.maps.Map(document.getElementById('map'));
-
-                    var defaultLatLng = new google.maps.LatLng(a.lat, a.lng);
-                    var country = document.getElementById('demo').getAttribute('country');
-                    console.log(country)
-
-                    var mapOptions = {
-                        zoom: 8,
-                        center: defaultLatLng,
-                        mapTypeId: google.maps.MapTypeId.ROADMAP
-                    };
-                    var map = new google.maps.Map(document.getElementById('map'),
-                    mapOptions);
-
-
-                    var marker;
-                    marker = new google.maps.Marker({
-                    position: defaultLatLng,
-                    map: map,
-                    //title: !{data.reportName},
-                  // icon: repIcon
-                    });
-                  };
-        
 
                   // Need a way of importing key securely and to whitelist IP's on deployment
               script(async='', defer='', src='https://maps.googleapis.com/maps/api/js?key=AIzaSyAPvir7Z2lcufXof9HTRehQ9SzmSMZ1qz0&callback=initMap')
               .body
               #regions_div(style='width: 500px; height: §00px;')
-              .toValidate
+              .commentInformation
+                    form.form-horizontal(action='/reporttool#{a._id}/comment', method="post", role="form")
+                      - if (error == "comment")
+                        .alert.alert-dismissible.alert-danger
+                          button.close(type='button', data-dismiss='alert') ×
+                          strong Oh snap!
+                          a.alert-link(href='#') Please make sure all values are completed 
+                          |  and try submitting again.
+                      .form-group
+                        label.control-label(for="commentText") Your comment
+                        .col-md-12.md-center
+                          input#commentText.form-control(name="commentText", rows='4',type='text')
+                          small#nameHelp.form-text.text-muted Please add any thoughts if you are adding support here
+                      .form-group
+                        label.control-label(for="commentText") Providing assistance
+                        .col-md-12.md-center
+                          input#commentText.form-control(name="commentText", type='checkbox')
+                          small#nameHelp.form-text.text-muted Check if you are able to support this person
+                      .form-group
+                        label.control-label(for="author") Your details
+                        .col-md-12.md-center
+                          input#author.form-control(name="author")
+                          small#nameHelp.form-text.text-muted Enter your details
+                      button.btn.btn-primary.btn-lg.col-md-12.md-center Submit

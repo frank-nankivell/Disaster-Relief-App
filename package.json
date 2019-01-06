@@ -3,14 +3,15 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "prod": "FRANKS_JWT_Key=great_stuff,FRANKS_MAP_API_KEY=AIzaSyAPvir7Z2lcufXof9HTRehQ9SzmSMZ1qz0,GMAIL_PASS=appsaregreat"
   },
   "dependencies": {
     "async": "^2.6.1",
     "body-parser": "^1.18.3",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
-    "dotenv": "^6.1.0",
+    "dotenv": "^6.2.0",
     "express": "~4.16.0",
     "express-jwt": "^5.3.1",
     "google-map-react": "^1.1.0",

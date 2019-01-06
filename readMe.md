@@ -11,11 +11,24 @@ https://www.youtube.com/watch?v=CxOWEkhz88E&feature=youtu.be
 
 Rescapp is an application that supports communities around the world with disaster relief, it enables people to report on issues they may have faced and other people to be alerted when these reports arise.
 
-### How has it been buit
+## How has it been buit
 
 The app has been built with node,express and mongodb. MongoDb's hosted service Atlas is currently serving as the database for the system.
 
-## Get the code and run the app!
+## Development process
+
+The app and repositories for the system are all hosted on dev.azure.com. Below are some useful links to present where the app was created.
+
+Most changes on the app were pushed to the master noted here:
+https://dev.azure.com/7wcm0035-fn17aak/_git/app-fn17aak/commits?itemPath=%2F&itemVersion=GBmaster
+
+there were many internal `develop` branches which have now been merged.
+
+This link below shows the kanban style board that the work was produced on. As noted there is always more to do, like every application.
+https://dev.azure.com/7wcm0035-fn17aak/app-fn17aak/_boards/board/t/app-fn17aak%20Team/Stories
+
+
+## Below gives the instructions on how to run the app
 
 To get the code for a specific branch:
 

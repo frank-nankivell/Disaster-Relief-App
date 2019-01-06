@@ -4,7 +4,7 @@ var apiOptions = {
   server : "http://localhost:3000"
 };
 if (process.env.NODE_ENV === 'production') {
-  apiOptions.server = "https://secret-sands-46525.herokuapp.com";
+  apiOptions.server = "https://www.rescueappinternational.com";
 }
 
 // function to get url for disaster icons

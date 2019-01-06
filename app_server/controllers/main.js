@@ -3,7 +3,7 @@ var apiOptions = {
   server : "http://localhost:3000"
 };
 if (process.env.NODE_ENV === 'production') {
-  apiOptions.server = "https://secret-sands-46525.herokuapp.com/";
+  apiOptions.server = "https://secret-sands-46525.herokuapp.com";
 }
 
 /* home page */
@@ -138,7 +138,7 @@ module.exports.registerNew = function(req, res) {
         
         console.log(body);
         _showError(req, res, response.statusCode);
-        console.log('ERROR 3')
+        console.log('ERROR 4')
         } 
         }
        );

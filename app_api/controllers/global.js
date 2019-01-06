@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
-var rT = mongoose.model('reportTool');
+var rT = mongoose.model('reporttool');
 
 var sendJSONresponse = function(res, status, content) {
     res.status(status);

@@ -7,7 +7,7 @@ var apiOptions = {
   server : "http://localhost:3000"
 };
 if (process.env.NODE_ENV === 'production') {
-  apiOptions.server = "https://www.rescueappinternational.com";
+  apiOptions.server = "https://secret-sands-46525.herokuapp.com/";
 }
 
 var _showError = function (req, res, status) {
@@ -496,8 +496,8 @@ var sendMailFunction = function(req, res, users, callback) {
       var mailOptions = {
         from: 'rescueappinternational@gmail.com',
         to: users[a].email,
-        subject: 'Report has been created:'+ req.reportName,
-        text: 'A new report has been created in the area of: '+ req.country +' to get to this report please go to',
+        subject: 'Report has been created:'+ req.reportName+' Login to access now!',
+        text: 'A new report has been created in the area of: '+ req.country +' to get to this report please login, the reporters needs are'+req.needs+'if you are able to get in contact with them now please do.',
       };
 
       transporter.sendMail(mailOptions, function(error, info){

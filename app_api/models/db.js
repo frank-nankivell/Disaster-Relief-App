@@ -2,6 +2,7 @@ var mongoose = require( 'mongoose' );
 mongoose.set('useCreateIndex', true);
 var gracefulShutdown;
 var readLine = require ("readline");
+
 if (process.platform === "win32"){
     var rl = readLine.createInterface ({
         input: process.stdin,
@@ -13,10 +14,10 @@ if (process.platform === "win32"){
 }
 var dbURI = "mongodb://localhost:27017/DRAP";
 if (process.env.NODE_ENV === 'production') {
-  dbURI = 'mongodb://admin:admin01@ds149894.mlab.com:49894/rescapp-01';
+  dbURI = 'mongodb+srv://admin:admin01@cluster0-of1ul.mongodb.net/test?retryWrites=true';
 }
 
-var mongo = mongoose.connect(dbURI, {useNewUrlParser: true });
+const mongo = mongoose.connect(dbURI, {useNewUrlParser: true });
 mongo.then(() => {
 console.log('connected');
 }).catch((err) => {

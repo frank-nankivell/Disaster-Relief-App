@@ -61,5 +61,5 @@ process.once('SIGTERM', function() {
 });
 
 require('./learninghub');
-require('./reportTool');
+require('./reporttool');
 require('./users');

@@ -11,9 +11,9 @@ if (process.platform === "win32"){
         process.emit ("SIGINT");
     });
 }
-const dbURI = "mongodb://localhost:27017/DRAP";
+var dbURI = "mongodb://localhost:27017/DRAP";
 if (process.env.NODE_ENV === 'production') {
-  dbURI = process.env.MONGO_DB_URI;
+  dbURI = 'mongodb://admin:admin01@ds149894.mlab.com:49894/rescapp-01';
 }
 const mongo = mongoose.connect(dbURI, {useNewUrlParser: true });
 mongo.then(() => {

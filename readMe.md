@@ -30,7 +30,7 @@ https://dev.azure.com/7wcm0035-fn17aak/app-fn17aak/_boards/board/t/app-fn17aak%2
 
 ## Below gives the instructions on how to run the app
 
-To get the code for a specific branch:
+1) To get the code for the master app.
 
 `$ git clone git@ssh.dev.azure.com:v3/7wcm0035-fn17aak/app-fn17aak/app-fn17aak`
 or 
@@ -38,19 +38,21 @@ or
 
 (You will need to either set up ssh keys or git credentials prior to accessing these links)
 
-Then change into the folder the git clone command will create:
+or... use the zip file from the submission
+
+2) Then change into the folder the git clone command will create:
 
 `$ cd app-fn17aak`
 
-install the dependencies:
+3) install the dependencies:
 
 `npm install`
 
-Then to start the application run this command
+4)Then to start the application run this command
 
 `NODE_ENV=production npm start`
 
-The app will initially launch here locally
+5) The app will launch here locally
 
 http://localhost:3000
 

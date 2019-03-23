@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "FRANKS_JWT_Key=great_stuff FRANKS_MAP_API_KEY=AIzaSyAPvir7Z2lcufXof9HTRehQ9SzmSMZ1qz0 GMAIL_PASS=appsaregreat node -r dotenv/config ./bin/www"
+    "start": "node -r dotenv/config ./bin/www"
   },
   "dependencies": {
     "async": "^2.6.1",

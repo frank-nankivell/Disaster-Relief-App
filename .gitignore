@@ -2,10 +2,15 @@
 node_modules
 
 # Environment variables
-.env
+
+
 # Environment variables
+.env
 .vscode/settings.json
 .vscode
+Procfile
 Dockerfile
 docker-compose.yml
 docker-compose.debug.yml
+my_app_err.log
+my_app_log.log
